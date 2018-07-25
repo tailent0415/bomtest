@@ -1,0 +1,118 @@
+body {
+	padding-top: 5px;
+}
+
+.align_left{
+	text-align: left;	
+}
+
+.align_right{
+	text-align: right;
+}
+
+.align_center{
+	text-align: center;
+}
+
+.login_icon { 
+	position:absolute;
+	width:185px;
+	height:35px;
+	top:5px;
+	left:5px;
+}
+
+.login_id { 
+	position:absolute;
+	width:200px;
+	height:15px;
+	top:10px;
+	left:195px;
+}   
+
+.login_container { 
+	margin-top:5px; 
+	margin-left:5px; 
+	margin-right:auto; 
+	margin-bottom:30px; 
+	border: 1px solid 000000; 
+}      
+
+.input_container{
+	margin-top:5px; 
+	margin-left:5px; 
+	margin-right:5px; 
+	margin-bottom:5px; 
+}
+
+.table_container {
+	margin-top:40px; 
+	margin-left:5px; 
+	margin-right:5px; 
+	margin-bottom:auto; 
+	border: 1px solid 000000; 
+}
+
+.tab_form {
+	margin-top:20px; 
+	margin-left:5px; 
+	margin-right:auto; 
+	margin-bottom:auto; 
+	border: 1px solid 000000; 
+}
+
+.text_field{
+	margin-top:5px; 
+	margin-left:0px;
+	margin-right:auto; 
+	margin-bottom:5px; 
+}
+
+
+.btn_field{
+	margin-top:10px; 
+	margin-left:0px; 
+	margin-right:10px; 
+	margin-bottom:5px; 
+}
+.none_side_btn_field{
+	margin-top:1px; 
+	margin-left:auto; 
+	margin-right:auto; 
+	margin-bottom:1px; 
+}
+.sm_btn_field{
+	margin-top:1px; 
+	margin-left:5px; 
+	margin-right:auto; 
+	margin-bottom:1px; 
+}
+
+.part_list_style{
+	width: 200px;
+}
+
+.normal_font{
+	font-family: Monospace, Courier New, sans-serif;
+}
+
+
+.load_modal {
+	display:    none;
+	position:   fixed;
+	z-index:    1000;
+	top:        0;
+	left:       0;
+	height:     100%;
+	width:      100%;
+	background: rgba( 255, 255, 255, .8 ) 
+	url('/css/loading.gif')
+	50% 50% 
+	no-repeat;
+}
+body.loading .load_modal {
+	overflow: hidden;   
+}
+body.loading .load_modal {
+	display: block;
+}
