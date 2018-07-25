@@ -17,20 +17,19 @@
          tempStr = "";
          var filePath = document.getElementById("upfile").value;
          
-          var oXL = new ActiveXObject("Excel.application");
-          alert( oXL )
-          var oWB = oXL.Workbooks.open(filePath);
-          alert( oWB )
-          oWB.worksheets(1).select();
-          var oSheet = oWB.ActiveSheet;
-         var rows = oSheet.usedrange.rows.count;
-         var columns = oSheet.usedrange.columns.count;
+
  			
  
          tempStr += '{"rows":[';
          try{
-             for (var i = 0; i < rows; i++) {
-                 tempStr += '[';
+			var oXL = new ActiveXObject("Excel.application");
+			var oWB = oXL.Workbooks.open(filePath);
+			oWB.worksheets(1).select();
+			var oSheet = oWB.ActiveSheet;
+			var rows = oSheet.usedrange.rows.count;
+			var columns = oSheet.usedrange.columns.count;
+			for (var i = 0; i < rows; i++) {
+			tempStr += '[';
                  for (var j = 0; j < columns; j++) {
                      tempStr += '"';
                      if ((oSheet.Cells(i + 1, j + 1) + "") != "undefined") {
@@ -49,7 +48,8 @@
             tempStr += ']}';
           }catch(e)
           {
-              document.getElementById("txtArea").value = tempStr;
+				alert(JSON.stringify(e))
+				document.getElementById("txtArea").value = tempStr;
           }
           document.getElementById("txtArea").value = tempStr;
           
