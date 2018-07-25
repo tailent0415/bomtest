@@ -1,73 +1,33 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
- <head>
-  <title> New Document </title>
-  <meta name="Generator" content="EditPlus"/>
-  <meta name="Author" content=""/>
-  <meta name="Keywords" content=""/>
-  <meta name="Description" content=""/>
-  <script src="Scripts/jquery-1.12.2.js" type="text/javascript"></script>
-  
-  <script type="text/javascript">
-        var tempStr="";
- 
- 
-        function ReadExcel() {
-        
-         tempStr = "";
-         var filePath = document.getElementById("upfile").value;
-         
-
- 			
- 
-         tempStr += '{"rows":[';
-         try{
-			var oXL = new ActiveXObject("Excel.application");
-			var oWB = oXL.Workbooks.open(filePath);
-			oWB.worksheets(1).select();
-			var oSheet = oWB.ActiveSheet;
-			var rows = oSheet.usedrange.rows.count;
-			var columns = oSheet.usedrange.columns.count;
-			for (var i = 0; i < rows; i++) {
-			tempStr += '[';
-                 for (var j = 0; j < columns; j++) {
-                     tempStr += '"';
-                     if ((oSheet.Cells(i + 1, j + 1) + "") != "undefined") {
-                         tempStr += (oSheet.Cells(i + 1, j + 1)+"");
-                     } else {
-                        tempStr += ("{-}");
-                    }
-                    tempStr += '"';
-                    if (columns != (j + 1)) {
-                        tempStr += ','; 
-                    }
-                }
-                if (rows != i + 1) tempStr += '],';
-                else tempStr += ']';
-            }
-            tempStr += ']}';
-          }catch(e)
-          {
-				alert(JSON.stringify(e))
-				document.getElementById("txtArea").value = tempStr;
-          }
-          document.getElementById("txtArea").value = tempStr;
-          
-          oXL.Application.Quit();
-          CollectGarbage();
-     }
- 
- 
-     function uploadJson() {
-         $.post("UploadPost.aspx", {jsonstr:tempStr}, function (data, status) {alert("Data:"+data+"\nStatus:"+status) });
-      }
-  </script>
- </head>
- 
- 
- <body>
-  <input type="file" id="upfile"/><input type="button" onclick="ReadExcel();" value="read"/><input type="button" value="uploadJson" onclick="uploadJson()"/>
-<br/>
-<textarea id="txtArea" cols="100" rows="50"></textarea>
- </body>
+    <head>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+        <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="http://code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+    </head>
+    <body>
+        <script>
+            function PreviewText() {
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.getElementById("uploadText").files[0]);
+            oFReader.onload = function (oFREvent) {
+                document.getElementById("uploadTextValue").value = oFREvent.target.result; 
+                document.getElementById("obj").data = oFREvent.target.result;
+            };
+        };
+        jQuery(document).ready(function(){
+            $('#viewSource').click(function ()
+            {
+                var text = $('#uploadTextValue').val();
+                alert(text);
+                //here ajax
+            });
+        });
+        </script>
+        <object width="100%" height="400" data="" id="obj"></object>
+        <div>
+            <input type="hidden" id="uploadTextValue" name="uploadTextValue" value="" />
+            <input id="uploadText" style="width:120px" type="file" size="10"  onchange="PreviewText();" />
+        </div>
+        <a href="#" id="viewSource">Source file</a>
+    </body>
 </html>
