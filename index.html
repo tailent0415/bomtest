@@ -8,17 +8,18 @@
 		<meta name="description" content="">
 		<meta name="author" content="">
 		<!-- Bootstrap core CSS -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/bootstrap-table.min.css">
 		<link rel="stylesheet" href="/css/style.css">
 		<!-- Bootstrap core JavaScript -->
-		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/multiple-search/bootstrap-table-multiple-search.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
+		<script src="/scripts/jquery.min.js"></script>
+		<script src="/scripts/bootstrap.min.js"></script>
+		<script src="/scripts/bootstrap-table.min.js"></script>
+		<script src="/scripts/bootstrap-table-multiple-search.min.js"></script>
+		<script src="/scripts/bootstrap-table-zh-TW.js"></script>
+		<script src="/scripts/bootstrap-table-zh-TW.min.js"></script>
+		<script src="/scripts/bootstrap-table-export.js"></script>
 	</head>
 	
 	
@@ -42,8 +43,15 @@
 			</ul>
 			<div class="tab-content">
 				<div id="home" class="tab-pane fade in active">
-					<div class="col-xs-3 btn_field">
-						<button type="button" class="btn btn-primary" onclick="receive_db_info()" >更新數據</button>
+					<div>
+						<button type="button" class="form-control" onclick="receive_db_info()" >更新數據</button>
+					</div>
+					<div id="toolbar">
+						<select class="form-control">
+							<option value="">Export Basic</option>
+							<option value="all">Export All</option>
+							<option value="selected">Export Selected</option>
+						</select>
 					</div>
 					<table id="part_table"
 						data-toggle="table"
