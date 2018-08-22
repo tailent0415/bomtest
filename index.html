@@ -241,6 +241,16 @@
 		var part_list_options = "";
 		var bom_node_array = new Array();
 		// loading event
+		
+		$(function () {
+			$('#toolbar').find('select').change(function () {
+				product_table.bootstrapTable('destroy').bootstrapTable({
+					exportDataType: $(this).val()
+				});
+			});
+		})
+		
+		
 		$(document).on({
 			ajaxStart: function() { body.addClass("loading"); },
 			ajaxStop: function() { body.removeClass("loading"); }
