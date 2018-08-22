@@ -44,12 +44,15 @@
 			<div class="tab-content">
 				<div id="home" class="tab-pane fade in active">
 					<div id="toolbar">
-						<button type="button" class="form-control" onclick="receive_db_info()" >更新數據</button>
-						<select class="form-control">
-							<option value="">Export Basic</option>
-							<option value="all">Export All</option>
-							<option value="selected">Export Selected</option>
-						</select>
+						<div class="col-auto">
+							<button type="button" class="btn btn-primary" onclick="receive_db_info()" >更新數據</button>
+						</div>
+						<div class="col-auto">
+							<select class="form-control">
+								<option value="all">Export All</option>
+								<option value="selected">Export Selected</option>
+							</select>
+						</div>
 					</div>
 					<table id="part_table"
 						data-toggle="table"
