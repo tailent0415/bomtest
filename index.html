@@ -245,6 +245,7 @@
 		
 		$(function () {
 			$('#toolbar').find('select').change(function () {
+				alert("test");
 				product_table.bootstrapTable('destroy').bootstrapTable({
 					exportDataType: $(this).val()
 				});
