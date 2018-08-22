@@ -43,10 +43,8 @@
 			</ul>
 			<div class="tab-content">
 				<div id="home" class="tab-pane fade in active">
-					<div>
-						<button type="button" class="form-control" onclick="receive_db_info()" >更新數據</button>
-					</div>
 					<div id="toolbar">
+						<button type="button" class="form-control" onclick="receive_db_info()" >更新數據</button>
 						<select class="form-control">
 							<option value="">Export Basic</option>
 							<option value="all">Export All</option>
@@ -63,6 +61,7 @@
 						data-id-field="index"
 						data-unique-id="index"
 						data-show-columns="true"
+						data-toolbar="#toolbar"
 						data-page-number="1">
 						<thead>
 							<tr>
