@@ -46,8 +46,6 @@
 					<div id="toolbar">
 						<div class="col-auto">
 							<button type="button" class="btn btn-primary mb-2" onclick="receive_db_info()" >更新數據</button>
-						</div>
-						<div class="col-auto">
 							<select class="form-control mb-2">
 								<option value="all">Export All</option>
 								<option value="selected">Export Selected</option>
@@ -56,6 +54,7 @@
 					</div>
 					<table id="part_table"
 						data-toggle="table"
+						data-click-to-select="true"
 						data-side-pagination="client"
 						data-pagination="true"
 						data-height="525"
