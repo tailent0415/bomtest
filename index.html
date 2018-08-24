@@ -45,10 +45,6 @@
 					<div id="toolbar">
 						<div class="col-auto">
 							<button type="button" class="btn btn-primary mb-2" onclick="receive_db_info()" >更新數據</button>
-							<select class="form-control mb-2">
-								<option value="all">Export All</option>
-								<option value="selected">Export Selected</option>
-							</select>
 						</div>
 					</div>
 					<table id="part_table"
@@ -239,15 +235,9 @@
 		var part_list_options = "";
 		var bom_node_array = new Array();
 		// loading event
-		
-		$(function () {
-			$('#toolbar').find('select').change(function () {
-				alert("test");
-				product_table.bootstrapTable('destroy').bootstrapTable({
-					exportDataType: $(this).val()
-				});
-			});
-		})
+		product_table.bootstrapTable('destroy').bootstrapTable({
+			exportDataType: "all"
+		});
 		
 		
 		$(document).on({
