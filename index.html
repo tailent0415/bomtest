@@ -193,11 +193,11 @@
 				<div id="menu5" class="tab-pane fade">
 				</div>
 				<div id="menu6" class="tab-pane fade">
-					<div class="col-xs-2 btn_field">
-						<button type="button" class="btn btn-primary" onclick="delete_record()" >刪除</button>
-					</div>
-					<div class="col-xs-2 btn_field">
-						<button type="button" class="btn btn-primary" onclick="receive_record()" >更新數據</button>
+					<div id="record_toolbar">
+						<div class="col-auto">
+							<button type="button" class="btn btn-primary" onclick="delete_record()" >刪除</button>
+							<button type="button" class="btn btn-primary" onclick="receive_record()" >更新數據</button>
+						</div>
 					</div>
 					<table id="record_table"
 						data-toggle="table"
@@ -209,6 +209,7 @@
 						data-id-field="index"
 						data-unique-id="index"
 						data-show-columns="true"
+						data-toolbar="#toolbar"
 						data-page-number="1">
 						<thead>
 							<tr>
