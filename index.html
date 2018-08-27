@@ -229,40 +229,42 @@
 					</table>
 				</div>
 				<div id="menu7" class="tab-pane fade">
-					<div id="event_toolbar">
-						<div class="col-auto">
-							<button type="button" class="btn btn-primary" onclick="del_make_order()" >刪除</button>
-							<button type="button" class="btn btn-primary" onclick="add_make_order()" >新增制令</button>
-							<button type="button" class="btn btn-primary" onclick="upd_make_order()" >更新數據</button>
+					<div id="show_make_order">
+						<div id="event_toolbar">
+							<div class="col-auto">
+								<button type="button" class="btn btn-primary" onclick="del_make_order()" >刪除</button>
+								<button type="button" class="btn btn-primary" onclick="add_make_order()" >新增制令</button>
+								<button type="button" class="btn btn-primary" onclick="upd_make_order()" >更新數據</button>
+							</div>
 						</div>
+						<table id="event_table"
+							data-toolbar="#event_toolbar"
+							data-toggle="table"
+							data-side-pagination="client"
+							data-pagination="true"
+							data-page-list="[5, 10, 50, 100]"
+							data-search="true"
+							data-height="525"
+							data-id-field="index"
+							data-unique-id="index"
+							data-show-columns="true"
+							data-detail-view="true"
+							data-detail-formatter="detailFormatter"
+							data-page-number="1">
+							<thead>
+								<tr>
+									<th data-field="state" data-checkbox="true"></th>
+									<th data-formatter="index_response">項次</th>
+									<th data-field="timestamp">時間</th>
+									<th data-field="number">品號</th>
+									<th data-field="action">行為</th>
+									<th data-field="quantity">數量</th>
+									<th data-field="goal">目的</th>
+									<th data-field="location">位置</th>
+								</tr>
+							</thead>
+						</table>
 					</div>
-					<table id="event_table"
-						data-toolbar="#event_toolbar"
-						data-toggle="table"
-						data-side-pagination="client"
-						data-pagination="true"
-						data-page-list="[5, 10, 50, 100]"
-						data-search="true"
-						data-height="525"
-						data-id-field="index"
-						data-unique-id="index"
-						data-show-columns="true"
-						data-detail-view="true"
-						data-detail-formatter="detailFormatter"
-						data-page-number="1">
-						<thead>
-							<tr>
-								<th data-field="state" data-checkbox="true"></th>
-								<th data-formatter="index_response">項次</th>
-								<th data-field="timestamp">時間</th>
-								<th data-field="number">品號</th>
-								<th data-field="action">行為</th>
-								<th data-field="quantity">數量</th>
-								<th data-field="goal">目的</th>
-								<th data-field="location">位置</th>
-							</tr>
-						</thead>
-					</table>
 				</div>
 			</div>
 		</div>
@@ -342,11 +344,11 @@
 		}
 		
 		function del_make_order(){
-			product_table.hide();
+			$("#show_make_order").hide();
 		}
 		
 		function add_make_order(){
-			product_table.show();
+			$("#show_make_order").show();
 		}
 		
 		// quantity change button response
