@@ -329,9 +329,9 @@
 		
 		function customCardView(row) {
 			return [
-				'<div class="card card-bs">',
+				'<div class="card card-bs" onclick="event_get_serial_num( test )">',
 					'<div class="head">',
-						'<p class="name" ondblclick="event_get_serial_num(' + row.number + ')">' + row.number + '</p>',
+						'<span class="name">' + row.number + '</p>',
 						'<span class="stars">★ ' + row.index + '</span>',
 						'<span class="forks">* ' + row.timestamp + '</span>',
 					'</div>',
