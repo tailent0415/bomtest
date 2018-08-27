@@ -243,7 +243,7 @@
 						data-id-field="index"
 						data-unique-id="index"
 						data-detail-view="true"
-						data-detail-formatter="detailFormatter"
+						data-detail-formatter="event_detail_formatter"
 						data-show-columns="true"
 						data-toolbar="#event_toolbar"
 						data-card-view="true"
@@ -326,11 +326,11 @@
 			});
 		});
 		
-		function detailFormatter(index, row) {
+		function event_detail_formatter(index, row) {
 			var html = [];
-			$.each(row, function (key, value) {
-				html.push('<p><b>' + key + ':</b> ' + value + '</p>');
-			});
+			var title_name="partnum";
+			var detail_value="3-aa-bbb-ccc-123-123";
+			html.push('<p><b>' + "event_title" + ':</b> ' + value + '</p>');
 			return html.join('');
 		}
 		
