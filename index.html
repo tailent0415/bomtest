@@ -319,47 +319,12 @@
 					case "事件":
 						product_table = $("#event_table");
 						ele_id = "menu7";
+						receive_record();
 					default:
 				}
 			});
 		});
 		
-		
-		
-		var data = [
-		{
-			"index": "1",
-			"timestamp": "2018/8/7",
-			"number": "bootstrap-table",
-			"action": "526",
-			"quantity": "122",
-			"goal": "An extended Bootstrap table with radio",
-			"location": "test"
-		},
-		{
-			"index": "2",
-			"timestamp": "2018/8/7",
-			"number": "bootstrap-table",
-			"action": "288",
-			"quantity": "333",
-			"goal": "A jQuery plugin to select multiple",
-			"location": "test"
-		}];
-		
-		$(function () {
-			$('#event_table').bootstrapTable({
-				data: data
-			});
-		});
-		
-		
-		function detailFormatter(index, row) {
-			var html = [];
-			$.each(row, function (key, value) {
-				html.push('<p><b>' + key + ':</b> ' + value + '</p>');
-			});
-			return html.join('');
-		}
 		
 		
 		// quantity change button response
