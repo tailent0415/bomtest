@@ -328,11 +328,7 @@
 		
 		function detailFormatter(index, row) {
 			var html = [];
-			alert( index );
-			alert( row );
 			$.each(row, function (key, value) {
-				alert( key );
-				alert( value );
 				html.push('<p><b>' + key + ':</b> ' + value + '</p>');
 			});
 			return html.join('');
