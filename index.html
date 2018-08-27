@@ -331,11 +331,12 @@
 			return [
 				'<div class="card card-bs">',
 					'<div class="head">',
-						'<span class="name"><p onclick="event_get_serial_num(test)>"' + row.number + '</p></span>',
+						'<span class="name">' + row.number + '</span>',
 						'<span class="stars">★ ' + row.index + '</span>',
 						'<span class="forks">* ' + row.timestamp + '</span>',
 					'</div>',
 					'<div class="body">' + row.goal + '</div>',
+					'<a href="#" onclick="event_get_serial_num(test)">Card link</a>',
 				'</div>'
 			].join('');
 		}
