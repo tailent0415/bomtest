@@ -331,7 +331,8 @@
 			return [
 				'<div class="card card-bs">',
 					'<div class="head">',
-						'<a class="name">' + row.number + '</a>',
+						
+						'<a class="name" onclick='event_get_serial_num( 'row.number' )>' + row.number + '</a>',
 						'<span class="stars">★ ' + row.index + '</span>',
 						'<span class="forks">* ' + row.timestamp + '</span>',
 					'</div>',
@@ -339,7 +340,12 @@
 				'</div>'
 			].join('');
 		}
-				
+		
+		function event_get_serial_num(row) {
+			alert(row)
+		}
+
+		
 		// quantity change button response
 		function quan_change_btn( currdata ){
 			var cnt = document.getElementById( ele_id );
