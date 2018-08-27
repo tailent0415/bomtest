@@ -234,6 +234,7 @@
 						</div>
 					</div>
 					<table id="event_table"
+						data-toolbar="#event_toolbar"
 						data-toggle="table"
 						data-side-pagination="client"
 						data-pagination="true"
@@ -242,11 +243,9 @@
 						data-height="525"
 						data-id-field="index"
 						data-unique-id="index"
-						data-detail-view="true"
-						data-detail-formatter="event_detail_formatter"
 						data-show-columns="true"
-						data-toolbar="#event_toolbar"
 						data-card-view="true"
+						data-card-formatter="customCardView"
 						data-page-number="1">
 						<thead>
 							<tr>
@@ -326,15 +325,19 @@
 			});
 		});
 		
-		function event_detail_formatter(index, row) {
-			var html = [];
-			var title_name="partnum";
-			var detail_value="3-aa-bbb-ccc-123-123";
-			html.push('<p><b>' + "event_title" + ':</b> ' + value + '</p>');
-			return html.join('');
+		function customCardView(row) {
+			return [
+				'<div class="card card-bs">',
+					'<div class="head">',
+					'<span class="number">' + row.number + '</span>',
+					'<span class="stars">★ ' + row.index + '</span>',
+					'<span class="forks">* ' + row.timestamp + '</span>',
+					'</div>',
+					'<div class="body">' + row.goal + '</div>',
+				'</div>'
+			].join('');
 		}
-		
-		
+				
 		// quantity change button response
 		function quan_change_btn( currdata ){
 			var cnt = document.getElementById( ele_id );
