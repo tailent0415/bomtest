@@ -363,8 +363,7 @@
 			div_second_obj.setAttribute("class", "text_field");
 			div_three_obj.setAttribute("class", "text_field");
 			var serial_num = Date.now().toString(16).toUpperCase();
-			var data_str = '<label for="part_serial_num_out">制令號 : </label><input type=text id="part_serial_num_out" class="part_attr input_container normal_font" style="width:200px;margin-top:15px" name="part_make_order" disabled="true" value=' + serial_num + ' >'
-			
+			var data_str = '<label for="part_serial_num_out">制令號 : </label><input type=text id="part_serial_num_out" class="part_attr input_container normal_font" style="width:200px;margin-top:15px" name="part_make_order" disabled="true" value=' + serial_num + ' >';
 			div_second_obj.innerHTML = data_str;
 			div_first_obj.appendChild(div_second_obj);
 			div_three_obj.setAttribute("id", "mo_part_num");
@@ -373,7 +372,7 @@
 			div_second_obj.appendChild(div_three_obj);
 			div_three_obj.setAttribute("id", "mo_part_table");
 			table_title = [ '料號', '名稱', '需求量', '提供量' ];
-			var title_len = table_title.length
+			var title_len = table_title.length;
 			var table_obj = document.createElement( "table" );
 			var thead_obj = document.createElement( "thead" );
 			var tbody_obj = document.createElement( "tbody" );
