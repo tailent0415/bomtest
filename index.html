@@ -361,14 +361,14 @@
 			var div_second_obj = document.createElement( "div" );
 			div_second_obj.setAttribute("class", "text_field");
 			var serial_num = Date.now().toString(16).toUpperCase();
-			var data_str = '<label for="part_serial_num_out">制令號 : </label><input type=text id="part_serial_num_out" class="part_attr input_container normal_font" style="width:200px;margin-top:15px" name="part_make_order" disabled="true" value=serial_num >'
+			var data_str = '<label for="part_serial_num_out">制令號 : </label><input type=text id="part_serial_num_out" class="part_attr input_container normal_font" style="width:200px;margin-top:15px" name="part_make_order" disabled="true" value=' + serial_num + ' >'
 			data_str += '<br><label for="part_num_in">品號 : </label><input id="part_num_in" class="input_container part_list_style normal_font" name="part_num_list" list="part_list"/>';
 			div_second_obj.innerHTML = data_str;
 			div_first_obj.appendChild(div_second_obj);
-			/*var data_str = '<button type="button" class="btn btn-primary" onclick="allow_make_order()" >確認</button>'
-			var data_str += '<button type="button" class="btn btn-primary" onclick="cancel_make_order()" >取消</button>';
+			var data_str = '<button type="button" class="btn btn-primary" onclick="allow_make_order()" >確認</button>';
+			data_str += '<button type="button" class="btn btn-primary" onclick="cancel_make_order()" >取消</button>';
 			div_first_obj.innerHTML = data_str;
-			cnt.appendChild( div_first_obj );*/
+			cnt.appendChild( div_first_obj );
 		}
 		
 		// Remove Make Order interface
