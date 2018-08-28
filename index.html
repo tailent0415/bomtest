@@ -41,7 +41,7 @@
 				<li><a data-toggle="tab" href="#menu4">入庫&領用</a></li>
 				<li><a data-toggle="tab" href="#menu5">BOM</a></li>
 				<li><a data-toggle="tab" href="#menu6">紀錄</a></li>
-				<li><a data-toggle="tab" href="#menu7">事件</a></li>
+				<li><a data-toggle="tab" href="#menu7">制令查詢</a></li>
 			</ul>
 			<div class="tab-content">
 				<div id="home" class="tab-pane fade in active">
@@ -229,13 +229,16 @@
 					</table>
 				</div>
 				<div id="menu7" class="tab-pane fade">
-					<ul class="nav flex-column">
-						<a data-toggle="tab" href="#add_order">新增制令</a>
-						<a data-toggle="tab" href="#search_order">查詢制令</a>
-					</ul>
+					<div id="make_order_toolbar">
+						<div class="col-auto">
+							<button type="button" class="btn btn-primary" onclick="add_make_order()" >產生製令</button>
+							<button type="button" class="btn btn-primary" onclick="del_make_order()" >刪除製令</button>
+							<button type="button" class="btn btn-primary" onclick="upd_make_order()" >更新數據</button>
+						</div>
+					</div>
 					<div id="show_make_order">
 						<table id="event_table"
-							data-toolbar="#event_toolbar"
+							data-toolbar="#make_order_toolbar"
 							data-toggle="table"
 							data-side-pagination="client"
 							data-pagination="true"
@@ -246,7 +249,7 @@
 							data-unique-id="index"
 							data-show-columns="true"
 							data-detail-view="true"
-							data-detail-formatter="detailFormatter"
+							data-detail-formatter="make_order_detail_formatter"
 							data-page-number="1">
 							<thead>
 								<tr>
@@ -326,29 +329,13 @@
 					default:
 				}
 			});
-			$('.flex-column a').click(function(){
-				$(this).tab('show');
-			});
-			
-		    $('.flex-column a').on('shown.bs.tab', function(event){
-				var x = $(event.target).text();   // active tab
-				switch(x){
-					case "新增制令":
-						add_make_order();	
-						break;
-					case "查詢制令":
-						remove_bomtable_interface();
-						break;
-					default:
-				}
-			});
 		});
 		
 		function index_response( val, row, ind ){
 			return ind;
 		}
 		
-		function detailFormatter(index, row) {
+		function make_order_detail_formatter(index, row) {
 			var html = [];
 			$.each(row, function (key, value) {
 				html.push('<p><b>' + key + ':</b> ' + value + '</p>');
@@ -357,7 +344,7 @@
 		}
 		
 		function del_make_order(){
-			
+			alert('del');
 		}
 		
 		function add_make_order(){
@@ -382,7 +369,7 @@
 		
 		// Remove Make Order interface
 		function remove_bomtable_interface(){
-			alert('init');
+			
 			/*var cnt = document.getElementById( ele_id );
 			var div_obj = document.getElementById( "make_order" );
 			cnt.removeChild(div_obj);*/
