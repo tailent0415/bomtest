@@ -348,6 +348,7 @@
 		}
 		
 		function add_make_order(){
+			$("show_make_order").hide();
 			var cnt = document.getElementById( ele_id );
 			var div_first_obj = document.getElementById( "make_order" );
 			if( div_first_obj !== null ){
@@ -375,6 +376,14 @@
 			var div_obj = document.getElementById( "make_order" );
 			cnt.removeChild(div_obj);
 		}
+		
+		function cancel_make_order(){
+			remove_make_order_interface();
+			$("show_make_order").show();
+		}
+		
+		
+		
 		
 		// quantity change button response
 		function quan_change_btn( currdata ){
