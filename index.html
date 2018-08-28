@@ -359,20 +359,69 @@
 			div_first_obj.setAttribute("class", "tab_form");
 			cnt.appendChild(div_first_obj);
 			var div_second_obj = document.createElement( "div" );
+			var div_three_obj = document.createElement( "div" );
 			div_second_obj.setAttribute("class", "text_field");
+			div_three_obj.setAttribute("class", "text_field");
 			var serial_num = Date.now().toString(16).toUpperCase();
 			var data_str = '<label for="part_serial_num_out">制令號 : </label><input type=text id="part_serial_num_out" class="part_attr input_container normal_font" style="width:200px;margin-top:15px" name="part_make_order" disabled="true" value=' + serial_num + ' >'
-			data_str += '<br><label for="part_num_in">品號 : </label><input id="part_num_in" class="input_container part_list_style normal_font" name="part_num_list" list="part_list"/>';
+			
 			div_second_obj.innerHTML = data_str;
 			div_first_obj.appendChild(div_second_obj);
-			
-			var div_second_obj = document.createElement( "div" );
-			div_second_obj.setAttribute("class", "text_field");
+			div_three_obj.setAttribute("id", "mo_part_num");
+			var data_str = '<label for="part_num_in">品號 : </label><input id="part_num_in" class="input_container part_list_style normal_font" name="part_num_list" list="part_list"/>';
+			div_three_obj.innerHTML = data_str;
+			div_second_obj.appendChild(div_three_obj);
+			div_three_obj.setAttribute("id", "mo_part_table");
+			table_title = [ '料號', '名稱', '需求量', '提供量' ];
+			var title_len = table_title.length
+			var table_obj = document.createElement( "table" );
+			var thead_obj = document.createElement( "thead" );
+			var tbody_obj = document.createElement( "tbody" );
+			var tr_obj = document.createElement( "tr" );
+			table_obj.border = "1";
+			var title_str = "";
+			var style_str = "";
+			for( var i=0; i<title_len; i++ ){
+				switch( table_title[i] ){
+					case '料號':
+						style_str = "style='width:170px;text-align:center' ";
+						break;
+					case '名稱':
+						style_str = "style='width:200px;text-align:center' ";
+						break;
+					case '需求量':
+						style_str = "style='width:80px;text-align:center' ";
+						break;
+					case '提供量':
+						style_str = "style='width:80px;text-align:center' ";
+						break;
+					default:
+				}
+				title_str += "<td " + style_str + ">" + table_title[i] + "</td>";
+			}
+			tr_obj.innerHTML = title_str;
+			thead_obj.appendChild( tr_obj );
+			table_obj.appendChild( thead_obj );
+			var data_str = "";
+			tr_obj = document.createElement( "tr" );
+				for( var i=0; i<title_len; i++ ){
+					data_str += "<td style='height:35px;text-align:center' >  </td>";
+				}
+				tr_obj.innerHTML = data_str;
+				tbody_obj.appendChild( tr_obj );
+			}
+			table_obj.appendChild( tbody_obj );
+			div_three_obj.appendChild( table_obj );
+			div_second_obj.appendChild(div_three_obj);
 			var data_str = '<button type="button" class="btn btn-primary btn_field" onclick="allow_make_order()" >確認</button>';
 			data_str += '<button type="button" class="btn btn-primary btn_field" onclick="cancel_make_order()" >取消</button>';
 			div_second_obj.innerHTML = data_str;
 			div_first_obj.appendChild(div_second_obj);
 		}
+
+	
+		
+		
 		
 		// Remove Make Order interface
 		function remove_make_order_interface(){
@@ -1058,6 +1107,7 @@
 										tbody_obj = document.createElement( "tbody" );
 										tr_obj = document.createElement( "tr" );
 										table_obj.border = "1";
+										
 										var title_str = "";
 										var style_str = "";
 										for( var i=0; i<title_len; i++ ){
