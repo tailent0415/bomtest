@@ -401,15 +401,6 @@
 			tr_obj.innerHTML = title_str;
 			thead_obj.appendChild( tr_obj );
 			table_obj.appendChild( thead_obj );
-			var data_str = "";
-			tr_obj = document.createElement( "tr" );
-				for( var i=0; i<title_len; i++ ){
-					data_str += "<td style='height:35px;text-align:center' >  </td>";
-				}
-				tr_obj.innerHTML = data_str;
-				tbody_obj.appendChild( tr_obj );
-			}
-			table_obj.appendChild( tbody_obj );
 			div_three_obj.appendChild( table_obj );
 			div_second_obj.appendChild(div_three_obj);
 			var data_str = '<button type="button" class="btn btn-primary btn_field" onclick="allow_make_order()" >確認</button>';
