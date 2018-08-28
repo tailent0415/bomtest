@@ -368,8 +368,8 @@
 			
 			var div_second_obj = document.createElement( "div" );
 			div_second_obj.setAttribute("class", "text_field");
-			var data_str = '<button type="button" class="btn btn-primary" onclick="allow_make_order()" >確認</button>';
-			data_str += '<button type="button" class="btn btn-primary" onclick="cancel_make_order()" >取消</button>';
+			var data_str = '<button type="button" class="btn btn-primary btn_field" onclick="allow_make_order()" >確認</button>';
+			data_str += '<button type="button" class="btn btn-primary btn_field" onclick="cancel_make_order()" >取消</button>';
 			div_second_obj.innerHTML = data_str;
 			div_first_obj.appendChild(div_second_obj);
 		}
@@ -390,7 +390,7 @@
 		// Cancel Access Make Order 
 		function cancel_make_order(){
 			remove_make_order_interface();
-			$("show_make_order").show();
+			$('#show_make_order').show();
 		}
 		
 		
