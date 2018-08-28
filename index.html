@@ -351,7 +351,7 @@
 			var cnt = document.getElementById( ele_id );
 			var div_first_obj = document.getElementById( "make_order" );
 			if( div_first_obj !== null ){
-				remove_bomtable_interface();
+				remove_make_order_interface();
 			}
 			div_first_obj = document.createElement( "div" );
 			div_first_obj.id = "make_order"
@@ -370,11 +370,10 @@
 		}
 		
 		// Remove Make Order interface
-		function remove_bomtable_interface(){
-			
-			/*var cnt = document.getElementById( ele_id );
+		function remove_make_order_interface(){
+			var cnt = document.getElementById( ele_id );
 			var div_obj = document.getElementById( "make_order" );
-			cnt.removeChild(div_obj);*/
+			cnt.removeChild(div_obj);
 		}
 		
 		// quantity change button response
