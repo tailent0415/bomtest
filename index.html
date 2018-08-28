@@ -229,6 +229,10 @@
 					</table>
 				</div>
 				<div id="menu7" class="tab-pane fade">
+					<ul class="nav flex-column">
+						<a data-toggle="tab" href="#add_make_order">新增</a>
+						<a data-toggle="tab" href="#search_make_order">查詢</a>
+					</ul>
 					<div id="show_make_order">
 						<div id="event_toolbar">
 							<div class="col-auto">
@@ -329,6 +333,21 @@
 					default:
 				}
 			});
+		    $('.flex-column a').on('shown.bs.tab', function(event){
+				var x = $(event.target).text();   // active tab
+				switch(x){
+					case "新增":
+						add_make_order();	
+						break;
+					case "查詢":
+						remove_bomtable_interface();
+						break;
+					default:
+				}
+			});
+			
+			
+			
 		});
 		
 		function index_response( val, row, ind ){
