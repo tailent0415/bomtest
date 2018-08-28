@@ -370,6 +370,7 @@
 			div_first_obj.appendChild(div_second_one_obj);
 			div_three_obj.setAttribute("id", "mo_part_num");
 			var data_str = '<label for="part_num_in">品號 : </label><input id="part_num_in" class="input_container part_list_style normal_font" name="part_num_list" list="part_list"/>';
+			var data_str += '<br><label for="part_variable_in">數量 : </label><input id="part_variable_in" class="part_attr input_container normal_font" name="part_varval" type="number" style="width:100px" value="0" />';
 			div_three_obj.innerHTML = data_str;
 			div_second_one_obj.appendChild(div_three_obj);
 			div_three_obj.setAttribute("id", "mo_part_table");
