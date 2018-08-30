@@ -11,7 +11,6 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link rel="stylesheet" href="/css/card.css">
 		<link rel="stylesheet" href="/css/style.css">
 		<!-- Bootstrap core JavaScript -->
 		<script src="/scripts/jquery.min.js"></script>
@@ -21,7 +20,6 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
 		<script src="/scripts/bootstrap-table-export.js"></script>
-		<script src="/scripts/bootstrap-table-card-extension.js"></script>
 		<script src="/scripts/tableExport.js"></script>
 		<script src="/scripts/ga.js"></script>
 	</head>
@@ -41,7 +39,6 @@
 				<li><a data-toggle="tab" href="#menu4">入庫&領用</a></li>
 				<li><a data-toggle="tab" href="#menu5">BOM</a></li>
 				<li><a data-toggle="tab" href="#menu6">紀錄</a></li>
-				<li><a data-toggle="tab" href="#menu7">制令查詢</a></li>
 			</ul>
 			<div class="tab-content">
 				<div id="home" class="tab-pane fade in active">
@@ -228,44 +225,6 @@
 						</thead>
 					</table>
 				</div>
-				<div id="menu7" class="tab-pane fade">
-					<div id="make_order_toolbar">
-						<div class="col-auto">
-							<button type="button" class="btn btn-primary" onclick="add_make_order()" >產生製令</button>
-							<button type="button" class="btn btn-primary" onclick="del_make_order()" >刪除製令</button>
-							<button type="button" class="btn btn-primary" onclick="upd_make_order()" >更新數據</button>
-						</div>
-					</div>
-					<div id='show_make_order'>
-						<table id="event_table"
-							data-toolbar="#make_order_toolbar"
-							data-toggle="table"
-							data-side-pagination="client"
-							data-pagination="true"
-							data-page-list="[5, 10, 50, 100]"
-							data-search="true"
-							data-height="525"
-							data-id-field="index"
-							data-unique-id="index"
-							data-show-columns="true"
-							data-detail-view="true"
-							data-detail-formatter="make_order_detail_formatter"
-							data-page-number="1">
-							<thead>
-								<tr>
-									<th data-field="state" data-checkbox="true"></th>
-									<th data-formatter="index_response">項次</th>
-									<th data-field="timestamp">時間</th>
-									<th data-field="number">品號</th>
-									<th data-field="action">行為</th>
-									<th data-field="quantity">數量</th>
-									<th data-field="goal">目的</th>
-									<th data-field="location">位置</th>
-								</tr>
-							</thead>
-						</table>
-					</div>
-				</div>
 			</div>
 		</div>
     <script language="JavaScript">
@@ -276,6 +235,7 @@
 		var part_list_obj = $("#part_list");
 		var part_list_options = "";
 		var bom_node_array = new Array();
+
 		
 		$(document).on({
 			ajaxStart: function() { body.addClass("loading"); },
@@ -322,122 +282,10 @@
 						ele_id = "menu6";
 						receive_record();
 						break;
-					case "制令查詢":
-						product_table = $("#event_table");
-						ele_id = "menu7";
-						receive_record();
 					default:
 				}
 			});
 		});
-		
-		function index_response( val, row, ind ){
-			return ind;
-		}
-		
-		function make_order_detail_formatter(index, row) {
-			var html = [];
-			$.each(row, function (key, value) {
-				html.push('<p><b>' + key + ':</b> ' + value + '</p>');
-			});
-			return html.join('');
-		}
-		
-		function del_make_order(){
-			alert('del');
-		}
-		
-		function add_make_order(){
-			$('#show_make_order').hide();
-			var cnt = document.getElementById( ele_id );
-			var div_first_obj = document.getElementById( "make_order" );
-			if( div_first_obj !== null ){
-				remove_make_order_interface();
-			}
-			div_first_obj = document.createElement( "div" );
-			div_first_obj.id = "make_order"
-			div_first_obj.setAttribute("class", "tab_form");
-			cnt.appendChild(div_first_obj);
-			var div_second_one_obj = document.createElement( "div" );
-			var div_second_two_obj = document.createElement( "div" );
-			var div_three_obj = document.createElement( "div" );
-			div_second_one_obj.setAttribute("class", "text_field");
-			div_second_two_obj.setAttribute("class", "text_field");
-			div_three_obj.setAttribute("class", "text_field");
-			var serial_num = Date.now().toString(16).toUpperCase();
-			var data_str = '<label for="part_serial_num_out">制令號 : </label><input type=text id="part_serial_num_out" class="part_attr input_container normal_font" style="width:200px;margin-top:15px" name="part_make_order" disabled="true" value=' + serial_num + ' >';
-			div_second_one_obj.innerHTML = data_str;
-			div_first_obj.appendChild(div_second_one_obj);
-			div_three_obj.setAttribute("id", "mo_part_num");
-			var data_str = '<label for="part_num_in">品號 : </label><input id="part_num_in" class="input_container part_list_style normal_font" name="part_num_list" list="part_list"/>';
-			data_str += '<br><label for="part_variable_in">數量 : </label><input id="part_variable_in" class="part_attr input_container normal_font" name="part_varval" type="number" style="width:100px" value="0" />';
-			data_str += '<button type="button" class="btn btn-primary btn_field" onclick="build_make_order_table()" >產生</button>';
-			div_three_obj.innerHTML = data_str;
-			div_second_one_obj.appendChild(div_three_obj);
-			div_three_obj.setAttribute("id", "mo_part_table");
-			table_title = [ '料號', '名稱', '需求量', '提供量' ];
-			var title_len = table_title.length;
-			var table_obj = document.createElement( "table" );
-			var thead_obj = document.createElement( "thead" );
-			var tbody_obj = document.createElement( "tbody" );
-			var tr_obj = document.createElement( "tr" );
-			table_obj.border = "1";
-			var title_str = "";
-			var style_str = "";
-			for( var i=0; i<title_len; i++ ){
-				switch( table_title[i] ){
-					case '料號':
-						style_str = "style='width:170px;text-align:center' ";
-						break;
-					case '名稱':
-						style_str = "style='width:200px;text-align:center' ";
-						break;
-					case '需求量':
-						style_str = "style='width:80px;text-align:center' ";
-						break;
-					case '提供量':
-						style_str = "style='width:80px;text-align:center' ";
-						break;
-					default:
-				}
-				title_str += "<td " + style_str + ">" + table_title[i] + "</td>";
-			}
-			tr_obj.innerHTML = title_str;
-			thead_obj.appendChild( tr_obj );
-			table_obj.appendChild( thead_obj );
-			div_three_obj.appendChild( table_obj );
-			div_second_one_obj.appendChild(div_three_obj);
-			var data_str = '<button type="button" class="btn btn-primary btn_field" onclick="allow_make_order()" >確認</button>';
-			data_str += '<button type="button" class="btn btn-primary btn_field" onclick="cancel_make_order()" >取消</button>';
-			div_second_two_obj.innerHTML = data_str;
-			div_first_obj.appendChild(div_second_one_obj);
-			div_first_obj.appendChild(div_second_two_obj);
-		}
-		
-		// Remove Make Order interface
-		function remove_make_order_interface(){
-			var cnt = document.getElementById( ele_id );
-			var div_obj = document.getElementById( "make_order" );
-			cnt.removeChild(div_obj);
-		}
-		
-		// Access Make Order 
-		function allow_make_order(){
-			cancel_make_order();
-		}
-		
-		
-		// Cancel Access Make Order 
-		function cancel_make_order(){
-			remove_make_order_interface();
-			$('#show_make_order').show();
-		}
-		
-		// Build Make Order Table
-		function build_make_order_table(){
-			
-			
-		}
 		
 		// quantity change button response
 		function quan_change_btn( currdata ){
@@ -1101,7 +949,6 @@
 										tbody_obj = document.createElement( "tbody" );
 										tr_obj = document.createElement( "tr" );
 										table_obj.border = "1";
-										
 										var title_str = "";
 										var style_str = "";
 										for( var i=0; i<title_len; i++ ){
@@ -1445,10 +1292,6 @@
 				});
 			})			
 		}
-		
-
-		
-		
 		
     </script>
 	<script type="text/javascript" src="/scripts/get.js"></script>
