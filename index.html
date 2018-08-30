@@ -42,7 +42,7 @@
 			</ul>
 			<div class="tab-content">
 				<div id="home" class="tab-pane fade in active">
-					<div id="toolbar">
+					<div id="home_toolbar">
 						<div class="col-auto">
 							<button type="button" class="btn btn-primary" onclick="receive_db_info()" >更新數據</button>
 						</div>
@@ -59,7 +59,7 @@
 						data-unique-id="index"
 						data-show-columns="true"
 						data-show-export="true"
-						data-toolbar="#toolbar">
+						data-toolbar="#home_toolbar">
 						<thead>
 							<tr>
 								<th data-field="index">項次</th>
@@ -117,14 +117,12 @@
 							<br><label for="part_unit_in">單位 :</label><select id="part_unit_in" class="part_attr input_container normal_font" name="part_unit" style="width:70px" ><option value="SET">SET</option><option value="PCS">PCS</option></select>
 							<br><label for="part_remark_in">備註 : </label>
 							<br><textarea id="part_remark_in" class="part_attr normal_font" name="part_remark" rows="5" cols="50" wrap="hard" ></textarea>
-							<br><div class="col-xs-2" style="margin-top:5px;margin-bottom:5px" >
-								<button type="button" class="col-xs-12 btn btn-primary" onclick='append_btn_res()' >新增</button>
-							</div>
-							<div class="col-xs-2" style="margin-top:5px;margin-bottom:5px" >
-								<button type="button" class="col-xs-12 btn btn-primary" onclick='send_new_product()' >上傳</button>
-							</div>
-							<div class="col-xs-8 align_right">
-								<label for="part_totalcost_out">總成本 :</label><input type=text id="part_totalcost_out" class="part_attr input_container normal_font" style="width:200px;margin-top:15px" name="part_totalcost" disabled="true" value="0" >
+							<br><div id="add_product_toolbar">
+								<div class="col-auto">
+									<button type="button" class="btn btn-primary" onclick='append_btn_res()' >新增</button>
+									<button type="button" class="btn btn-primary" onclick='send_new_product()' >上傳</button>
+									<label for="part_totalcost_out">總成本 :</label><input type=text id="part_totalcost_out" class="align_right part_attr input_container normal_font" style="width:200px;margin-top:15px" name="part_totalcost" disabled="true" value="0" >
+								</div>
 							</div>
 							<table id="product_table_add"
 								data-toggle="table"
@@ -132,6 +130,7 @@
 								data-pagination="false"
 								data-height="525"
 								data-id-field="index"
+								data-toolbar="#add_product_toolbar"
 								data-unique-id="index">
 								<thead>
 									<tr>
