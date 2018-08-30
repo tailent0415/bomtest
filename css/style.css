@@ -3,10 +3,12 @@ body {
 }
 
 .align_left{
+	float: left;
 	text-align: left;	
 }
 
 .align_right{
+	float: right;
 	text-align: right;
 }
 
