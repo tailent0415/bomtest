@@ -118,12 +118,12 @@
 							<br><label for="part_remark_in">備註 : </label>
 							<br><textarea id="part_remark_in" class="part_attr normal_font" name="part_remark" rows="5" cols="50" wrap="hard" ></textarea>
 							<br><div id="add_product_toolbar">
-								<div class="col-auto">
+								<div style="width: 48%;float: left;border: 1px">
 									<button type="button" class="btn btn-primary" onclick='append_btn_res()' >新增</button>
 									<button type="button" class="btn btn-primary" onclick='send_new_product()' >上傳</button>
-									<div class="align_right">
-										<label for="part_totalcost_out">總成本 :</label><input type=text id="part_totalcost_out" class="part_attr input_container normal_font" style="width:200px;margin-top:15px" name="part_totalcost" disabled="true" value="0" >
-									</div>
+								</div>
+								<div style="width: 48%;float: right;border: 1px">
+									<label for="part_totalcost_out">總成本 :</label><input type=text id="part_totalcost_out" class="part_attr input_container normal_font" style="width:200px;margin-top:15px" name="part_totalcost" disabled="true" value="0" >
 								</div>
 							</div>
 							<table id="product_table_add"
