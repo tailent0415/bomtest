@@ -130,6 +130,7 @@
 								data-height="525"
 								data-id-field="index"
 								data-toolbar="#add_product_toolbar"
+								data-row-style="set_table_font"
 								data-unique-id="index">
 								<thead>
 									<tr>
@@ -156,6 +157,7 @@
 							data-pagination="false"
 							data-visible = "false"
 							data-height="525"
+							data-row-style="set_table_font"
 							data-id-field="index"
 							data-unique-id="index" >
 							<thead>
@@ -208,6 +210,7 @@
 						data-unique-id="index"
 						data-show-columns="true"
 						data-toolbar="#record_toolbar"
+						data-row-style="set_table_font"
 						data-page-number="1">
 						<thead>
 							<tr>
@@ -235,10 +238,6 @@
 		var bom_node_array = new Array();
 
 		
-		function set_table_font(){
-			
-			
-		}
 		function set_table_font(row, index) {
 		  return {
 			css: {"font-family": "Monospace, Courier New, sans-serif"}
