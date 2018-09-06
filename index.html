@@ -59,6 +59,7 @@
 						data-unique-id="index"
 						data-show-columns="true"
 						data-show-export="true"
+						data-row-style="set_table_font"
 						data-toolbar="#home_toolbar">
 						<thead>
 							<tr>
@@ -233,6 +234,17 @@
 		var part_list_options = "";
 		var bom_node_array = new Array();
 
+		
+		function set_table_font(){
+			
+			
+		}
+		function set_table_font(row, index) {
+		  return {
+			css: {"font-family": "Monospace, Courier New, sans-serif"}
+		  };
+		}
+		
 		
 		$(document).on({
 			ajaxStart: function() { body.addClass("loading"); },
