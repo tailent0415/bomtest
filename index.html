@@ -29,12 +29,12 @@
 			<div class="login_icon" id="my-signin2"></div>
 			<div class="login_id align_left"><p id="user_title">Guest</p></div>
 		</div>
-		<datalist id="part_list"></datalist>
+		<datalist id="part_list" class="normal_font"></datalist>
 		<div class="table_container">
 			<ul class="nav nav-tabs">
 				<li class="active"><a data-toggle="tab" href="#home">查詢</a></li>
 				<li><a data-toggle="tab" href="#menu1">新增料件</a></li>
-				<li><a data-toggle="tab" href="#menu2">新增材料</a></li>
+				<li><a data-toggle="tab" href="#menu2">新增成品/半成品</a></li>
 				<li><a data-toggle="tab" href="#menu3">修改</a></li>
 				<li><a data-toggle="tab" href="#menu4">入庫&領用</a></li>
 				<li><a data-toggle="tab" href="#menu5">BOM</a></li>
@@ -180,6 +180,7 @@
 					<div class= "tab_form">
 						<div class="text_field">
 							<label for="part_num_in">品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" onfocus="this.oldvalue = this.value;" onchange="quan_change_btn( this );this.oldvalue = this.value;" />
+							<br><label for="part_name_out">品名 :</label><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" ></textarea>';
 							<br><label for="part_inventory_out">庫存 :</label><input id="part_inventory_out" class="part_attr input_container normal_font" name="inventory" type="number" style="width:100px" disabled="true" value="0" />
 							<br><label for="part_variable_in">變量 :</label><input id="part_variable_in" class="part_attr input_container normal_font" name="part_varval" type="number" style="width:100px" value="0" />
 							<br><label for="part_location_in">位置 :</label><input id="part_location_in" class="part_attr input_container normal_font" name="part_location" type="text" style="width:100px" placeholder="湖口" />
@@ -218,6 +219,7 @@
 								<th data-field="index">項次</th>
 								<th data-field="timestamp">時間</th>
 								<th data-field="number">品號</th>
+								<th data-field="name">品名</th>
 								<th data-field="action">行為</th>
 								<th data-field="quantity">數量</th>
 								<th data-field="goal">目的</th>
@@ -268,7 +270,7 @@
 						ele_id = "menu1";
 						form_id = "add_part_form"
 						break;
-					case "新增材料":
+					case "新增成品/半成品":
 						product_table = $("#product_table_add"); 
 						ele_id = "menu2";
 						form_id = "add_product_form"
@@ -1102,9 +1104,15 @@
 										var cnt = document.getElementById( ele_id );
 										var var_val = cnt.getElementsByClassName("part_attr");
 										for (var i=0; i<var_val.length; i++){
-											if( var_val[i].name == "inventory" ){
-												var_val[i].value = response.stock_quantity;
-												break;
+											
+											switch( var_val[i].name ){
+												case "part_name":
+													var_val[i].value = response.name;
+													break;
+												case "inventory":
+													var_val[i].value = response.stock_quantity;
+													break;
+												default:
 											}
 										}
 										resolve( true );
