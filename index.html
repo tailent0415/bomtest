@@ -376,7 +376,9 @@
 		}
 		
 		function supplier_change_btn( currdata ){
-			alert( currdata );
+			if( currdata == "" ){
+				return;
+			}
 			receive_supplier_info('supplier_info', currdata )
 			receive_db_supplierlist();
 		}
