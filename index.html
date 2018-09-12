@@ -39,6 +39,7 @@
 				<li><a data-toggle="tab" href="#menu4">入庫&領用</a></li>
 				<li><a data-toggle="tab" href="#menu5">BOM</a></li>
 				<li><a data-toggle="tab" href="#menu6">紀錄</a></li>
+				<li><a data-toggle="tab" href="#menu7">廠商</a></li>
 			</ul>
 			<div class="tab-content">
 				<div id="home" class="tab-pane fade in active">
@@ -229,6 +230,44 @@
 						</thead>
 					</table>
 				</div>
+				<div id="menu7" class="tab-pane fade">
+					<div>
+						<div class="col-auto">
+							<button type="button" class="btn btn-primary" onclick="supplier_search()" >查詢頁面</button>
+							<button type="button" class="btn btn-primary" onclick="supplier_revise()" >修改頁面</button>
+						</div>
+					</div>
+					<div id="supplier_toolbar">
+						<button type="button" class="btn btn-primary" onclick="supplier_delete()" >刪除</button>
+					</div>
+					<table id="supplier_table"
+						data-toggle="table"
+						data-side-pagination="client"
+						data-pagination="true"
+						data-page-list="[5, 10, 50, 100]"
+						data-search="true"
+						data-height="525"
+						data-id-field="index"
+						data-unique-id="index"
+						data-show-columns="true"
+						data-toolbar="#supplier_toolbar"
+						data-row-style="set_table_font"
+						data-page-number="1">
+						<thead>
+							<tr>
+								<th data-field="state" data-checkbox="true"></th>
+								<th data-field="index">項次</th>
+								<th data-field="timestamp">時間</th>
+								<th data-field="number">品號</th>
+								<th data-field="name">品名</th>
+								<th data-field="action">行為</th>
+								<th data-field="quantity">數量</th>
+								<th data-field="goal">目的</th>
+								<th data-field="location">位置</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
 			</div>
 		</div>
     <script language="JavaScript">
@@ -292,6 +331,9 @@
 						product_table = $("#record_table");
 						ele_id = "menu6";
 						receive_record();
+						break;
+					case "廠商":
+						ele_id = "menu7";
 						break;
 					default:
 				}
@@ -1032,7 +1074,6 @@
 												}
 												data_str += "<td style='height:35px;text-align:center' >" + res_str + "</td>";
 											}
-											alert(response.data[1]);
 											tr_obj.innerHTML = data_str;
 											tbody_obj.appendChild( tr_obj );
 										}
