@@ -237,36 +237,40 @@
 							<button type="button" class="btn btn-primary" onclick="supplier_revise()" >修改頁面</button>
 						</div>
 					</div>
-					<div id="supplier_toolbar">
-						<button type="button" class="btn btn-primary" onclick="supplier_delete()" >刪除</button>
+					<div id="supplier_search_page">
+						<div id="supplier_toolbar">
+							<button type="button" class="btn btn-primary" onclick="supplier_delete()" >刪除</button>
+						</div>
+						<table id="supplier_table"
+							data-toggle="table"
+							data-side-pagination="client"
+							data-pagination="true"
+							data-page-list="[5, 10, 50, 100]"
+							data-search="true"
+							data-height="525"
+							data-id-field="index"
+							data-unique-id="index"
+							data-show-columns="true"
+							data-toolbar="#supplier_toolbar"
+							data-row-style="set_table_font"
+							data-page-number="1">
+							<thead>
+								<tr>
+									<th data-field="state" data-checkbox="true"></th>
+									<th data-field="index">項次</th>
+									<th data-field="timestamp">時間</th>
+									<th data-field="number">品號</th>
+									<th data-field="name">品名</th>
+									<th data-field="action">行為</th>
+									<th data-field="quantity">數量</th>
+									<th data-field="goal">目的</th>
+									<th data-field="location">位置</th>
+								</tr>
+							</thead>
+						</table>
 					</div>
-					<table id="supplier_table"
-						data-toggle="table"
-						data-side-pagination="client"
-						data-pagination="true"
-						data-page-list="[5, 10, 50, 100]"
-						data-search="true"
-						data-height="525"
-						data-id-field="index"
-						data-unique-id="index"
-						data-show-columns="true"
-						data-toolbar="#supplier_toolbar"
-						data-row-style="set_table_font"
-						data-page-number="1">
-						<thead>
-							<tr>
-								<th data-field="state" data-checkbox="true"></th>
-								<th data-field="index">項次</th>
-								<th data-field="timestamp">時間</th>
-								<th data-field="number">品號</th>
-								<th data-field="name">品名</th>
-								<th data-field="action">行為</th>
-								<th data-field="quantity">數量</th>
-								<th data-field="goal">目的</th>
-								<th data-field="location">位置</th>
-							</tr>
-						</thead>
-					</table>
+					<div id="supplier_revise_page">
+					</div>
 				</div>
 			</div>
 		</div>
