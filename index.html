@@ -382,7 +382,7 @@
 			if( currdata.trim() == "" ){
 				return;
 			}
-			receive_supplier_info('get_supplier_info', currdata )
+			receive_supplier_info('get_supplier_info', currdata );
 		}
 		
 		
@@ -1034,7 +1034,6 @@
 								}
 								switch(data.func){
 									case "bom_data":
-
 										remove_bomtable_interface();
 										
 										var cnt = document.getElementById( ele_id );
@@ -1391,7 +1390,7 @@
 							};
 							receive_to_db(attr);
 							break;
-						case "replace_supplier"
+						case "replace_supplier":
 							receive_db_supplierlist();
 							break;
 						case "rem_record_data":
