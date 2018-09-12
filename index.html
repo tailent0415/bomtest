@@ -920,14 +920,14 @@
 												data_str += '<br><label for="part_name_out">品名 :</label>';
 												data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" >' + response.name + '</textarea>';
 												data_str += '<br><label for="part_remark_out">備註 : </label><br><textarea id="part_remark_out" class="normal_font" rows="5" cols="50" wrap="hard" disabled="true" />' + response.remark + '</textarea>';
-												table_title = [ '料號', '名稱', '成本', '數量', '備註', 'Sunny註解', '庫存' ];
+												table_title = [ '品號', '名稱', '成本', '數量', '規格', '備註', '庫存' ];
 												break;
 											case '2':
 												data_str += '<br><label for="part_cost_out">總成本 :</label><input id="part_cost_out" class="input_container normal_font" style="width:100px" disabled="true" value="' + response.cost + '" />';
 												data_str += '<br><label for="part_name_out">品名 :</label>';
 												data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" >' + response.name + '</textarea>';
 												data_str += '<br><label for="part_remark_out">備註 :</label><br><textarea id="part_remark_out" class="normal_font" rows="5" cols="50" wrap="hard" disabled="true" />' + response.remark + '</textarea>';
-												table_title = [ '料號', '名稱', '成本', '數量', '廠商', '規格', '庫存'  ];
+												table_title = [ '品號', '名稱', '成本', '數量', '廠商', '規格', '庫存'  ];
 												break;
 											case '3':
 												data_str += '<br><label for="part_name_out">品名 :</label>';
@@ -964,7 +964,7 @@
 										var style_str = "";
 										for( var i=0; i<title_len; i++ ){
 											switch( table_title[i] ){
-												case '料號':
+												case '品號':
 													style_str = "style='width:170px;text-align:center' ";
 													break;
 												case '名稱':
@@ -988,9 +988,6 @@
 												case '備註':
 													style_str = "style='width:200px;text-align:center' ";
 													break;
-												case 'Sunny註解':
-													style_str = "style='width:80px;text-align:center' ";
-													break;
 												default:
 											}
 											title_str += "<td " + style_str + ">" + table_title[i] + "</td>";
@@ -1005,7 +1002,7 @@
 											data_str = "";
 											for( var j=0; j<title_len; j++ ){
 												switch( table_title[j] ){
-													case '料號':
+													case '品號':
 														var number_str = response.data[i].number;
 														var hnumber = "<a style='font-family: Monospace, Courier New, sans-serif' onclick = 'update_bomtable_type( this.text, -1 )' >" + number_str + "</a>";
 														res_str = hnumber;
@@ -1030,9 +1027,7 @@
 														break;
 													case '備註':
 														res_str = response.data[i].remark;
-														break;
-													case 'Sunny註解':
-														res_str = response.data[i].sunnyremark;
+														alert( res_str );
 														break;
 													default:
 												}
