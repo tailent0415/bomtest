@@ -50,7 +50,6 @@ function receive_supplier_info( source_str, supplier_name ){
 
 // receive product parameter to table row
 function receive_product_param( idx, val ){
-	
 	var attr = {
 		"state": "get_single_data",
 		"func": "product",
@@ -58,15 +57,16 @@ function receive_product_param( idx, val ){
 		"index": idx
 	};
 	receive_to_db(attr);
-
 }
+
 // get all supplier information
-function receive_supplier_info(){
+function receive_all_supplier_info(){
 	var attr = {
 		"state": "get_all_supplier_info",
 	};
 	receive_to_db( attr );
 }
+
 
 // receive record
 function receive_record(){
