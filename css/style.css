@@ -92,6 +92,11 @@ body {
 	width: 200px;
 }
 
+.supplier_list_style{
+	width: 150px;
+}
+
+
 .normal_font{
 	font-family: Monospace, Courier New, sans-serif;
 }

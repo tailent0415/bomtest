@@ -30,6 +30,7 @@
 			<div class="login_id align_left"><p id="user_title">Guest</p></div>
 		</div>
 		<datalist id="part_list" class="normal_font"></datalist>
+		<datalist id="supplier_list" class="normal_font"></datalist>
 		<div class="table_container">
 			<ul class="nav nav-tabs">
 				<li class="active"><a data-toggle="tab" href="#home">查詢</a></li>
@@ -272,7 +273,7 @@
 					<div id="supplier_revise_page">
 						<div class= "tab_form">
 							<div class="text_field">
-								<label for="part_supplier_in">廠商名稱 :</label><input id="part_supplier_in" class="part_attr input_container normal_font" name="part_supplier" type="text" style="width:300px" placeholder="辛耘" />
+								<label for="part_supplier_in">品號 :</label><input id="part_supplier_in" class="part_attr input_container supplier_list_style normal_font" name="part_supplier" list="supplier_list" />
 								<br><label for="part_contact_in">聯絡人 :</label><input id="part_contact_in" class="part_attr input_container normal_font" name="part_contact" type="text" style="width:300px" placeholder="Jacky" />
 								<br><label for="part_phone_in">電話 :</label><input id="part_phone_in" class="part_attr input_container normal_font" name="part_phone" type="text" style="width:300px" placeholder="(03)598-6199 Ext.5553" />
 								<br><label for="part_address_in">地址 :</label><input id="part_address_in" class="part_attr input_container normal_font" name="part_address" type="text" style="width:300px" placeholder="湖口" />
@@ -290,6 +291,11 @@
 		var user_id = "";
 		var part_list_obj = $("#part_list");
 		var part_list_options = "";
+		var supplier_list_obj = $("#supplier_list");
+		var supplier_list_options = "";
+		
+		
+		
 		var bom_node_array = new Array();
 
 		
@@ -962,6 +968,19 @@
 								part_list_obj.append( part_list_options );
 								resolve( true );
 								break;
+							case "get_all_supplier":
+								if( response[0].supplier == undefined || response.supplier == "" ){
+									return;
+								}
+								supplier_list_options = "";
+								for(var i=0; i < response.length; i++){
+									supplier_list_options += '<option value="'+response[i].supplier+'" />';
+								}
+								supplier_list_obj.empty();
+								supplier_list_obj.append( supplier_list_options );
+								resolve( true );
+								break;
+								
 							case "get_single_data":
 								if( response.name == undefined || response.name == "" ){
 									resolve( "錯誤的檔案" );
