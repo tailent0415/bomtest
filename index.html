@@ -1027,13 +1027,12 @@
 														break;
 													case '備註':
 														res_str = response.data[i].remark;
-														
 														break;
 													default:
 												}
 												data_str += "<td style='height:35px;text-align:center' >" + res_str + "</td>";
 											}
-											alert(response.data);
+											alert(response.data[1]);
 											tr_obj.innerHTML = data_str;
 											tbody_obj.appendChild( tr_obj );
 										}
