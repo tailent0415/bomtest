@@ -270,6 +270,16 @@
 						</table>
 					</div>
 					<div id="supplier_revise_page">
+						<div class= "tab_form">
+							<div class="text_field">
+								<label for="part_num_in">品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" onfocus="this.oldvalue = this.value;" onchange="quan_change_btn( this );this.oldvalue = this.value;" />
+								<br><label for="part_name_out">品名 :</label>
+								<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" ></textarea>
+								<br><label for="part_inventory_out">庫存 :</label><input id="part_inventory_out" class="part_attr input_container normal_font" name="inventory" type="number" style="width:100px" disabled="true" value="0" />
+								<br><label for="part_variable_in">變量 :</label><input id="part_variable_in" class="part_attr input_container normal_font" name="part_varval" type="number" style="width:100px" value="0" />
+								<br><label for="part_location_in">位置 :</label><input id="part_location_in" class="part_attr input_container normal_font" name="part_location" type="text" style="width:100px" placeholder="湖口" />
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -337,6 +347,9 @@
 						receive_record();
 						break;
 					case "廠商":
+						$("#supplier_search_page").hide;
+						$("#supplier_revise_page").show;
+						product_table = $("#supplier_table");
 						ele_id = "menu7";
 						break;
 					default:
