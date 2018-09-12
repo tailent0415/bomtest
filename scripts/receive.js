@@ -5,6 +5,8 @@ function receive_db_info(){
 	};
 	receive_to_db( attr );
 	receive_db_partlist();
+	receive_db_supplierlist();
+	
 };
 
 
@@ -16,6 +18,12 @@ function receive_db_partlist(){
 	receive_to_db(attr);
 }
 
+function receive_db_supplierlist(){
+	var attr = {
+		"state": "get_all_supplier"
+	};
+	receive_to_db(attr);
+}
 
 // receive database part infomation , and update interface
 function receive_part_info( source_str, part_num ){
