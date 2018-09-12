@@ -34,6 +34,18 @@ function get_doc_part_attr( part_obj ){
 				case "part_supplier":
 					attr.supplier = param_value;
 					break;
+				case "part_contact":
+					attr.contact = param_value;
+					break;
+				case "part_phone":
+					attr.phone = param_value;
+					break;
+				case "part_address":
+					attr.address = param_value;
+					break;
+				case "part_url":
+					attr.url = param_value;
+					break;
 				case "part_unit":
 					attr.unit = param_value;
 					break;

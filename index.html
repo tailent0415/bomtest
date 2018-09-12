@@ -375,13 +375,26 @@
 			$("#supplier_revise_page").hide();
 		}
 		
+		// supplier change name
 		function supplier_change_btn( currdata ){
-			if( currdata == "" ){
+			if( currdata.trim() == "" ){
 				return;
 			}
-			alert( currdata )
-			receive_supplier_info('supplier_info', currdata )
-			receive_db_supplierlist();
+			receive_supplier_info('get_supplier_info', currdata )
+		}
+		
+		
+		// supplier upload information
+		function supplier_info_upload(){
+			var cnt = document.getElementById( ele_id );
+			var part_attr = cnt.getElementsByClassName("part_attr");
+			var attr = get_doc_part_attr( part_attr );
+			if( attr.supplier == "" ){
+				alert( "input error" );
+				return false;
+			}
+			attr.state = "replace_supplier";
+			send_to_db( attr );
 		}
 		
 		
@@ -989,7 +1002,28 @@
 								supplier_list_obj.append( supplier_list_options );
 								resolve( true );
 								break;
-								
+							case "get_supplier_info":
+								var cnt = document.getElementById( ele_id );
+								var var_val = cnt.getElementsByClassName("part_attr");
+								for (var i=0; i<var_val.length; i++){
+									switch( var_val[i].name ){
+										case "part_contact":
+											var_val[i].value = response.contact;
+											break;
+										case "part_phone":
+											var_val[i].value = response.phone;
+											break;
+										case "part_address":
+											var_val[i].value = response.address;
+											break;
+										case "part_url":
+											var_val[i].value = response.url;
+											break;
+										default:
+									}
+								} 
+								resolve( true );
+								break;
 							case "get_single_data":
 								if( response.name == undefined || response.name == "" ){
 									resolve( "錯誤的檔案" );
@@ -1353,9 +1387,15 @@
 								"func": 'quantity'
 							};
 							receive_to_db(attr);
+							break;
+						case "replace_supplier"
+							receive_db_supplierlist();
+							break;
 						case "rem_record_data":
 							receive_record();
+							break;
 						default:
+							break;
 					}
 				}
 				else{
@@ -1384,6 +1424,9 @@
 								resolve( response );
 								break;
 							case "replace_data":
+								resolve( response );
+								break;
+							case "replace_supplier":
 								resolve( response );
 								break;
 							case "add_inventory_quantity":
