@@ -1409,7 +1409,7 @@
 							receive_to_db(attr);
 							break;
 						case "replace_supplier":
-							receive_supplier_info('get_supplier_info',  );
+							receive_supplier_info('get_supplier_info', data.supplier );
 							receive_db_supplier_name();
 							alert("修改完成");
 							alert(data.supplier);
