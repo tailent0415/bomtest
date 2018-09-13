@@ -258,6 +258,7 @@
 							<thead>
 								<tr>
 									<th data-field="state" data-checkbox="true"></th>
+									<th data-field="index">項次</th>
 									<th data-field="supplier">廠商名稱</th>
 									<th data-field="contact">聯絡人</th>
 									<th data-field="phone">電話</th>
@@ -389,7 +390,7 @@
 			var part_attr = cnt.getElementsByClassName("part_attr");
 			var attr = get_doc_part_attr( part_attr );
 			if( attr.supplier == "" ){
-				alert( "input error" );
+				alert( "請輸入廠商名稱" );
 				return false;
 			}
 			attr.state = "replace_supplier";
