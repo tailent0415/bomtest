@@ -953,6 +953,8 @@
 		
 		// receive data for database
 		async function receive_to_db( data ){
+			
+			alert(data.state);
 			data.id = user_id;
 			try{
 				var response = await receive_promise( data);
@@ -1010,7 +1012,6 @@
 								if( response[0].supplier == undefined || response.supplier == "" ){
 									return;
 								}
-								alert( response );
 								supplier_list_options = "";
 								for(var i=0; i < response.length; i++){
 									supplier_list_options += '<option value="'+response[i].supplier+'" />';
