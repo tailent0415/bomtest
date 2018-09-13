@@ -1019,6 +1019,7 @@
 								resolve( true );
 								break;
 							case "get_supplier_info":
+								alert( response );
 								if ( response == false ){
 									supplier_info_upload();
 									resolve( true );
@@ -1043,6 +1044,7 @@
 										default:
 									}
 								}
+								
 								resolve( true );
 								break;
 							case "get_single_data":
@@ -1412,7 +1414,6 @@
 							receive_supplier_info('get_supplier_info', data.supplier );
 							receive_db_supplier_name();
 							alert("修改完成");
-							alert(data.supplier);
 							break;
 						case "rem_record_data":
 							receive_record();
