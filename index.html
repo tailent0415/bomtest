@@ -1420,6 +1420,7 @@
 					switch( data.state ){
 						case "add_newdata":
 							receive_db_partlist();
+							alert("新增完成");
 							break;
 						case "add_inventory_quantity":
 							var attr = {
@@ -1428,6 +1429,10 @@
 								"func": 'quantity'
 							};
 							receive_to_db(attr);
+							break;
+							
+						case "add_supplier_data":
+							alert("新增廠商");
 							break;
 						case "replace_supplier":
 							receive_supplier_info('get_supplier_info', data.supplier );
@@ -1468,6 +1473,9 @@
 					success: function (response) {
 						switch( data.state ){
 							case "add_newdata":
+								resolve( response );
+								break;
+							case "add_supplier_data":
 								resolve( response );
 								break;
 							case "replace_data":
