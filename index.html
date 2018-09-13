@@ -1010,6 +1010,7 @@
 								if( response[0].supplier == undefined || response.supplier == "" ){
 									return;
 								}
+								alert( response );
 								supplier_list_options = "";
 								for(var i=0; i < response.length; i++){
 									supplier_list_options += '<option value="'+response[i].supplier+'" />';
