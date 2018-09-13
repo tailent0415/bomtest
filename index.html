@@ -1404,6 +1404,7 @@
 							receive_to_db(attr);
 							break;
 						case "replace_supplier":
+							receive_supplier_info('get_supplier_info', data.supplier );
 							receive_db_supplier_name();
 							break;
 						case "rem_record_data":
