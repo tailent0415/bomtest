@@ -972,7 +972,6 @@
 								});
 							case "get_record_data":
 							case "get_supplier_list":
-								alert( response[0] );
 								product_table.bootstrapTable('removeAll');
 								product_table.bootstrapTable('load', response);
 								product_table.bootstrapTable('selectPage', '1');
@@ -1389,7 +1388,7 @@
 							receive_to_db(attr);
 							break;
 						case "replace_supplier":
-							receive_db_supplierlist();
+							receive_supplier_list();
 							break;
 						case "rem_record_data":
 							receive_record();
