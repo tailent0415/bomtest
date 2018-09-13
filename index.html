@@ -1006,7 +1006,7 @@
 								part_list_obj.append( part_list_options );
 								resolve( true );
 								break;
-							case "get_all_supplier":
+							case "get_all_supplier_name":
 								if( response[0].supplier == undefined || response.supplier == "" ){
 									return;
 								}
@@ -1404,7 +1404,7 @@
 							receive_to_db(attr);
 							break;
 						case "replace_supplier":
-							receive_supplier_list();
+							receive_db_supplier_name();
 							break;
 						case "rem_record_data":
 							receive_record();
