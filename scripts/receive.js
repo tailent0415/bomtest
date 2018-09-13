@@ -60,9 +60,9 @@ function receive_product_param( idx, val ){
 }
 
 // get all supplier information
-function receive_all_supplier_info(){
+function receive_supplier_list(){
 	var attr = {
-		"state": "get_all_supplier_info",
+		"state": "get_supplier_list",
 	};
 	receive_to_db( attr );
 }

@@ -356,7 +356,7 @@
 						$("#supplier_revise_page").hide();
 						product_table = $("#supplier_table");
 						ele_id = "menu7";
-						receive_all_supplier_info();
+						receive_supplier_list();
 						break;
 					default:
 				}
@@ -374,7 +374,7 @@
 		function supplier_search_btn(){
 			$("#supplier_search_page").show();
 			$("#supplier_revise_page").hide();
-			receive_all_supplier_info();
+			receive_supplier_list();
 		}
 		
 		// supplier change name
@@ -975,6 +975,7 @@
 								});
 							case "get_record_data":
 							case "get_all_supplier_info":
+								alert( response[0] );
 								product_table.bootstrapTable('removeAll');
 								product_table.bootstrapTable('load', response);
 								product_table.bootstrapTable('selectPage', '1');
