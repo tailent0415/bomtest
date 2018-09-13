@@ -1417,6 +1417,9 @@
 						case "rem_record_data":
 							receive_record();
 							break;
+						case "rem_supplier_data":
+							receive_supplier_list();
+							break;
 						default:
 							break;
 					}
@@ -1459,6 +1462,9 @@
 								resolve( response );
 								break;
 							case "rem_record_data":
+								resolve( response );
+								break;
+							case "rem_supplier_data":
 								resolve( response );
 								break;
 							default:
