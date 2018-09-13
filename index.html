@@ -93,7 +93,7 @@
 							<br><label for="part_format_in">規格 :</label>
 							<br><textarea id="part_format_in" class="part_attr normal_font" name="part_format" rows="2" cols="50" wrap="hard" ></textarea>
 							<br><label for="part_fignum_in">圖號 :</label><input id="part_fignum_in" class="part_attr input_container normal_font" name="part_fignum" type="text" style="width:200px" />
-							<br><label for="part_supplier_in">廠商 :</label><input id="part_supplier_in" class="part_attr input_container normal_font" name="part_supplier" type="text" style="width:100px" />
+							<br><label for="part_supplier_in">廠商 :</label><input id="part_supplier_in" class="part_attr input_container normal_font" name="part_supplier" list="supplier_list" type="text" style="width:100px" />
 							<br><label for="part_unit_in">單位 :</label><select id="part_unit_in" class="part_attr input_container normal_font" name="part_unit" style="width:70px" ><option value="SET">SET</option><option value="PCS">PCS</option></select>
 							<br><label for="part_cost_in">成本 :</label><input id="part_cost_in" class="part_attr input_container normal_font" name="part_cost" type="text" style="width:100px" />
 						</div>
@@ -116,7 +116,7 @@
 							<br><label for="part_format_in">規格 :</label>
 							<br><textarea id="part_format_in" class="part_attr normal_font" name="part_format" rows="2" cols="50" wrap="hard" ></textarea>
 							<br><label for="part_fignum_in">圖號 :</label><input id="part_fignum_in" class="part_attr input_container normal_font" name="part_fignum" type="text" style="width:200px" />
-							<br><label for="part_supplier_in">廠商 :</label><input id="part_supplier_in" class="part_attr input_container normal_font" name="part_supplier" type="text" style="width:100px" />
+							<br><label for="part_supplier_in">廠商 :</label><input id="part_supplier_in" class="part_attr input_container normal_font" name="part_supplier" list="supplier_list" type="text" style="width:100px" />
 							<br><label for="part_unit_in">單位 :</label><select id="part_unit_in" class="part_attr input_container normal_font" name="part_unit" style="width:70px" ><option value="SET">SET</option><option value="PCS">PCS</option></select>
 							<br><label for="part_remark_in">備註 : </label>
 							<br><textarea id="part_remark_in" class="part_attr normal_font" name="part_remark" rows="5" cols="50" wrap="hard" ></textarea>
@@ -777,7 +777,7 @@
 						data_str += '<br><label for="part_format_in">規格 :</label>';
 						data_str += '<br><textarea id="part_format_in" class="part_attr normal_font" name="part_format" rows="2" cols="50" wrap="hard" ></textarea>'
 						data_str += '<br><label for="part_fignum_in">圖號 :</label><input id="part_fignum_in" type="text" class="part_attr input_container normal_font" name="part_fignum" type="text" style="width:200px" />';
-						data_str += '<br><label for="part_supplier_in">廠商 :</label><input id="part_supplier_in" type="text" class="part_attr input_container" name="part_supplier" type="text" style="width:100px" />';
+						data_str += '<br><label for="part_supplier_in">廠商 :</label><input id="part_supplier_in" type="text" class="part_attr input_container" name="part_supplier" list="supplier_list" type="text" style="width:100px" />';
 						data_str += '<br><label for="part_unit_in">單位 :</label><select id="part_unit_in" type="text" class="part_attr input_container" name="part_unit" style="width:70px" ><option value="SET">SET</option><option value="PCS">PCS</option></select>';
 						data_str += '<br><label for="part_cost_in">成本 :</label><input id="part_cost_in" type="text" class="part_attr input_container" name="part_cost" type="text" style="width:100px" />';
 						data_str += '<br><label for="part_quantity_in">數量 :</label><input id="part_quantity_in" type="text" class="part_attr input_container" name="part_quantity" type="text" style="width:60px" />';
