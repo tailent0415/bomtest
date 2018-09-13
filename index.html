@@ -1024,8 +1024,6 @@
 									resolve( true );
 									break;
 								}
-								
-								alert( response );
 								var cnt = document.getElementById( ele_id );
 								var var_val = cnt.getElementsByClassName("part_attr");
 								for (var i=0; i<var_val.length; i++){
@@ -1413,6 +1411,7 @@
 						case "replace_supplier":
 							receive_supplier_info('get_supplier_info', data.supplier );
 							receive_db_supplier_name();
+							alert("修改完成");
 							break;
 						case "rem_record_data":
 							receive_record();
