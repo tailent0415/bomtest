@@ -393,8 +393,6 @@
 				alert( "請輸入廠商名稱" );
 				return false;
 			}
-			alert( attr.supplier );
-			alert( attr.url );
 			attr.state = "replace_supplier";
 			send_to_db( attr );
 		}
@@ -1021,6 +1019,11 @@
 								resolve( true );
 								break;
 							case "get_supplier_info":
+								if ( response == false ){
+									supplier_info_upload();
+									resolve( true );
+									break;
+								}
 								var cnt = document.getElementById( ele_id );
 								var var_val = cnt.getElementsByClassName("part_attr");
 								for (var i=0; i<var_val.length; i++){
@@ -1039,7 +1042,7 @@
 											break;
 										default:
 									}
-								} 
+								}
 								resolve( true );
 								break;
 							case "get_single_data":
