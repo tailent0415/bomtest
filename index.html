@@ -397,7 +397,22 @@
 			send_to_db( attr );
 		}
 		
-		
+		// supplier delete supplier
+		function supplier_delete_btn(){
+			var sel_target = new Array();
+			var del_index = new Array();
+			sel_target = product_table.bootstrapTable('getSelections');
+			for( var i=0; i<sel_target.length; i++ ){
+				del_index[i] = sel_target[i].index
+			}
+			var json_array = get_json_array( del_index );
+			var attr = {
+				"state": "rem_supplier_data",
+				"del_index": json_array
+			};
+			send_to_db( attr );
+			
+		}
 		
 		// quantity change button response
 		function quan_change_btn( currdata ){
