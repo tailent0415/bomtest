@@ -42,7 +42,7 @@ function receive_part_info( source_str, part_num ){
 function receive_supplier_info( source_str, supplier_name ){
 	var attr = {
 		"state": "get_supplier_info",
-		"supplier": supplier_name,
+		"supplier": supplier_name
 	};
 	receive_to_db(attr);
 }
