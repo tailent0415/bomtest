@@ -66,7 +66,7 @@
 						<thead>
 							<tr>
 								<th data-field="index">項次</th>
-								<th data-field="number">品號</th>
+								<th data-field="number" data-formatter="edit_part_number">品號</th>
 								<th data-field="name">品名</th>
 								<th data-field="format">規格</th>
 								<th data-field="fignum">圖號</th>
@@ -359,6 +359,18 @@
 				}
 			});
 		});
+		
+		
+		
+		// search page edit part number field format
+		function edit_part_number( param, row, index ){
+			return ("<a onclick='link_to_bom_table(" + val + ")'>" + val + "</a>");
+		}
+		
+		// link to bom
+		function link_to_bom_table( part_num ){
+			alert( part_num );
+		}
 		
 		
 		// supplier revise button
