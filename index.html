@@ -409,6 +409,26 @@
 			supplier_add_new_name( attr.supplier );
 			attr.state = "replace_supplier";
 			send_to_db( attr );
+			var enable_swap = false;
+			if ( attr.replace_name.trim() !== "" ){
+				enable_swap = true;
+			}
+			for (var i=0; i<var_val.length; i++){
+				switch( var_val[i].name ){
+					case "part_supplier":
+						if ( enable_swap ){
+							var_val[i].value = attr.replace_name;
+						}
+						else{
+							var_val[i].value = attr.supplier;
+						}
+						break;
+					case "part_replace_name":
+						var_val[i].value = "";
+						break;
+					default:
+				}
+			}
 		}
 		
 		// supplier delete supplier
@@ -1450,12 +1470,6 @@
 						case "add_supplier_data":
 							break;
 						case "replace_supplier":
-							if ( data.replace_name.trim() == "" ){
-								receive_supplier_info( data.supplier );
-							}
-							else{
-								receive_supplier_info( data.replace_name );
-							}
 							receive_db_supplier_name();
 							alert("修改完成");
 							break;
