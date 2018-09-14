@@ -1427,13 +1427,10 @@
 							};
 							receive_to_db(attr);
 							break;
-							
 						case "add_supplier_data":
-							alert("新增廠商");
 							break;
 						case "replace_supplier":
-							supplier_add_new_name( data.supplier )
-							receive_supplier_info('get_supplier_info', data.supplier );
+							receive_supplier_info( data.supplier );
 							receive_db_supplier_name();
 							alert("修改完成");
 							break;
