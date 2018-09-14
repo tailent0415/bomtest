@@ -364,14 +364,13 @@
 		
 		// search page edit part number field format
 		function edit_part_number( val, row, index ){
-			alert( val );
-			return ("<a onclick='link_to_bom_table()'>" + val + "</a>");
+			return ("<a onclick='link_to_bom_table(" + val + ")'>" + val + "</a>");
 		}
 		
 		// link to bom
-		function link_to_bom_table( ){
+		function link_to_bom_table( val ){
 
-			alert( "test" );
+			alert( val );
 		}
 		
 		
