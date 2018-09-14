@@ -379,7 +379,8 @@
 			if( currdata.trim() == "" ){
 				return;
 			}
-			receive_supplier_info('get_supplier_info', currdata );
+			supplier_add_new_name( currdata );
+			receive_supplier_info( currdata );
 		}
 		
 		
@@ -405,7 +406,7 @@
 				alert( "請輸入廠商名稱" );
 				return false;
 			}
-			alert("test");
+			supplier_add_new_name( attr.supplier );
 			attr.state = "replace_supplier";
 			send_to_db( attr );
 		}
@@ -1041,11 +1042,6 @@
 								resolve( true );
 								break;
 							case "get_supplier_info":
-								if ( response == false ){
-									supplier_info_upload();
-									resolve( true );
-									break;
-								}
 								var cnt = document.getElementById( ele_id );
 								var var_val = cnt.getElementsByClassName("part_attr");
 								for (var i=0; i<var_val.length; i++){
@@ -1065,7 +1061,6 @@
 										default:
 									}
 								}
-								
 								resolve( true );
 								break;
 							case "get_single_data":
@@ -1437,6 +1432,7 @@
 							alert("新增廠商");
 							break;
 						case "replace_supplier":
+							supplier_add_new_name( data.supplier )
 							receive_supplier_info('get_supplier_info', data.supplier );
 							receive_db_supplier_name();
 							alert("修改完成");

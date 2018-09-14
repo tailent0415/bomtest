@@ -37,7 +37,7 @@ function receive_db_supplier_name(){
 }
 
 // receive single supplier information
-function receive_supplier_info( source_str, supplier_name ){
+function receive_supplier_info( supplier_name ){
 	var attr = {
 		"state": "get_supplier_info",
 		"supplier": supplier_name
