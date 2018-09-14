@@ -416,19 +416,19 @@
 			attr.state = "replace_supplier";
 			send_to_db( attr );
 
-			for (var i=0; i<attr.length; i++){
-				switch( attr[i].name ){
+			for (var i=0; i<part_attr.length; i++){
+				switch( part_attr[i].name ){
 					case "part_supplier":
 						if ( enable_swap ){
-							attr[i].value = attr.replace_name;
+							part_attr[i].value = attr.replace_name;
 						}
 						else{
-							attr[i].value = attr.supplier;
+							part_attr[i].value = attr.supplier;
 						}
-						alert( attr[i].value );
+						alert( part_attr[i].value );
 						break;
 					case "part_replace_name":
-						attr[i].value = "";
+						part_attr[i].value = "";
 						break;
 					default:
 				}
