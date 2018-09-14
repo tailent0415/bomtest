@@ -1003,7 +1003,6 @@
 			try{
 				var response = await receive_promise( data);
 				if( response == true ){
-					console.log( "接收完成" );
 					return true;
 				}
 				else{
@@ -1450,47 +1449,18 @@
 			});
 		}
 
-
 		// send data to database
 		async function send_to_db(data){
 			data.id = user_id;
 			try{
 				var response = await send_promise(data);
 				if( response == true ){
-					switch( data.state ){
-						case "add_newdata":
-							receive_db_partlist();
-							alert("新增完成");
-							break;
-						case "add_inventory_quantity":
-							var attr = {
-								"state": "get_single_data",
-								"number": data.number,
-								"func": 'quantity'
-							};
-							receive_to_db(attr);
-							break;
-						case "add_supplier_data":
-							break;
-						case "replace_supplier":
-							receive_db_supplier_name();
-							alert("修改完成");
-							break;
-						case "rem_record_data":
-							receive_record();
-							break;
-						case "rem_supplier_data":
-							receive_db_supplier_name();
-							receive_supplier_list();
-							break;
-						default:
-							break;
-					}
+					return true;
 				}
 				else{
-					alert( response );
+					alert( response )
+					return false;
 				}
-
 			}
 			catch(e){
 				alert( "資料庫錯誤:" + e  );
@@ -1508,32 +1478,44 @@
 					dataType: "JSON",
 					timeout: 10000,
 					success: function (response) {
-						switch( data.state ){
-							case "add_newdata":
-								resolve( response );
-								break;
-							case "add_supplier_data":
-								resolve( response );
-								break;
-							case "replace_data":
-								resolve( response );
-								break;
-							case "replace_supplier":
-								resolve( response );
-								break;
-							case "add_inventory_quantity":
-								resolve( response );
-								break;
-							case "add_track_data":
-								resolve( response );
-								break;
-							case "rem_record_data":
-								resolve( response );
-								break;
-							case "rem_supplier_data":
-								resolve( response );
-								break;
-							default:
+						if ( response !== false ){
+							switch( data.state ){
+								case "add_newdata":
+									receive_db_partlist();
+									alert("新增完成");
+									resolve( true );
+									break;
+								case "replace_supplier":
+									receive_db_supplier_name();
+									alert("修改完成");
+									resolve( true );
+									break;
+								case "add_inventory_quantity":
+									var attr = {
+										"state": "get_single_data",
+										"number": data.number,
+										"func": 'quantity'
+									};
+									receive_to_db(attr);
+									resolve( true );
+									break;
+								case "rem_record_data":
+									receive_record();
+									alert("已移除紀錄");
+									resolve( true );
+									break;
+								case "rem_supplier_data":
+									receive_db_supplier_name();
+									receive_supplier_list();
+									alert("已移除廠商");
+									resolve( true );
+									break;
+								default:
+							}
+							
+						}
+						else{
+							resolve( response );
 						}
 					},
 					error: function (err) {
