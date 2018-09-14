@@ -406,13 +406,16 @@
 				alert( "請輸入廠商名稱" );
 				return false;
 			}
-			supplier_add_new_name( attr.supplier );
-			attr.state = "replace_supplier";
-			send_to_db( attr );
 			var enable_swap = false;
 			if ( attr.replace_name.trim() !== "" ){
 				enable_swap = true;
 			}
+			else{
+				supplier_add_new_name( attr.supplier );
+			}
+			attr.state = "replace_supplier";
+			send_to_db( attr );
+
 			for (var i=0; i<var_val.length; i++){
 				switch( var_val[i].name ){
 					case "part_supplier":
