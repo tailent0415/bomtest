@@ -25,7 +25,7 @@ function get_doc_part_attr( part_obj ){
 						attr.name = param_value;
 					}
 					break;
-				case "part_new_name":
+				case "part_replace_name":
 					attr.replace_name = param_value;
 					break;
 				case "part_format":

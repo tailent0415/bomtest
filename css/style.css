@@ -98,7 +98,8 @@ body {
 
 
 .normal_font{
-	color: #ffffaa;
+	color: #000000;
+	font-weight:bold;
 	font-family: Monospace, Courier New, sans-serif;
 }
 
