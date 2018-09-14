@@ -1047,16 +1047,36 @@
 								for (var i=0; i<var_val.length; i++){
 									switch( var_val[i].name ){
 										case "part_contact":
-											var_val[i].value = response.contact;
+											if ( response.contact == undefined ){
+												var_val[i].value = "";
+											}
+											else{
+												var_val[i].value = response.contact;
+											}
 											break;
 										case "part_phone":
-											var_val[i].value = response.phone;
+											if ( response.contact == undefined ){
+												var_val[i].value = "";
+											}
+											else{
+												var_val[i].value = response.phone;
+											}
 											break;
 										case "part_address":
-											var_val[i].value = response.address;
+											if ( response.contact == undefined ){
+												var_val[i].value = "";
+											}
+											else{
+												var_val[i].value = response.address;
+											}
 											break;
 										case "part_url":
-											var_val[i].value = response.url;
+											if ( response.contact == undefined ){
+												var_val[i].value = "";
+											}
+											else{
+												var_val[i].value = response.url;
+											}
 											break;
 										default:
 									}
