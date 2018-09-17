@@ -368,8 +368,7 @@
 			'click .part_number': function (e, value, row, index) {
 				$('.nav-tabs a[href="#menu5"]').tab('show');
 				var cnt = document.getElementById( "menu5" );
-				var part_attr = cnt.getElementsByClassName("part_attr");
-				var attr = get_doc_part_attr( part_attr );
+				var var_val = cnt.getElementsByClassName("part_attr");
 				for (var i=0; i<var_val.length; i++){
 					switch( var_val[i].name ){
 						case "part_num_list":
