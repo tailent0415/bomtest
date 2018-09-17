@@ -377,18 +377,16 @@
 			if ( bool_check ){
 				var cnt = document.getElementById( "menu5" );
 				var var_val = cnt.getElementsByClassName("part_attr");
-				alert(var_val);
 				for (var i=0; i<var_val.length; i++){
 					switch( var_val[i].name ){
 						case "part_num_list":
 							var_val[i].value = value;
-							alert(value);
+							/*update_bomtable_type( value, -1 );*/
 							break;
 						default:
 					}
 				}
 			};
-			alert( bool_check );
 		}
 		
 		
