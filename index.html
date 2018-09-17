@@ -371,9 +371,12 @@
 		};
 
 		async function chenge_page( value ) {
+			
 			var cnt = document.getElementById( "menu5" );
-			var div_obj = document.getElementById( "bom" );
-			cnt.removeChild(div_obj);
+			var div_first_obj = document.getElementById( "bom" );
+			if( div_first_obj !== null ){
+				cnt.removeChild( div_first_obj );
+			}
 			$('.nav-tabs a[href="#menu5"]').tab('show');
 			var len_num = 0;
 			var var_val;
