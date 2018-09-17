@@ -366,27 +366,35 @@
 		
 		window.guide_num_event = {
 			'click .part_number': function (e, value, row, index) {
-				$('.nav-tabs a[href="#menu5"]').tab('show');
-				var new_val = delay_2_sec( value );
+				chenge_page( value );
+			},
+		};
+
+		async function chenge_page( value ) {
+			$('.nav-tabs a[href="#menu5"]').tab('show');
+			var bool_check = false;
+			bool_check = await delay_2_sec();
+			if ( bool_check ){
 				var cnt = document.getElementById( "menu5" );
 				var var_val = cnt.getElementsByClassName("part_attr");
 				for (var i=0; i<var_val.length; i++){
 					switch( var_val[i].name ){
 						case "part_num_list":
-							var_val[i].value = new_val;
-							alert(new_val);
+							var_val[i].value = value;
+							alert(value);
 							break;
 						default:
 					}
 				}
-				alert('test');
-			},
-		};
-
-		function delay_2_sec(x) {
+			};
+			alert( bool_check );
+		}
+		
+		
+		function delay_2_sec() {
 		  return new Promise(resolve => {
 			setTimeout(() => {
-			  resolve(x);
+			  resolve( true );
 			}, 2000);
 		  });
 		}
