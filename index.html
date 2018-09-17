@@ -366,10 +366,15 @@
 		
 		window.guide_num_event = {
 			'click .part_number': function (e, value, row, index) {
-				alert('You click like icon, row: ' + value );
-				alert('You click like icon, row: ' + row.number );
+				$('#menu5').tab('show');
+				var cnt = document.getElementById( "menu5" );
+				var part_attr = cnt.getElementsByClassName("part_attr");
+				var attr = get_doc_part_attr( part_attr );
+				attr.number = value;
 			},
 		};
+		
+		
 		
 		// supplier revise button
 		function supplier_revise_btn(){
