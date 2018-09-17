@@ -374,12 +374,11 @@
 			var cnt = document.getElementById( "menu5" );
 			var div_obj = document.getElementById( "bom" );
 			cnt.removeChild(div_obj);
-			await time_delay( 200 );
-			alert( 'test' );
 			$('.nav-tabs a[href="#menu5"]').tab('show');
 			var len_num = 0;
 			var var_val;
 			while ( len_num == 0 ){
+				cnt = document.getElementById( "menu5" );
 				var_val = cnt.getElementsByClassName("part_attr");
 				len_num = var_val.length;
 				await time_delay( 200 );
