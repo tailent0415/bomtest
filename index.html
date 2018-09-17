@@ -372,29 +372,28 @@
 
 		async function chenge_page( value ) {
 			$('.nav-tabs a[href="#menu5"]').tab('show');
-			var bool_check = false;
-			bool_check = await delay_2_sec();
-			if ( bool_check ){
-				var cnt = document.getElementById( "menu5" );
+			remove_bomtable_interface();
+			var cnt = document.getElementById( "menu5" );
+			while ( var_val.length > 0 ){
 				var var_val = cnt.getElementsByClassName("part_attr");
-				for (var i=0; i<var_val.length; i++){
-					switch( var_val[i].name ){
-						case "part_num_list":
-							var_val[i].value = value;
-							update_bomtable_type( value, -1 );
-							break;
-						default:
-					}
+				await time_delay( 200 );
+			}
+			for (var i=0; i<var_val.length; i++){
+				switch( var_val[i].name ){
+					case "part_num_list":
+						var_val[i].value = value;
+						update_bomtable_type( value, -1 );
+						break;
+					default:
 				}
-			};
-		}
+			}
+		};
 		
-		
-		function delay_2_sec() {
+		function time_delay( time_millisecond ) {
 			return new Promise(resolve => {
 				setTimeout(() => {
 					resolve( true );
-				}, 1000);
+				}, time_millisecond );
 			});
 		}
 
