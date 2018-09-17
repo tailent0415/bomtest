@@ -381,7 +381,7 @@
 					switch( var_val[i].name ){
 						case "part_num_list":
 							var_val[i].value = value;
-							/*update_bomtable_type( value, -1 );*/
+							update_bomtable_type( value, -1 );
 							break;
 						default:
 					}
@@ -394,7 +394,7 @@
 			return new Promise(resolve => {
 				setTimeout(() => {
 					resolve( true );
-				}, 2000);
+				}, 1000);
 			});
 		}
 
