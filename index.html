@@ -372,6 +372,7 @@
 
 		async function chenge_page( value ) {
 			remove_bomtable_interface();
+			await time_delay( 200 );
 			$('.nav-tabs a[href="#menu5"]').tab('show');
 			var cnt = document.getElementById( "menu5" );
 			var len_num = 0;
