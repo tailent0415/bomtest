@@ -361,25 +361,18 @@
 		});
 
 
-		$("#part_table").bootstrapTable({
+		/*$("#part_table").bootstrapTable({
 			onClickRow:function(row, $element,field){
 				var i = $element.data('index');
 				alert(i+"，"+row.name+"，"+field);
 			}
-		)};
+		)};*/
 		
 		// search page edit part number field format
 		function edit_part_number( val, row, index ){
 			return ("<a class='part_num_info' href='javascript:void(0)'>" + val + "</a>");
 		}
 		
-		// link to bom
-		window.operateEvents = {
-		  'click .part_num_info': function (e, value, row, index) {
-			alert(JSON.stringify(row));
-		  }
-		};
-				
 		// supplier revise button
 		function supplier_revise_btn(){
 			$("#supplier_search_page").hide();
