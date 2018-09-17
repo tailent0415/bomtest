@@ -63,20 +63,6 @@
 						data-show-export="true"
 						data-row-style="set_table_font"
 						data-toolbar="#home_toolbar">
-						<thead>
-							<tr>
-								<th data-field="index">項次</th>
-								<th data-field="number" data-formatter="edit_part_number">品號</th>
-								<th data-field="name">品名</th>
-								<th data-field="format">規格</th>
-								<th data-field="fignum">圖號</th>
-								<th data-field="supplier">廠商</th>
-								<th data-field="unit">單位</th>
-								<th data-field="stock_quantity">庫存數量</th>
-								<th data-field="cost">單位成本</th>
-								<th data-field="stock_amount">庫存金額</th>
-							</tr>
-						</thead>
 					</table>
 				</div>
 				<div id="menu1" class="tab-pane fade">
@@ -359,8 +345,73 @@
 				}
 			});
 		});
-		
-		
+
+
+		$("#part_table").bootstrapTable({
+			columns: [
+				{
+				  field: 'index',
+				  title: '項次',
+				  align: 'center',
+				  valign: 'middle'
+				},
+				{
+				  field: 'number',
+				  title: '品號',
+				  align: 'center',
+				  valign: 'middle',
+				  formatter: edit_part_number
+				},
+				{
+				  field: 'name',
+				  title: '品名',
+				  align: 'center',
+				  valign: 'middle'
+				},
+				{
+				  field: 'format',
+				  title: '規格',
+				  align: 'center',
+				  valign: 'middle'
+				},
+				{
+				  field: 'fignum',
+				  title: '圖號',
+				  align: 'center',
+				  valign: 'middle'
+				},
+				{
+				  field: 'supplier',
+				  title: '廠商',
+				  align: 'center',
+				  valign: 'middle'
+				},
+				{
+				  field: 'unit',
+				  title: '單位',
+				  align: 'center',
+				  valign: 'middle'
+				},
+				{
+				  field: 'stock_quantity',
+				  title: '庫存數量',
+				  align: 'center',
+				  valign: 'middle'
+				},
+				{
+				  field: 'cost',
+				  title: '單位成本',
+				  align: 'center',
+				  valign: 'middle'
+				},
+				{
+				  field: 'stock_amount',
+				  title: '庫存金額',
+				  align: 'center',
+				  valign: 'middle'
+				},
+			]
+		)};
 		
 		// search page edit part number field format
 		function edit_part_number( val, row, index ){
