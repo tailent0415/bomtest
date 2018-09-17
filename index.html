@@ -366,7 +366,8 @@
 		
 		window.guide_num_event = {
 			'click .part_number': function (e, value, row, index) {
-				alert('You click like icon, row: ' + JSON.stringify(row));
+				alert('You click like icon, row: ' + value );
+				alert('You click like icon, row: ' + row.number );
 			},
 		};
 		
