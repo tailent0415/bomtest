@@ -367,25 +367,30 @@
 		window.guide_num_event = {
 			'click .part_number': function (e, value, row, index) {
 				$('.nav-tabs a[href="#menu5"]').tab('show');
-				setTimeout(delay_chenge_bom_num( value ), 2000);
+				var new_val = delay_2_sec( value );
+				var cnt = document.getElementById( "menu5" );
+				var var_val = cnt.getElementsByClassName("part_attr");
+				for (var i=0; i<var_val.length; i++){
+					switch( var_val[i].name ){
+						case "part_num_list":
+							var_val[i].value = new_val;
+							alert(new_val);
+							break;
+						default:
+					}
+				}
+				alert('test');
 			},
 		};
-		
-		function delay_chenge_bom_num( value ){
-			var cnt = document.getElementById( "menu5" );
-			var var_val = cnt.getElementsByClassName("part_attr");
-			for (var i=0; i<var_val.length; i++){
-				switch( var_val[i].name ){
-					case "part_num_list":
-						var_val[i].value = value;
-						break;
-					default:
-				}
-			}
-			alert(value)
+
+		function delay_2_sec(x) {
+		  return new Promise(resolve => {
+			setTimeout(() => {
+			  resolve(x);
+			}, 2000);
+		  });
 		}
-		
-		
+
 		
 		// supplier revise button
 		function supplier_revise_btn(){
