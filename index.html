@@ -374,11 +374,16 @@
 			$('.nav-tabs a[href="#menu5"]').tab('show');
 			remove_bomtable_interface();
 			var cnt = document.getElementById( "menu5" );
-			while ( var_val.length > 0 ){
-				var var_val = cnt.getElementsByClassName("part_attr");
+			var len_num = 0;
+			var var_val;
+			while ( len_num > 0 ){
+				var_val = cnt.getElementsByClassName("part_attr");
+				len_num = var_val.length;
 				await time_delay( 200 );
 			}
-			for (var i=0; i<var_val.length; i++){
+			alert( var_val );
+			alert( len_num );
+			for (var i=0; i<len_num; i++){
 				switch( var_val[i].name ){
 					case "part_num_list":
 						var_val[i].value = value;
