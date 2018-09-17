@@ -366,7 +366,7 @@
 		
 		window.guide_num_event = {
 			'click .part_number': function (e, value, row, index) {
-				setTimeout(chenge_page_wait( 'menu5' ), 2000);
+				setTimeout(chenge_page_wait(), 2000);
 				var cnt = document.getElementById( "menu5" );
 				var var_val = cnt.getElementsByClassName("part_attr");
 				for (var i=0; i<var_val.length; i++){
@@ -377,12 +377,12 @@
 						default:
 					}
 				}
-				alert("test finish5");
+				alert("test finish");
 			},
 		};
 		
 		function chenge_page_wait( target ){
-			$('.nav-tabs a[href="'+ target +'"]').tab('show');
+			$('.nav-tabs a[href="menu5"]').tab('show');
 		}
 		
 		
