@@ -371,7 +371,6 @@
 		};
 
 		async function chenge_page( value ) {
-			
 			var cnt = document.getElementById( "menu5" );
 			var div_first_obj = document.getElementById( "bom" );
 			if( div_first_obj !== null ){
@@ -385,10 +384,7 @@
 				var_val = cnt.getElementsByClassName("part_attr");
 				len_num = var_val.length;
 				await time_delay( 200 );
-				alert( len_num );
 			}
-			alert( var_val );
-			
 			for (var i=0; i<len_num; i++){
 				switch( var_val[i].name ){
 					case "part_num_list":
