@@ -66,7 +66,7 @@
 						<thead>
 							<tr>
 								<th data-field="index">項次</th>
-								<th data-field="number" data-formatter="edit_part_number">品號</th>
+								<th data-field="number" data-formatter="guide_num_format" data-events="guide_num_event">品號</th>
 								<th data-field="name">品名</th>
 								<th data-field="format">規格</th>
 								<th data-field="fignum">圖號</th>
@@ -360,19 +360,15 @@
 			});
 		});
 
-
-		/*$("#part_table").bootstrapTable({
-			onClickRow:function(row, $element,field){
-				var i = $element.data('index');
-				alert(i+"，"+row.name+"，"+field);
-			}
-		)};*/
-		
-		// search page edit part number field format
-		function edit_part_number( val, row, index ){
-			return ("<a href='$('#menu6').trigger('click')'>" + val + "</a>");
+		function guide_num_format( val ){
+			return ("<a class='part_number' href='javascript:void(0)' >" + val + "</a>");
 		}
 		
+		window.guide_num_event = {
+			'click .part_number': function (e, value, row, index) {
+				alert('You click like icon, row: ' + JSON.stringify(row));
+			},
+		};
 		
 		// supplier revise button
 		function supplier_revise_btn(){
