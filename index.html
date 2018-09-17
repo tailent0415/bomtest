@@ -369,6 +369,7 @@
 				$('.nav-tabs a[href="#menu5"]').tab('show');
 				var cnt = document.getElementById( "menu5" );
 				var var_val = cnt.getElementsByClassName("part_attr");
+				alert(var_val.length);
 				for (var i=0; i<var_val.length; i++){
 					switch( var_val[i].name ){
 						case "part_num_list":
