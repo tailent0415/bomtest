@@ -371,8 +371,8 @@
 		};
 
 		async function chenge_page( value ) {
-			$('.nav-tabs a[href="#menu5"]').tab('show');
 			remove_bomtable_interface();
+			$('.nav-tabs a[href="#menu5"]').tab('show');
 			var cnt = document.getElementById( "menu5" );
 			var len_num = 0;
 			var var_val;
@@ -380,9 +380,10 @@
 				var_val = cnt.getElementsByClassName("part_attr");
 				len_num = var_val.length;
 				await time_delay( 200 );
+				alert( len_num );
 			}
 			alert( var_val );
-			alert( len_num );
+			
 			for (var i=0; i<len_num; i++){
 				switch( var_val[i].name ){
 					case "part_num_list":
