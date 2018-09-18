@@ -425,14 +425,18 @@
 		
 		// supplier revise button
 		function supplier_revise_btn(){
-			$("#supplier_search_page").hide();
-			$("#supplier_revise_page").show();
+			if ($("#supplier_revise_page").style.display === "none") {
+				$("#supplier_revise_page").style.display = "block";
+				$("#supplier_search_page").style.display = "none";
+			}
 		}
 		
 		// supplier search button
 		function supplier_search_btn(){
-			$("#supplier_search_page").show();
-			$("#supplier_revise_page").hide();
+			if ($("#supplier_search_page").style.display === "none") {
+				$("#supplier_search_page").style.display = "block";
+				$("#supplier_revise_page").style.display = "none";
+			}
 			receive_supplier_list();
 		}
 		
