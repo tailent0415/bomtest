@@ -404,11 +404,12 @@
 				switch( var_val[i].name ){
 					case "part_supplier":
 						var_val[i].value = value;
-						supplier_change_btn( value );
 						break;
 					default:
+						var_val[i].value = "";
 				}
 			}
+			supplier_change_btn( value );
 			
 		};
 		
