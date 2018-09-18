@@ -379,12 +379,20 @@
 		
 		// supplier name link to supplier table
 		async function chenge_page_to_supplier( value ) {
-			$('.nav-tabs a[href="#menu7"]').tab('show');
-			time_delay(200);
+			
+			var obj = $('.nav-tabs a[href="#menu7"]');
 			var i = 0;
-			while ( $("#supplier_revise_page").is(":hidden") && i<10){
+			while ( obj.is(":hidden") && i<10){
+				obj.tab('show');
+				await time_delay(200);
+				i++
+			}
+			alert( i );
+			var obj = $("#supplier_revise_page");
+			i = 0;
+			while ( obj.is(":hidden") && i<10){
 				supplier_revise_btn();
-				time_delay(200);
+				await time_delay(200);
 				i++
 			}
 			alert( i );
