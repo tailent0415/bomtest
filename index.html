@@ -293,6 +293,7 @@
 		var part_list_options = "";
 		var supplier_list_obj = $("#supplier_list");
 		var supplier_list_options = "";
+		var tab_page_name = "";
 		var bom_node_array = new Array();
 
 		
@@ -316,39 +317,39 @@
 			
 			// tab response
 		    $('.nav-tabs a').on('shown.bs.tab', function(event){
-				var x = $(event.target).text();   // active tab
-				switch(x){
-					case "查詢":
+				tab_page_name = $(event.target).attr('href');   // active tab
+				switch( tab_page_name ){
+					case "#home":
 						product_table = $("#part_table"); 
 						ele_id = "home";
 						break;
-					case "新增料件":
+					case "#menu1":
 						ele_id = "menu1";
 						form_id = "add_part_form"
 						break;
-					case "新增成品/半成品":
+					case "#menu2":
 						product_table = $("#product_table_add"); 
 						ele_id = "menu2";
 						form_id = "add_product_form"
 						break;
-					case "修改":
+					case "#menu3":
 						product_table = $("#revise_table");
 						ele_id = "menu3";
 						init_revise_interface();
 						break;
-					case "入庫&領用":
+					case "#menu4":
 						ele_id = "menu4";
 						break;
-					case "BOM":
+					case "#menu5":
 						ele_id = "menu5";
 						init_bomtable_interface();
 						break;
-					case "紀錄":
+					case "#menu6":
 						product_table = $("#record_table");
 						ele_id = "menu6";
 						receive_record();
 						break;
-					case "廠商":
+					case "#menu7":
 						$("#supplier_search_page").show();
 						$("#supplier_revise_page").hide();
 						product_table = $("#supplier_table");
@@ -380,11 +381,15 @@
 		// supplier name link to supplier table
 		async function chenge_page_to_supplier( value ) {
 			$('.nav-tabs a[href="#menu7"]').tab('show');
-			await time_delay(500);
 			var i = 0;
+			while ( tab_page_name !== "#menu7" && i<20 ){
+				await time_delay(200);
+				i++
+			}
+			alert( i );
 			var obj = $("#supplier_revise_page");
 			i = 0;
-			while ( obj.is(":hidden") && i<10){
+			while ( obj.is(":hidden") && i<20){
 				supplier_revise_btn();
 				await time_delay(200);
 				i++
