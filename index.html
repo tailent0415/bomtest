@@ -382,9 +382,9 @@
 			
 			var obj = $('.nav-tabs a[href="#menu7"]');
 			var i = 0;
-			alert( obj.is(":hidden") );
-			alert( obj.is(":visible") );
-			while ( obj.is(":hidden") && i<10){
+			alert( obj.tab.is(":hidden") );
+			alert( obj.tab.is(":visible") );
+			while ( obj.tab.is(":hidden") && i<10){
 				obj.tab('show');
 				await time_delay(200);
 				i++
