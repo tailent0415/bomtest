@@ -66,11 +66,11 @@
 						<thead>
 							<tr>
 								<th data-field="index">項次</th>
-								<th data-field="number" data-formatter="guide_num_format" data-events="guide_num_event">品號</th>
+								<th data-field="number" data-formatter="guide_num_format" data-events="guide_event_response">品號</th>
 								<th data-field="name">品名</th>
 								<th data-field="format">規格</th>
 								<th data-field="fignum">圖號</th>
-								<th data-field="supplier">廠商</th>
+								<th data-field="supplier" data-formatter="guide_supplier_format" data-events="guide_event_response" >廠商</th>
 								<th data-field="unit">單位</th>
 								<th data-field="stock_quantity">庫存數量</th>
 								<th data-field="cost">單位成本</th>
@@ -368,7 +368,7 @@
 			return ("<a class='guide_part_supplier' href='javascript:void(0)' >" + val + "</a>");
 		}
 		
-		window.guide_num_event = {
+		window.guide_event_response = {
 			'click .guide_part_number': function (e, value, row, index) {
 				chenge_page_to_bom( value );
 			},
