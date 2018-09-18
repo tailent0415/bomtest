@@ -361,16 +361,31 @@
 		});
 
 		function guide_num_format( val ){
-			return ("<a class='part_number' href='javascript:void(0)' >" + val + "</a>");
+			return ("<a class='guide_part_number' href='javascript:void(0)' >" + val + "</a>");
+		}
+		
+		function guide_supplier_format( val ){
+			return ("<a class='guide_part_supplier' href='javascript:void(0)' >" + val + "</a>");
 		}
 		
 		window.guide_num_event = {
-			'click .part_number': function (e, value, row, index) {
-				chenge_page( value );
+			'click .guide_part_number': function (e, value, row, index) {
+				chenge_page_to_bom( value );
+			},
+			'click .guide_part_supplier': function (e, value, row, index) {
+				chenge_page_to_supplier( value );
 			},
 		};
-
-		async function chenge_page( value ) {
+		
+		// supplier name link to supplier table
+		async function chenge_page_to_supplier( value ) {
+			$('.nav-tabs a[href="#menu7"]').tab('show');
+			supplier_revise_btn();
+			alert( $("#supplier_revise_page").style.display );
+		};
+		
+		// part number link to bom table
+		async function chenge_page_to_bom( value ) {
 			var cnt = document.getElementById( "menu5" );
 			var div_first_obj = document.getElementById( "bom" );
 			if( div_first_obj !== null ){
@@ -378,12 +393,14 @@
 			}
 			$('.nav-tabs a[href="#menu5"]').tab('show');
 			var len_num = 0;
+			var i = 0;
 			var var_val;
-			while ( len_num == 0 ){
+			while ( len_num == 0 || i<100){
 				cnt = document.getElementById( "menu5" );
 				var_val = cnt.getElementsByClassName("part_attr");
 				len_num = var_val.length;
 				await time_delay( 200 );
+				i++;
 			}
 			for (var i=0; i<len_num; i++){
 				switch( var_val[i].name ){
@@ -396,6 +413,7 @@
 			}
 		};
 		
+		// time delay
 		function time_delay( time_millisecond ) {
 			return new Promise(resolve => {
 				setTimeout(() => {
