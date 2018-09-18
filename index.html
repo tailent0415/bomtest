@@ -380,10 +380,12 @@
 		// supplier name link to supplier table
 		async function chenge_page_to_supplier( value ) {
 			$('.nav-tabs a[href="#menu7"]').tab('show');
-			supplier_revise_btn();
-			alert( $("#supplier_revise_page").is(":visible") ); 
-			alert( $("#supplier_revise_page").is(":hidden") ); 
-			
+			var i = 0;
+			while ( $("#supplier_revise_page").is(":hidden") || i<100){
+				supplier_revise_btn();
+				time_delay(200);
+				i++
+			}
 		};
 		
 		// part number link to bom table
