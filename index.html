@@ -382,7 +382,7 @@
 			$('.nav-tabs a[href="#menu7"]').tab('show');
 			time_delay(200);
 			var i = 0;
-			while ( $("#supplier_revise_page").is(":hidden") || i<10){
+			while ( $("#supplier_revise_page").is(":hidden") && i<10){
 				supplier_revise_btn();
 				time_delay(200);
 				i++
@@ -401,7 +401,7 @@
 			var len_num = 0;
 			var i = 0;
 			var var_val;
-			while ( len_num == 0 || i<10){
+			while ( len_num == 0 && i<10){
 				cnt = document.getElementById( "menu5" );
 				var_val = cnt.getElementsByClassName("part_attr");
 				len_num = var_val.length;
