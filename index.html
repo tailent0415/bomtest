@@ -380,36 +380,56 @@
 		
 		// supplier name link to supplier table
 		async function chenge_page_to_supplier( value ) {
-			$('.nav-tabs a[href="#menu7"]').tab('show');
+			var tab_id = "#menu7";
+			var obj = $("#supplier_revise_page");
+			$('.nav-tabs a[href="'+ tab_id +'"]').tab('show');
+			
 			var i = 0;
-			while ( tab_page_name !== "#menu7" && i<20 ){
+			while ( tab_page_name !== tab_id && i<20 ){
 				await time_delay(200);
 				i++
 			}
-			alert( i );
-			var obj = $("#supplier_revise_page");
 			i = 0;
 			while ( obj.is(":hidden") && i<20){
 				supplier_revise_btn();
 				await time_delay(200);
 				i++
 			}
-			alert( i );
+			
+			cnt = document.getElementById( tab_id );
+			var_val = cnt.getElementsByClassName("part_attr");
+			len_num = var_val.length;
+			for (var i=0; i<len_num; i++){
+				switch( var_val[i].name ){
+					case "part_supplier":
+						var_val[i].value = value;
+						supplier_change_btn( value );
+						break;
+					default:
+				}
+			}
+			
 		};
 		
 		// part number link to bom table
 		async function chenge_page_to_bom( value ) {
-			var cnt = document.getElementById( "menu5" );
+			var tab_id = "menu5";
+			var cnt = document.getElementById( tab_id );
 			var div_first_obj = document.getElementById( "bom" );
 			if( div_first_obj !== null ){
 				cnt.removeChild( div_first_obj );
 			}
-			$('.nav-tabs a[href="#menu5"]').tab('show');
-			var len_num = 0;
+			$('.nav-tabs a[href="'+ tab_id +'"]').tab('show');
 			var i = 0;
+			while ( tab_page_name !== tab_id && i<20 ){
+				await time_delay(200);
+				i++
+			}
+			var len_num = 0;
 			var var_val;
-			while ( len_num == 0 && i<10){
-				cnt = document.getElementById( "menu5" );
+			i = 0;
+			while ( len_num == 0 && i<20){
+				cnt = document.getElementById( tab_id );
 				var_val = cnt.getElementsByClassName("part_attr");
 				len_num = var_val.length;
 				await time_delay( 200 );
