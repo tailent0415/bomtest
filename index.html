@@ -976,7 +976,6 @@
 		
 		// send product data
 		function send_product_data( part_attr, product_num_str, state ){
-			alert( product_num_str );
 			if( check_part_num( 0, 15, product_num_str ) ) {
 				var attr = get_doc_part_attr( part_attr );
 				if (attr !== false){
@@ -1010,11 +1009,15 @@
 			var part_attr = cnt.getElementsByClassName("part_attr");
 			var attr;
 			var num_str = "";
+			
+			alert( partnum[0].value );
+			
+			
 			if( partnum[0].value == "3" || partnum[0].value == "4" ){
 				for (i = 0; i < partnum.length; i++) {
 					num_str += partnum[i].value;
 				}
-					
+				alert( num_str );	
 				if( check_part_num( 0, 15, num_str ) ) {
 					var attr = get_doc_part_attr( part_attr );
 					if (attr !== false){
