@@ -58,7 +58,7 @@ function check_part_num( func, size, value ){
 			break;
 		case 3: // number check
 			if( value.length == size){
-				re = /[1-3]{1}/;
+				re = /[1-4]{1}/;
 				flag = true;
 			}
 			break;
@@ -87,7 +87,7 @@ function check_part_num_noshow( func, size, value ){
 	switch(func){
 		case 0: // full check
 			if( value.length == size){
-				re = /[1-3]{1}[A-Z]{2}[A-Z]{3}[A-Z]{3}[0-9]{3}[0-9]{3}/;
+				re = /[1-4]{1}[A-Z]{2}[A-Z]{3}[A-Z]{3}[0-9]{3}[0-9]{3}/;
 				flag = true;
 			}
 			break;
@@ -131,7 +131,7 @@ function check_part_num_noshow( func, size, value ){
 			break;
 		case 3: // number check
 			if( value.length == size){
-				re = /[1-3]{1}/;
+				re = /[1-4]{1}/;
 				flag = true;
 			}
 			break;
