@@ -915,6 +915,7 @@
 						receive_part_info( "revise_product_data", num_value )
 						break;
 					case "3":
+					case "4":
 						data_str += '<br><label for="part_format_in">規格 :</label>';
 						data_str += '<br><textarea id="part_format_in" class="part_attr normal_font" name="part_format" rows="2" cols="50" wrap="hard" ></textarea>'
 						data_str += '<br><label for="part_fignum_in">圖號 :</label><input id="part_fignum_in" type="text" class="part_attr input_container normal_font" name="part_fignum" type="text" style="width:200px" />';
@@ -1243,6 +1244,7 @@
 												table_title = [ '品號', '名稱', '成本', '數量', '廠商', '規格', '庫存'  ];
 												break;
 											case '3':
+											case '4':
 												data_str += '<br><label for="part_name_out">品名 :</label>';
 												data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" >' + response.name + '</textarea>';
 												data_str += '<br><label for="part_format_out">規格 :</label>';
