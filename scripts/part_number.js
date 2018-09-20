@@ -14,7 +14,7 @@ function check_part_num( func, size, value ){
 	switch(func){
 		case 0: // full check
 			if( value.length == size){
-				re = /[1-3]{1}[A-Z]{2}[A-Z]{3}[A-Z]{3}[0-9]{3}[0-9]{3}/;
+				re = /[1-4]{1}[A-Z]{2}[A-Z]{3}[A-Z]{3}[0-9]{3}[0-9]{3}/;
 				flag = true;
 			}
 			break;
