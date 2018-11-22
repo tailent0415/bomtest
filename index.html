@@ -1233,14 +1233,14 @@
 												data_str += '<br><label for="part_name_out">品名 :</label>';
 												data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" >' + response.name + '</textarea>';
 												data_str += '<br><label for="part_remark_out">備註 : </label><br><textarea id="part_remark_out" class="normal_font" rows="5" cols="50" wrap="hard" disabled="true" />' + response.remark + '</textarea>';
-												table_title = [ '品號', '名稱', '成本', '數量', '規格', '備註', '庫存' ];
+												table_title = [ '品號', '品名', '成本', '數量', '規格', '備註', '庫存' ];
 												break;
 											case '2':
 												data_str += '<br><label for="part_cost_out">總成本 :</label><input id="part_cost_out" class="input_container normal_font" style="width:100px" disabled="true" value="' + response.cost + '" />';
 												data_str += '<br><label for="part_name_out">品名 :</label>';
 												data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" >' + response.name + '</textarea>';
 												data_str += '<br><label for="part_remark_out">備註 :</label><br><textarea id="part_remark_out" class="normal_font" rows="5" cols="50" wrap="hard" disabled="true" />' + response.remark + '</textarea>';
-												table_title = [ '品號', '名稱', '成本', '數量', '廠商', '規格', '庫存'  ];
+												table_title = [ '品號', '品名', '成本', '數量', '廠商', '規格', '庫存'  ];
 												break;
 											case '3':
 											case '4':
@@ -1281,7 +1281,7 @@
 												case '品號':
 													style_str = "style='width:170px;text-align:center' ";
 													break;
-												case '名稱':
+												case '品名':
 													style_str = "style='width:200px;text-align:center' ";
 													break;
 												case '成本':
@@ -1321,7 +1321,7 @@
 														var hnumber = "<a style='font-family: Monospace, Courier New, sans-serif' onclick = 'update_bomtable_type( this.text, -1 )' >" + number_str + "</a>";
 														res_str = hnumber;
 														break;
-													case '名稱':
+													case '品名':
 														res_str = response.data[i].name;
 														break;
 													case '成本':
