@@ -98,7 +98,7 @@
 							<br><label for="part_cost_in">成本 :</label><input id="part_cost_in" class="part_attr input_container normal_font" name="part_cost" type="text" style="width:100px" />
 						</div>
 						<div class="btn_field">
-							<button type="button" class="btn btn-primary" onclick="send_new_part()" >新增</button>
+							<button type="button" class="btn btn-primary" onclick="send_new_part()" >新增料件</button>
 						</div>
 					</form>
 				</div>
@@ -119,8 +119,8 @@
 							<br><label for="part_remark_in">備註 : </label>
 							<br><textarea id="part_remark_in" class="part_attr normal_font" name="part_remark" rows="5" cols="50" wrap="hard" ></textarea>
 							<br><div id="add_product_toolbar">
-								<button type="button" class="btn btn-primary" onclick='append_btn_res()' >新增</button>
-								<button type="button" class="btn btn-primary" onclick='send_new_product()' >上傳</button>
+								<button type="button" class="btn btn-primary" onclick='append_btn_res()' >新增料件</button>
+								<button type="button" class="btn btn-primary" onclick='send_new_product()' >資料上傳</button>
 								<br><label for="part_totalcost_out">總成本 :</label><input type=text id="part_totalcost_out" class="part_attr input_container normal_font" style="width:200px;margin-top:15px" name="part_totalcost" disabled="true" value="0" >
 							</div>
 							<table id="product_table_add"
@@ -985,7 +985,7 @@
 					for( var i=0; i<data.length; i++ ){
 						num_str = data[i].number.val;
 						if( num_str == "undefined" ){
-							return;
+							break;
 						}
 						data_str += "index=" + i + "&number=" + data[i].number.val + "&quantity=" + data[i].quantity.val + ";";
 					}
