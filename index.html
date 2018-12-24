@@ -985,16 +985,14 @@
 					for( var i=0; i<data.length; i++ ){
 						num_str = data[i].number.val;
 						if( num_str == "undefined" ){
-							break;
+							return;
 						}
 						data_str += "index=" + i + "&number=" + data[i].number.val + "&quantity=" + data[i].quantity.val + ";";
 					}
 					attr.state = state;
 					attr.number = product_num_str;
 					attr.bomcode = data_str;
-					if( data_str !== "" ){
-						send_to_db(attr);
-					}
+					send_to_db(attr);
 				}
 			}
 		}
