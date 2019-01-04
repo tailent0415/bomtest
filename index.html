@@ -325,6 +325,8 @@
 						ele_id = "home";
 						tab_obj.set_table_id( $("#part_table") );
 						tab_obj.set_ele_id( "home" );
+						alert( tab_obj.get_table_id() );
+						alert( tab_obj.get_ele_id() );
 						break;
 					case "#menu1":
 						ele_id = "menu1";
@@ -1101,9 +1103,8 @@
 		// receive data for database
 		async function receive_to_db( data ){
 			data.id = user_id;
-			var tab_obj = new tab_assign();
 			try{
-				var response = await receive_promise( tab_obj.get_table_id(), tab_obj.get_ele_id(), data );
+				var response = await receive_promise( product_table, ele_id, data );
 				if( response == true ){
 					return true;
 				}
