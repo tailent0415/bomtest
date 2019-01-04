@@ -22,7 +22,7 @@
 		<script src="/scripts/bootstrap-table-export.js"></script>
 		<script src="/scripts/tableExport.js"></script>
 		<script src="/scripts/ga.js"></script>
-		<script src="/scripts/package_tab_assign.js"></script>
+		<script src="/scripts/class_tab_assign.js"></script>
 		
 	</head>
 	<body>
@@ -297,9 +297,7 @@
 		var supplier_list_options = "";
 		var tab_page_name = "";
 		var bom_node_array = new Array();
-		var tab_obj = new tab_assign();
-		tab_obj.set_table_id( $("#part_table") );
-		tab_obj.set_ele_id( "home" );
+		TabProp.SetProp( $("#part_table") );
 		
 		
 		function set_table_font(row, index) {
@@ -327,8 +325,7 @@
 					case "#home":
 						product_table = $("#part_table"); 
 						ele_id = "home";
-						tab_obj.set_table_id( $("#part_table") );
-						tab_obj.set_ele_id( "home" );
+						TabProp.SetProp( $("#part_table"), "home" );
 						break;
 					case "#menu1":
 						ele_id = "menu1";
@@ -354,8 +351,7 @@
 					case "#menu6":
 						product_table = $("#record_table");
 						ele_id = "menu6";
-						tab_obj.set_table_id( $("#record_table") );
-						tab_obj.set_ele_id( "menu6" );
+						TabProp.SetProp( $("#record_table"), "menu6" );
 						receive_record();
 						break;
 					case "#menu7":
@@ -1105,10 +1101,9 @@
 		// receive data for database
 		async function receive_to_db( data ){
 			data.id = user_id;
-			var table_id = tab_obj.get_table_id();
-			var ele_id = tab_obj.get_table_id();
+			var NewPropRes = TabProp.GetProp();
 			try{
-				var response = await receive_promise( table_id, ele_id, data );
+				var response = await receive_promise( NewPropRes.tabid, NewPropRes.eleid, data );
 				if( response == true ){
 					return true;
 				}
