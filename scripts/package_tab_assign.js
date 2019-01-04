@@ -11,4 +11,5 @@ var tab_assign = function(){
 	
 	this.set_form_id = function( val ) { form_id = val; };
  	this.get_form_id = function() { return form_id; };
+	
 }
