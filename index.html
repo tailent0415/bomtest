@@ -22,6 +22,8 @@
 		<script src="/scripts/bootstrap-table-export.js"></script>
 		<script src="/scripts/tableExport.js"></script>
 		<script src="/scripts/ga.js"></script>
+		<script src="/scripts/package_tab_assign.js"></script>
+		
 	</head>
 	<body>
 		<div class="load_modal"></div>
@@ -1103,8 +1105,10 @@
 		// receive data for database
 		async function receive_to_db( data ){
 			data.id = user_id;
+			var table_id = tab_obj.get_table_id();
+			var ele_id = tab_obj.get_table_id();
 			try{
-				var response = await receive_promise( tab_obj.get_table_id(), tab_obj.get_ele_id(), data );
+				var response = await receive_promise( table_id, ele_id, data );
 				if( response == true ){
 					return true;
 				}
@@ -1140,7 +1144,7 @@
 		}
 		
     </script>
-	<script type="text/javascript" src="/scripts/package_tab_assign.js"></script>
+	
 	<script type="text/javascript" src="/scripts/db_receive.js"></script>
 	<script type="text/javascript" src="/scripts/db_send.js"></script>
 	<script type="text/javascript" src="/scripts/get.js"></script>
