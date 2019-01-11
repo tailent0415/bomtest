@@ -295,7 +295,7 @@
 		var supplier_list_options = "";
 		var tab_page_name = "";
 		var bom_node_array = new Array();
-		TabProp.SetProp( $("#part_table") );
+		TabProp.SetProp( "home", $("#part_table") );
 		
 		
 		function set_table_font(row, index) {
@@ -334,7 +334,7 @@
 						init_revise_interface();
 						break;
 					case "#menu4":
-						TabProp.SetProp( "menu4", $("#revise_table") );
+						TabProp.SetProp( "menu4" );
 						break;
 					case "#menu5":
 						TabProp.SetProp( "menu5" );
