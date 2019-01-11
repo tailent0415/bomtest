@@ -288,8 +288,6 @@
 		</div>
     <script language="JavaScript">
 		var body = $("body");
-		var product_table = $("#part_table"); 
-		var ele_id;
 		var user_id = "";
 		var part_list_obj = $("#part_list");
 		var part_list_options = "";
@@ -323,42 +321,33 @@
 				tab_page_name = $(event.target).attr('href');   // active tab
 				switch( tab_page_name ){
 					case "#home":
-						product_table = $("#part_table"); 
-						ele_id = "home";
-						TabProp.SetProp( $("#part_table"), "home" );
+						TabProp.SetProp( "home", $("#part_table") );
 						break;
 					case "#menu1":
-						ele_id = "menu1";
-						form_id = "add_part_form"
+						TabProp.SetProp( "menu1", "", "add_part_form" );
 						break;
 					case "#menu2":
-						product_table = $("#product_table_add"); 
-						ele_id = "menu2";
-						form_id = "add_product_form"
+						TabProp.SetProp( "menu2", $("#product_table_add"), "add_product_form" );
 						break;
 					case "#menu3":
-						product_table = $("#revise_table");
-						ele_id = "menu3";
+						TabProp.SetProp( "menu3", $("#revise_table") );
 						init_revise_interface();
 						break;
 					case "#menu4":
-						ele_id = "menu4";
+						TabProp.SetProp( "menu4", $("#revise_table") );
 						break;
 					case "#menu5":
-						ele_id = "menu5";
+						TabProp.SetProp( "menu5" );
 						init_bomtable_interface();
 						break;
 					case "#menu6":
-						product_table = $("#record_table");
-						ele_id = "menu6";
-						TabProp.SetProp( $("#record_table"), "menu6" );
+						TabProp.SetProp( "menu6", $("#record_table") );
 						receive_record();
 						break;
 					case "#menu7":
 						$("#supplier_search_page").show();
 						$("#supplier_revise_page").hide();
-						product_table = $("#supplier_table");
-						ele_id = "menu7";
+						TabProp.SetProp( "menu7", $("#supplier_table") );
 						receive_supplier_list();
 						break;
 					default:
@@ -502,7 +491,9 @@
 		
 		// supplier upload information
 		function supplier_info_upload(){
-			var cnt = document.getElementById( ele_id );
+			var tab_pror = TabProp.GetProp();
+			var newPage = tab_pror.eleid;
+			var cnt = document.getElementById( newPage );
 			var part_attr = cnt.getElementsByClassName("part_attr");
 			var attr = get_doc_part_attr( part_attr );
 			if( attr.supplier == "" ){
@@ -539,9 +530,11 @@
 		
 		// supplier delete supplier
 		function supplier_delete_btn(){
+			var tab_pror = TabProp.GetProp();
+			var newTable = tab_pror.tabid;
 			var sel_target = new Array();
 			var del_index = new Array();
-			sel_target = product_table.bootstrapTable('getSelections');
+			sel_target = newTable.bootstrapTable('getSelections');
 			for( var i=0; i<sel_target.length; i++ ){
 				del_index[i] = sel_target[i].index
 			}
@@ -559,7 +552,9 @@
 		
 		// quantity change button response
 		function quan_change_btn( currdata ){
-			var cnt = document.getElementById( ele_id );
+			var tab_pror = TabProp.GetProp();
+			var newPage = tab_pror.eleid;
+			var cnt = document.getElementById( newPage );
 			var partnum = cnt.getElementsByClassName("part_attr");
 			var numValue = "";
 			if( check_part_num( 0, 15, normal_part_number( currdata.value ) ) ){
@@ -575,10 +570,12 @@
 		
 		// addend new row to product table
 		function append_btn_res(){
+			var tab_pror = TabProp.GetProp();
+			var newTable = tab_pror.tabid;
 			var data_attr = new Array();
-			var data_attr = product_table.bootstrapTable("getData",false);
-			product_table.bootstrapTable("append", add_product_part_row(data_attr.length));
-			product_table.bootstrapTable("scrollTo", 'bottom');
+			var data_attr = newTable.bootstrapTable("getData",false);
+			newTable.bootstrapTable("append", add_product_part_row(data_attr.length));
+			newTable.bootstrapTable("scrollTo", 'bottom');
 		};
 		
 		// add product part table row
@@ -607,22 +604,24 @@
 		
 		// remove table row
 		function remove_table_row( idx ){
-			var attr = product_table.bootstrapTable('getRowByUniqueId', idx );
+			var tab_pror = TabProp.GetProp();
+			var newTable = tab_pror.tabid;
+			var attr = newTable.bootstrapTable('getRowByUniqueId', idx );
 			var i = 1;
-			product_table.bootstrapTable('remove', {
+			newTable.bootstrapTable('remove', {
 				field: "index",
 				values: Array.of(idx)
 			});
 			
 			while( attr !== null ){
 				replace_index = idx+i-1;
-				product_table.bootstrapTable('updateRow', {
+				newTable.bootstrapTable('updateRow', {
 					index: replace_index,
 					row: {
 						index: replace_index,
 					}
 				});
-				attr = product_table.bootstrapTable('getRowByUniqueId', idx+i+1 );
+				attr = newTable.bootstrapTable('getRowByUniqueId', idx+i+1 );
 				i++;
 			}
 		}
@@ -647,6 +646,8 @@
 		}
 			
 		function change_quan_input( idx, val ){
+			var tab_pror = TabProp.GetProp();
+			var newTable = tab_pror.tabid;
 			if ( isNaN( parseInt( val ) ) ){
 				val = 0;
 			}
@@ -654,7 +655,7 @@
 				func: 2,
 				val: val
 			};
-			product_table.bootstrapTable('updateRow', {
+			newTable.bootstrapTable('updateRow', {
 				index: idx,
 				row: {
 					quantity: quan_param
@@ -664,7 +665,10 @@
 
 		// calculate total cost and update	
 		function update_total_cost( idx, val ){
-			var attr = product_table.bootstrapTable('getRowByUniqueId', idx );
+			var tab_pror = TabProp.GetProp();
+			var newTable = tab_pror.tabid;
+			var newPage = tab_pror.eleid;
+			var attr = newTab.bootstrapTable('getRowByUniqueId', idx );
 			if ( isNaN( parseInt( val ) ) ){
 				val = 0;
 			}
@@ -678,14 +682,14 @@
 				attr.cost = 0;
 			}
 			
-			product_table.bootstrapTable('updateRow', {
+			newTable.bootstrapTable('updateRow', {
 				index: idx,
 				row: {
 					quantity: quan_param,
 					totalcost: attr.cost * val,
 				}
 			});
-			data_attr = product_table.bootstrapTable("getData",false);
+			data_attr = newTable.bootstrapTable("getData",false);
 			var product_cost = 0;
 			var value = 0;
 			for( var i = 0; i<data_attr.length; i++ ){
@@ -695,7 +699,7 @@
 				}
 				product_cost += value;
 			}
-			var cnt = document.getElementById( ele_id );
+			var cnt = document.getElementById( newPage );
 			var part_attr = cnt.getElementsByClassName("part_attr");
 			for( var i=0; i<part_attr.length; i++ ){
 				if( part_attr[i].name == "part_totalcost" ){
@@ -717,7 +721,9 @@
 		}
 		
 		function change_partnum_type_static( idx, source_val ){
-			var param = product_table.bootstrapTable( 'getRowByUniqueId', idx );
+			var tab_pror = TabProp.GetProp();
+			var newTable = tab_pror.tabid;
+			var param = newTable.bootstrapTable( 'getRowByUniqueId', idx );
 			if(param.number.val == "undefined"){
 				param_val = "";
 			}
@@ -728,7 +734,7 @@
 				func: 2,
 				val: param_val
 			};
-			product_table.bootstrapTable('updateRow', {
+			newTable.bootstrapTable('updateRow', {
 				index: idx,
 				row: {
 					number: num_param
@@ -737,8 +743,10 @@
 		}
 		
 		function change_partnum_type_dynamic( idx, source_val ){
+			var tab_pror = TabProp.GetProp();
+			var newTable = tab_pror.tabid;
 			if( check_part_num_noshow( 0, 15, normal_part_number( source_val ) ) ){
-				var data = product_table.bootstrapTable( 'getData', false );
+				var data = newTable.bootstrapTable( 'getData', false );
 				var same_check = true;
 				for (var i=0; i<data.length; i++){
 					if( i !== idx ){
@@ -763,7 +771,7 @@
 				func: 1,
 				val: 0
 			};
-			product_table.bootstrapTable('updateRow', {
+			newTable.bootstrapTable('updateRow', {
 				index: idx,
 				row: {
 					index: idx,
@@ -828,7 +836,9 @@
 
 		// Remove Bomtable interface
 		function remove_bomtable_interface(){
-			var cnt = document.getElementById( ele_id );
+			var tab_pror = TabProp.GetProp();
+			var newPage = tab_pror.eleid;
+			var cnt = document.getElementById( newPage );
 			var div_obj = document.getElementById( "bom" );
 			cnt.removeChild(div_obj);
 		}
@@ -846,9 +856,11 @@
 		
 		// delete select record
 		function delete_record(){
+			var tab_pror = TabProp.GetProp();
+			var newTable = tab_pror.tabid;
 			var sel_target = new Array();
 			var del_index = new Array();
-			sel_target = product_table.bootstrapTable('getSelections');
+			sel_target = newTable.bootstrapTable('getSelections');
 			for( var i=0; i<sel_target.length; i++ ){
 				del_index[i] = sel_target[i].index
 			}
@@ -864,7 +876,9 @@
 		
 		// revise interface control
 		function init_revise_interface(){
-			var cnt = document.getElementById( ele_id );
+			var tab_pror = TabProp.GetProp();
+			var newPage = tab_pror.eleid;
+			var cnt = document.getElementById( newPage );
 			var div_first_obj = document.getElementById( "revise" );
 			if( div_first_obj !== null ){
 				remove_revise_interface();
@@ -881,13 +895,14 @@
 		}
 
 		function update_revise_type( num_value ){
-			
+			var tab_pror = TabProp.GetProp();
+			var newPage = tab_pror.eleid;
 			if( check_part_num( 0, 15, normal_part_number( num_value ) ) ){
 				
 				remove_revise_interface();
 			
 				var revise_table_obj = document.getElementById( "revise_title" );
-				var cnt = document.getElementById( ele_id );
+				var cnt = document.getElementById( newPage );
 				div_first_obj = document.createElement( "div" );
 				div_first_obj.id = "revise";
 				div_first_obj.setAttribute("class", "tab_form");
@@ -943,7 +958,9 @@
 		}
 
 		function remove_revise_interface(){
-			var cnt = document.getElementById( ele_id );
+			var tab_pror = TabProp.GetProp();
+			var newPage = tab_pror.eleid;
+			var cnt = document.getElementById( newPage );
 			var div_obj = document.getElementById( "revise" );
 			document.getElementById( "revise_title" ).style.display = "none";
 			cnt.removeChild(div_obj);
@@ -953,7 +970,11 @@
 
 		// send a new product data to database
 		function send_new_product(){
-			var cnt = document.getElementById( ele_id );
+			var tab_pror = TabProp.GetProp();
+			var newTable = tab_pror.tabid;
+			var newPage = tab_pror.eleid;
+			var newForm = tab_pror.formid;
+			var cnt = document.getElementById( newPage );
 			var partnum = cnt.getElementsByClassName("numtext");
 			var part_attr = cnt.getElementsByClassName("part_attr");
 			var num_str = "";
@@ -966,14 +987,16 @@
 			else{
 				alert( "input has error" );
 			}
-			var form_cnt = document.getElementById( form_id );
+			var form_cnt = document.getElementById( newForm );
 			form_cnt.reset();
-			product_table.bootstrapTable('removeAll');
+			newTable.bootstrapTable('removeAll');
 		}
 		
 		// send a revise product data to database
 		function send_revise_product(){
-			var cnt = document.getElementById( ele_id );
+			var tab_pror = TabProp.GetProp();
+			var newPage = tab_pror.eleid;
+			var cnt = document.getElementById( newPage );
 			var part_attr = cnt.getElementsByClassName("part_attr");
 			var num_str = normal_part_number( part_attr[0].value );
 			send_product_data( part_attr, num_str, "replace_data" );
@@ -981,11 +1004,13 @@
 		
 		// send product data
 		function send_product_data( part_attr, product_num_str, state ){
+			var tab_pror = TabProp.GetProp();
+			var newTable = tab_pror.tabid;
 			if( check_part_num( 0, 15, product_num_str ) ) {
 				var attr = get_doc_part_attr( part_attr );
 				if (attr !== false){
 					var data_str = "";
-					var data = product_table.bootstrapTable('getData', false );
+					var data = newTable.bootstrapTable('getData', false );
 					var num_str = "";
 					for( var i=0; i<data.length; i++ ){
 						num_str = data[i].number.val;
@@ -1007,7 +1032,10 @@
 		
 		// send a new part data to database
 		function send_new_part(){
-			var cnt = document.getElementById( ele_id );
+			var tab_pror = TabProp.GetProp();
+			var newPage = tab_pror.eleid;
+			var newForm = tab_pror.formid;
+			var cnt = document.getElementById( newPage );
 			var partnum = cnt.getElementsByClassName("numtext");
 			var part_attr = cnt.getElementsByClassName("part_attr");
 			var attr;
@@ -1029,13 +1057,15 @@
 			else{
 				alert( "input has error" );
 			}
-			var form_cnt = document.getElementById( form_id );
+			var form_cnt = document.getElementById( newForm );
 			form_cnt.reset();
 		}
 
 		// send replace part data to database
 		function send_revise_part(){
-			var cnt = document.getElementById( ele_id );
+			var tab_pror = TabProp.GetProp();
+			var newPage = tab_pror.eleid;
+			var cnt = document.getElementById( newPage );
 			var part_attr = cnt.getElementsByClassName("part_attr");
 			var attr = get_doc_part_attr( part_attr );
 			if( attr !== false ){
@@ -1049,11 +1079,13 @@
 			
 		}
 
-		
+
 		
 		// send inventory variable to database
 		function send_inventory_quantity( source_str ){
-			var cnt = document.getElementById( ele_id );
+			var tab_pror = TabProp.GetProp();
+			var newPage = tab_pror.eleid;
+			var cnt = document.getElementById( newPage );
 			var part_attr = cnt.getElementsByClassName("part_attr");
 			var attr = get_doc_part_attr( part_attr );
 			if( attr.number == "" || attr.varval == "" ){
@@ -1086,7 +1118,6 @@
 			user_email = googleUser.getBasicProfile().getEmail();
 			user_id = user_email.substring( 0, user_email.indexOf("@") );
 			user_name = googleUser.getBasicProfile().getName();
-			console.log('Logged in as: ' + user_email + user_id );
 			document.getElementById("user_title").innerHTML = "Hello"+ " " + user_name;
 			receive_db_info();
 		};

@@ -1,5 +1,5 @@
 // receive promise
-function receive_promise( product_table, ele_id, data ){
+function receive_promise( tabID, eleID, data ){
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "post",
@@ -10,15 +10,15 @@ function receive_promise( product_table, ele_id, data ){
 			success: function(response){
 				switch( data.state ){
 					case "get_all_data":
-						product_table.bootstrapTable('destroy').bootstrapTable({
+						tabID.bootstrapTable('destroy').bootstrapTable({
 							exportDataType: "all"
 						});
 					case "get_record_data":
 					case "get_supplier_list":
-						product_table.bootstrapTable('removeAll');
-						product_table.bootstrapTable('load', response);
-						product_table.bootstrapTable('selectPage', '1');
-						product_table.bootstrapTable('scrollTo', 'top');
+						tabID.bootstrapTable('removeAll');
+						tabID.bootstrapTable('load', response);
+						tabID.bootstrapTable('selectPage', '1');
+						tabID.bootstrapTable('scrollTo', 'top');
 						resolve( true );
 						break;	
 					case "get_all_partnum":
@@ -46,7 +46,7 @@ function receive_promise( product_table, ele_id, data ){
 						resolve( true );
 						break;
 					case "get_supplier_info":
-						var cnt = document.getElementById( ele_id );
+						var cnt = document.getElementById( eleID );
 						var var_val = cnt.getElementsByClassName("part_attr");
 						for (var i=0; i<var_val.length; i++){
 							switch( var_val[i].name ){
@@ -96,7 +96,7 @@ function receive_promise( product_table, ele_id, data ){
 							case "bom_data":
 								remove_bomtable_interface();
 								
-								var cnt = document.getElementById( ele_id );
+								var cnt = document.getElementById( eleID );
 								div_first_obj = document.createElement( "div" );
 								div_first_obj.id = "bom";
 								div_first_obj.setAttribute("class", "tab_form");
@@ -247,7 +247,7 @@ function receive_promise( product_table, ele_id, data ){
 										func: 1,
 										val: 0
 									};
-									product_table.bootstrapTable('updateRow', {
+									tabID.bootstrapTable('updateRow', {
 										index: data.index,
 										row: {
 											index: data.index,
@@ -263,7 +263,7 @@ function receive_promise( product_table, ele_id, data ){
 								}
 								break;
 							case "revise_part_data":
-								var cnt = document.getElementById( ele_id );
+								var cnt = document.getElementById( eleID );
 								var var_val = cnt.getElementsByClassName("part_attr");
 								for (var i=0; i<var_val.length; i++){
 									switch( var_val[i].name ){
@@ -294,7 +294,7 @@ function receive_promise( product_table, ele_id, data ){
 								resolve( true );
 								break;
 							case "quantity":
-								var cnt = document.getElementById( ele_id );
+								var cnt = document.getElementById( eleID );
 								var var_val = cnt.getElementsByClassName("part_attr");
 								for (var i=0; i<var_val.length; i++){
 									
@@ -311,9 +311,9 @@ function receive_promise( product_table, ele_id, data ){
 								resolve( true );
 								break;
 							case "product_num_search":
-								var cnt = document.getElementById( ele_id );
+								var cnt = document.getElementById( eleID );
 								var var_val = cnt.getElementsByClassName("part_attr");
-								product_table.bootstrapTable('removeAll');
+								tabID.bootstrapTable('removeAll');
 								if(response.data == undefined){
 									for (var i=0; i<var_val.length; i++){
 										switch( var_val[i].name ){	
@@ -345,16 +345,16 @@ function receive_promise( product_table, ele_id, data ){
 											default:
 										}
 									}
-									product_table.bootstrapTable('load', response.data);
-									product_table.bootstrapTable('selectPage', '1');
-									product_table.bootstrapTable('scrollTo', 'top');
+									tabID.bootstrapTable('load', response.data);
+									tabID.bootstrapTable('selectPage', '1');
+									tabID.bootstrapTable('scrollTo', 'top');
 									resolve( true );
 								}
 								break;
 							case "revise_product_data":
-								var cnt = document.getElementById( ele_id );
+								var cnt = document.getElementById( eleID );
 								var var_val = cnt.getElementsByClassName("part_attr");
-								product_table.bootstrapTable('removeAll');
+								tabID.bootstrapTable('removeAll');
 								if(response.data == undefined){
 									for (var i=0; i<var_val.length; i++){
 										switch( var_val[i].name ){	
@@ -411,9 +411,9 @@ function receive_promise( product_table, ele_id, data ){
 										  "delrow": ""
 										};
 									}
-									product_table.bootstrapTable('load', new_data);
-									product_table.bootstrapTable('selectPage', '1');
-									product_table.bootstrapTable('scrollTo', 'top');
+									tabID.bootstrapTable('load', new_data);
+									tabID.bootstrapTable('selectPage', '1');
+									tabID.bootstrapTable('scrollTo', 'top');
 									resolve( true );
 								}
 								break;
