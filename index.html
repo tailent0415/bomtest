@@ -1132,9 +1132,11 @@
 		// receive data for database
 		async function receive_to_db( data ){
 			data.id = user_id;
-			var NewPropRes = TabProp.GetProp();
+			var tab_pror = TabProp.GetProp();
+			alert( tab_pror.tabid );
+			alert( tab_pror.eleid );
 			try{
-				var response = await receive_promise( NewPropRes.tabid, NewPropRes.eleid, data );
+				var response = await receive_promise( tab_pror.tabid, tab_pror.eleid, data );
 				if( response == true ){
 					return true;
 				}
