@@ -791,7 +791,9 @@
 		// Init Bomtable interface
 		function init_bomtable_interface( ){
 			window.bom_node_array = [];
-			var cnt = document.getElementById( ele_id );
+			var tab_pror = TabProp.GetProp();
+			var newPage = tab_pror.eleid;
+			var cnt = document.getElementById( newPage );
 			var div_first_obj = document.getElementById( "bom" );
 			if( div_first_obj !== null ){
 				remove_bomtable_interface();
@@ -1133,8 +1135,6 @@
 		async function receive_to_db( data ){
 			data.id = user_id;
 			var tab_pror = TabProp.GetProp();
-			alert( tab_pror.tabid );
-			alert( tab_pror.eleid );
 			try{
 				var response = await receive_promise( tab_pror.tabid, tab_pror.eleid, data );
 				if( response == true ){
