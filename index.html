@@ -43,6 +43,7 @@
 				<li><a data-toggle="tab" href="#menu5">BOM</a></li>
 				<li><a data-toggle="tab" href="#menu6">紀錄</a></li>
 				<li><a data-toggle="tab" href="#menu7">廠商</a></li>
+				<li><a data-toggle="tab" href="#menu8">製令</a></li>
 			</ul>
 			<div class="tab-content">
 				<div id="home" class="tab-pane fade in active">
@@ -281,6 +282,16 @@
 						</div>
 						<div>
 							<button type="button" class="btn btn-primary" onclick="supplier_info_upload()" >上傳</button>
+						</div>
+					</div>
+				</div>
+				<div id="menu8" class="tab-pane fade">
+					<div class= "tab_form">
+						<div class="text_field">
+							<label for="part_docnum_out">單號 :</label><input id="part_docnum_out" class="part_attr input_container normal_font" name="part_docnum" type="text" style="width:100px" disabled="true" />
+							<br><label for="part_num_in">製作品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" onfocus="this.oldvalue = this.value;" onchange="quan_change_btn( this );this.oldvalue = this.value;" />
+							<br><label for="part_moitems_in">製作數量 :</label><input id="part_moitems_in" class="part_attr input_container normal_font" name="part_moitems_in" type="text" style="width:100px" />
+							<button type="button" class="btn btn-primary" onclick="mo_generate_data()" >產生資料</button>
 						</div>
 					</div>
 				</div>
