@@ -13,16 +13,16 @@
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="/css/style.css">
 		<!-- Bootstrap core JavaScript -->
-		<script src="/scripts/jquery.min.js"></script>
+		<script src="/CoreScripts/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/multiple-search/bootstrap-table-multiple-search.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
-		<script src="/scripts/bootstrap-table-export.js"></script>
-		<script src="/scripts/tableExport.js"></script>
-		<script src="/scripts/ga.js"></script>
-		<script src="/scripts/class_tab_assign.js"></script>
+		<script src="/CoreScripts/bootstrap-table-export.js"></script>
+		<script src="/CoreScripts/tableExport.js"></script>
+		<script src="/CoreScripts/ga.js"></script>
+		<script src="/SubScripts/class_tab_assign.js"></script>
 		
 	</head>
 	<body>
@@ -287,11 +287,8 @@
 			</div>
 		</div>
     <script language="JavaScript">
-		var body = $("body");
 		var user_id = "";
-		var part_list_obj = $("#part_list");
 		var part_list_options = "";
-		var supplier_list_obj = $("#supplier_list");
 		var supplier_list_options = "";
 		var tab_page_name = "";
 		var bom_node_array = new Array();
@@ -306,8 +303,8 @@
 		
 		
 		$(document).on({
-			ajaxStart: function() { body.addClass("loading"); },
-			ajaxStop: function() { body.removeClass("loading"); }
+			ajaxStart: function() { $("body").addClass("loading"); },
+			ajaxStop: function() { $("body").removeClass("loading"); }
 		});
 
 		$(document).ready(function(){
@@ -1173,11 +1170,11 @@
 		
     </script>
 	
-	<script type="text/javascript" src="/scripts/db_receive.js"></script>
-	<script type="text/javascript" src="/scripts/db_send.js"></script>
-	<script type="text/javascript" src="/scripts/get.js"></script>
-	<script type="text/javascript" src="/scripts/part_number.js"></script>
-	<script type="text/javascript" src="/scripts/receive.js"></script>
+	<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+	<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+	<script type="text/javascript" src="/SubScripts/get.js"></script>
+	<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+	<script type="text/javascript" src="/SubScripts/receive.js"></script>
     <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
   </body>
 </html>
