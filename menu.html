@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
 <html lang="zh-tw">
 	<head>
 		<meta charset="utf-8">
 		<script src="/CoreScripts/jquery.min.js"></script>
 		<style> 
-		
-			body
-			{
+			body {
 				margin: 0px;
 				background: #ffffff;
 			}
-			.flip , .nonepanel {
+			
+			.flip .nonepanel {
 				padding: 5px;
 				text-align: center;
 				background-color: #66b3ff;
@@ -34,59 +34,63 @@
 			}
 		</style>
 	</head>
-	<div class="nonepanel" id="0" onclick="javascript:location.href='http://www.google.com'" target="Display" >首頁</div>
-	<div class="flip" id="1" >查詢</div>
-	<div class="panel" id="home">Hello world!</div>
-	<div class="flip" id="2" >新增料件</div>
-	<div class="panel" id="menu1">Hello world!</div>
-	<div class="flip" id="3" >新增成品/半成品</div>
-	<div class="panel" id="menu2">Hello world!</div>
-	<div class="flip" id="4" >修改</div>
-	<div class="panel" id="menu3">Hello world!</div>
-	<div class="flip" id="5" >入庫&領用</div>
-	<div class="panel" id="menu4">Hello world!</div>
-	<div class="flip" id="6" >BOM</div>
-	<div class="panel" id="menu5">Hello world!</div>
-	<div class="flip" id="7" >紀錄</div>
-	<div class="panel" id="menu6">Hello world!</div>
-	<div class="flip" id="8" >廠商</div>
-	<div class="panel" id="menu7">Hello world!</div>
-	<div class="flip" id="9" >製令</div>
-	<div class="panel" id="menu8">Hello world!</div>
-	
-	<script type="text/javascript">
-		$(".flip").click(function(){
-			switch( this.id ){
-				case "1":
-					$("#home").slideToggle("fast");
-					break;
-				case "2":
-					$("#menu1").slideToggle("fast");
-					break;
-				case "3":
-					$("#menu2").slideToggle("fast");
-					break;
-				case "4":
-					$("#menu3").slideToggle("fast");
-					break;
-				case "5":
-					$("#menu4").slideToggle("fast");
-					break;
-				case "6":
-					$("#menu5").slideToggle("fast");
-					break;
-				case "7":
-					$("#menu6").slideToggle("fast");
-					break;
-				case "8":
-					$("#menu7").slideToggle("fast");
-					break;
-				case "9":
-					$("#menu8").slideToggle("fast");
-					break;
-				default:
-			}
-		});
-	</script>
-</body>
+	<body>
+		<div class="nonepanel" id="0" onclick="javascript:location.href='http://www.google.com'" target="frame_display" >首頁</div>
+		<div class="flip" id="1" >查詢</div>
+		<div class="panel" id="home">Hello world!</div>
+		<div class="flip" id="2" >新增料件</div>
+		<div class="panel" id="menu1">Hello world!</div>
+		<div class="flip" id="3" >新增成品/半成品</div>
+		<div class="panel" id="menu2">Hello world!</div>
+		<div class="flip" id="4" >修改</div>
+		<div class="panel" id="menu3">Hello world!</div>
+		<div class="flip" id="5" >入庫&領用</div>
+		<div class="panel" id="menu4">Hello world!</div>
+		<div class="flip" id="6" >BOM</div>
+		<div class="panel" id="menu5">Hello world!</div>
+		<div class="flip" id="7" >紀錄</div>
+		<div class="panel" id="menu6">Hello world!</div>
+		<div class="flip" id="8" >廠商</div>
+		<div class="panel" id="menu7">Hello world!</div>
+		<div class="flip" id="9" >製令</div>
+		<div class="panel" id="menu8">Hello world!</div>
+		<script type="text/javascript">
+			$(".flip").click(function(){
+				switch( this.id ){
+					case "1":
+						$("#home").slideToggle("fast");
+						break;
+					case "2":
+						$("#menu1").slideToggle("fast");
+						break;
+					case "3":
+						$("#menu2").slideToggle("fast");
+						break;
+					case "4":
+						$("#menu3").slideToggle("fast");
+						break;
+					case "5":
+						$("#menu4").slideToggle("fast");
+						break;
+					case "6":
+						$("#menu5").slideToggle("fast");
+						break;
+					case "7":
+						$("#menu6").slideToggle("fast");
+						break;
+					case "8":
+						$("#menu7").slideToggle("fast");
+						break;
+					case "9":
+						$("#menu8").slideToggle("fast");
+						break;
+					default:
+				}
+			});
+			
+			$(document).ready(function(){
+				alert("1");
+			});
+		</script>
+	</body>
 </html>
