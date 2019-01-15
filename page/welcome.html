@@ -10,7 +10,7 @@
 				position:absolute;
 				width:185px;
 				height:35px;
-				top:5px;
+				top:60px;
 				left:5px;
 			}
 
@@ -18,8 +18,8 @@
 				position:absolute;
 				width:200px;
 				height:15px;
-				top:10px;
-				left:195px;
+				top:90px;
+				left:8px;
 			}   
 
 			.login_container { 
@@ -47,8 +47,8 @@
 			function renderButton(){
 				gapi.signin2.render('my-signin2', {
 					'scope': 'profile email',
-					'width': 180,
-					'height': 32,
+					'width': 200,
+					'height': 80,
 					'longtitle': true,
 					'theme': 'dark',
 					'onsuccess': onSuccess,
@@ -70,7 +70,7 @@
 				alert(JSON.stringify( error ) );
 			};
 			$(document).ready(function(){
-				alert("1");
+				alert("2");
 			});
 		</script>
 		<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
