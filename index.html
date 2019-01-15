@@ -33,6 +33,11 @@
 		
 
 	</head>
+
+	<p class="flip">
+	  <span class="1">展开</span>
+	  <span class="2" style="display:none;">收起</span>
+	</p>
 	<div class="panel">
 	<p>晨星博客 – 专注网站SEO优化及wordpress主题开发</p>
 	</div>
@@ -40,12 +45,13 @@
 	  <span class="1">展开</span>
 	  <span class="2" style="display:none;">收起</span>
 	</p>
-	
-	
+	<div class="panel">
+	<p>晨星博客 – 专注网站SEO优化及wordpress主题开发</p>
+	</div>
 	<script type="text/javascript">
 	$(function(){
 	$(".flip").click(function(){
-		$(".panel").slideToggle("slow");
+		$(".panel").slideToggle("fast");
 		$(".xs1").toggle();
 		$(".xs2").toggle();
 	  });});
