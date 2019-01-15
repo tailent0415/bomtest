@@ -5,6 +5,34 @@
 		<meta charset="utf-8">
 		<meta name="google-signin-client_id" content="65164552845-kt5nqknig8520gtv3o66aqej0t5a2pfp.apps.googleusercontent.com">
 		<script src="/CoreScripts/jquery.min.js"></script>
+		<style>
+			.login_icon { 
+				position:absolute;
+				width:185px;
+				height:35px;
+				top:5px;
+				left:5px;
+			}
+
+			.login_id { 
+				position:absolute;
+				width:200px;
+				height:15px;
+				top:10px;
+				left:195px;
+			}   
+
+			.login_container { 
+				margin-top:5px; 
+				margin-left:5px; 
+				margin-right:auto; 
+				margin-bottom:30px; 
+				border: 1px solid 000000; 
+			}
+			.align_left{
+				text-align: left;	
+			}
+		</style>
 	</head>
 	<body>
 		<p>當前版本: 1.0.0.0</p>
@@ -19,8 +47,8 @@
 			function renderButton(){
 				gapi.signin2.render('my-signin2', {
 					'scope': 'profile email',
-					'width': 200,
-					'height': 64,
+					'width': 180,
+					'height': 32,
 					'longtitle': true,
 					'theme': 'dark',
 					'onsuccess': onSuccess,
