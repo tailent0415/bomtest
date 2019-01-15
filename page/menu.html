@@ -7,7 +7,7 @@
 		<style> 
 			body {
 				margin: 0px;
-				background: #d9ffff;
+				background: #d2e9ff;
 			}
 			
 			.flip, .nonepanel, .panel {
@@ -30,27 +30,26 @@
 	</head>
 	<body>
 		<div class="nonepanel" id="0" onclick="window.open( 'www.google.com', 'frame_display' )" >首頁</div>
-		<div class="flip" id="1" >查詢</div>
-		<div class="panel" id="home" >
-			<div onclick="window.open( 'search_number.html', 'frame_display' )">查詢品號</div>
-			<div onclick="window.open( 'create_number.html', 'frame_display' )">創建品號</div>
+		<div class="nonepanel" id="1" onclick="window.open( 'search_number.html', 'frame_display' )">查詢</div>
+		<div class="flip" id="2" >新增</div>
+		<div class="panel" id="menu1" >
+			<div onclick="window.open( 'add_part.html', 'frame_display' )">料件</div>
+			<div onclick="window.open( 'add_product.html', 'frame_display' )">成品/半成品</div>
 		</div>
-		<div class="flip" id="2" >新增料件</div>
-		<div class="panel" id="menu1">Hello world!</div>
-		<div class="flip" id="3" >新增成品/半成品</div>
-		<div class="panel" id="menu2">Hello world!</div>
-		<div class="flip" id="4" >修改</div>
-		<div class="panel" id="menu3">Hello world!</div>
-		<div class="flip" id="5" >入庫&領用</div>
-		<div class="panel" id="menu4">Hello world!</div>
-		<div class="flip" id="6" >BOM</div>
-		<div class="panel" id="menu5">Hello world!</div>
-		<div class="flip" id="7" >紀錄</div>
-		<div class="panel" id="menu6">Hello world!</div>
-		<div class="flip" id="8" >廠商</div>
-		<div class="panel" id="menu7">Hello world!</div>
-		<div class="flip" id="9" >製令</div>
-		<div class="panel" id="menu8">Hello world!</div>
+		<div class="nonepanel" id="3" onclick="window.open( 'revise.html', 'frame_display' )">修改</div>
+		<div class="flip" id="4" >庫存</div>
+		<div class="panel" id="menu3" >
+			<div onclick="window.open( 'inbound.html', 'frame_display' )">入庫</div>
+			<div onclick="window.open( 'outbound.html', 'frame_display' )">領用</div>
+		</div>
+		<div class="nonepanel" id="5" onclick="window.open( 'bom.html', 'frame_display' )">BOM</div>
+		<div class="nonepanel" id="6" onclick="window.open( 'mo.html', 'frame_display' )">製令</div>
+		<div class="flip" id="7" >廠商</div>
+		<div class="panel" id="menu6" >
+			<div onclick="window.open( 'lookup_company.html', 'frame_display' )">查詢</div>
+			<div onclick="window.open( 'change_info_company.html', 'frame_display' )">新增/修改</div>
+		</div>
+		<div class="nonepanel" id="8" onclick="window.open( 'record.html', 'frame_display' )">紀錄</div>
 		<script type="text/javascript">
 			$(".flip").click(function(){
 				switch( this.id ){
@@ -86,7 +85,7 @@
 			});
 			
 			$(document).ready(function(){
-				alert("8");
+				alert("10");
 			});
 		</script>
 	</body>
