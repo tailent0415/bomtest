@@ -3,9 +3,45 @@
 <html lang="zh-tw">
 	<head>
 		<meta charset="utf-8">
+		<meta name="google-signin-client_id" content="65164552845-kt5nqknig8520gtv3o66aqej0t5a2pfp.apps.googleusercontent.com">
 		<script src="/CoreScripts/jquery.min.js"></script>
 	</head>
 	<body>
-		<p>Test</p>
+		<p>當前版本: 1.0.0.0</p>
+		<div class="login_container">
+			<div class="login_icon" id="my-signin2"></div>
+			<div class="login_id align_left"><p id="user_title">請先登入Google帳號</p></div>
+		</div>
+		
+		<script>
+		
+			// google login render icon
+			function renderButton(){
+				gapi.signin2.render('my-signin2', {
+					'scope': 'profile email',
+					'width': 180,
+					'height': 32,
+					'longtitle': true,
+					'theme': 'dark',
+					'onsuccess': onSuccess,
+					'onfailure': onFailure
+				});
+			};
+
+			// google login event
+			function onSuccess( googleUser ){
+				user_email = googleUser.getBasicProfile().getEmail();
+				user_id = user_email.substring( 0, user_email.indexOf("@") );
+				user_name = googleUser.getBasicProfile().getName();
+				document.getElementById("user_title").innerHTML = "Hello"+ " " + user_name;
+				UserID.SetID( user_id );
+			};
+
+			// google login failure report
+			function onFailure(error){
+				alert(JSON.stringify( error ) );
+			};
+			
+		</script>
 	</body>
 </html>
