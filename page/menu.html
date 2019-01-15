@@ -29,30 +29,32 @@
 		</style>
 	</head>
 	<body>
-		<div class="nonepanel" id="0" onclick="window.open( 'welcome.html', 'frame_display' )" >首頁</div>
-		<div class="nonepanel" id="1" onclick="window.open( 'search_number.html', 'frame_display' )">查詢</div>
-		<div class="flip" id="2" >新增</div>
-		<div class="panel" id="menu1" >
-			<div onclick="window.open( 'add_part.html', 'frame_display' )">料件</div>
-			<div onclick="window.open( 'add_product.html', 'frame_display' )">成品/半成品</div>
+	
+	onchange="supplier_change_btn( this.name )"
+		<div class="nonepanel" name="0" onclick="open_page( this.name )" >首頁</div>
+		<div class="nonepanel" name="1" onclick="open_page( this.name )" >查詢</div>
+		<div class="flip" name="2" >新增</div>
+		<div class="panel" name="menu1" >
+			<div name="2_0" onclick="open_page( this.name )" >料件</div>
+			<div name="2_1" onclick="open_page( this.name )" >成品/半成品</div>
 		</div>
-		<div class="nonepanel" id="3" onclick="window.open( 'revise.html', 'frame_display' )">修改</div>
-		<div class="flip" id="4" >庫存</div>
-		<div class="panel" id="menu3" >
-			<div onclick="window.open( 'inbound.html', 'frame_display' )">入庫</div>
-			<div onclick="window.open( 'outbound.html', 'frame_display' )">領用</div>
+		<div class="nonepanel" name="3" onclick="open_page( this.name )" >修改</div>
+		<div class="flip" name="4" >庫存</div>
+		<div class="panel" name="menu3" >
+			<div name="4_0" onclick="open_page( this.name )" >入庫</div>
+			<div name="4_1" onclick="open_page( this.name )" >領用</div>
 		</div>
-		<div class="nonepanel" id="5" onclick="window.open( 'bom.html', 'frame_display' )">BOM</div>
-		<div class="nonepanel" id="6" onclick="window.open( 'mo.html', 'frame_display' )">製令</div>
-		<div class="flip" id="7" >廠商</div>
-		<div class="panel" id="menu6" >
-			<div onclick="window.open( 'lookup_company.html', 'frame_display' )">查詢</div>
-			<div onclick="window.open( 'change_info_company.html', 'frame_display' )">新增/修改</div>
+		<div class="nonepanel" name="5" onclick="open_page( this.name )" >BOM</div>
+		<div class="nonepanel" name="6" onclick="open_page( this.name )" >製令</div>
+		<div class="flip" name="7" >廠商</div>
+		<div class="panel" name="menu6" >
+			<div name="7_0" onclick="open_page( this.name )" >查詢</div>
+			<div name="7_1" onclick="open_page( this.name )" >新增/修改</div>
 		</div>
-		<div class="nonepanel" id="8" onclick="window.open( 'record.html', 'frame_display' )">紀錄</div>
+		<div class="nonepanel" name="8" onclick="open_page( this.name )" >紀錄</div>
 		<script type="text/javascript">
 			$(".flip").click(function(){
-				switch( this.id ){
+				switch( this.name ){
 					case "1":
 						$("#home").slideToggle("fast");
 						break;
@@ -83,6 +85,52 @@
 					default:
 				}
 			});
+			
+			function open_page( page_num ){
+				var page_name = "";
+				switch( page_num ){
+					case "0":
+						page_name = "welcome.html";
+						break;
+					case "1":
+						page_name = "search_number.html";
+						break;
+					case "2_0":
+						page_name = "add_part.html";
+						break;
+					case "2_1":
+						page_name = "add_product.html";
+						break;
+					case "3":
+						page_name = "revise.html";
+						break;
+					case "4_0":
+						page_name = "inbound.html";
+						break;
+					case "4_1":
+						page_name = "outbound.html";
+						break;
+					case "5":
+						page_name = "bom.html";
+						break;
+					case "6":
+						page_name = "mo.html";
+						break;
+					case "7_0":
+						page_name = "lookup_company.html";
+						break;
+					case "7_1":
+						page_name = "change_info_company.html";
+						break;
+					case "8":
+						page_name = "record.html";
+						break;
+					default:
+				}
+				if ( page_name != "" ){
+					window.open( page_name, "frame_display" );
+				}
+			}
 		</script>
 	</body>
 </html>
