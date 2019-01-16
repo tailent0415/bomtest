@@ -52,6 +52,7 @@
 		<div class="nonepanel" name="8" onclick="open_page( this.name )" >紀錄</div>
 		<script type="text/javascript">
 			$(".flip").click(function(){
+				alert( this.name );
 				switch( this.name ){
 					case "1":
 						$("#home").slideToggle("fast");
