@@ -1,12 +1,10 @@
 // receive database information
 function receive_db_info( info ){
 	var attr = {
-		"id": info.user_id,
+		"id": info.id,
 		"tabID": info.tabID,
 		"state": "get_all_data"
 	};
-	alert( attr.id );
-	alert( attr.tabID );
 	receive_to_db( attr );
 };
 
