@@ -67,11 +67,9 @@
 		
 			
 		$(document).ready(function(){
-			alert("1");
 			var url = location.href;
 			var temp = url.split("?");
 			username = temp[1];
-			alert(username);
 			upd_partnum_table();
 		});
 		
@@ -79,7 +77,7 @@
 		function upd_partnum_table(){
 			var info = {
 				"id": username,
-				"tabID": $("#part_list")
+				"tabID": $("#part_table")
 			};
 			receive_db_info( info )
 		}
