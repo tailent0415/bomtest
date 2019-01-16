@@ -3,9 +3,89 @@
 <html lang="zh-tw">
 	<head>
 		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
 		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/multiple-search/bootstrap-table-multiple-search.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
+		<script src="/CoreScripts/bootstrap-table-export.js"></script>
+		<script src="/CoreScripts/tableExport.js"></script>
+		
 	</head>
 	<body>
-		<p>Search Number Page</p>
+		<div class="tab-content">
+			<div id="home" class="tab-pane fade in active">
+				<div id="home_toolbar">
+					<div class="col-auto">
+						<button type="button" class="btn btn-primary" onclick="receive_db_info()" >更新數據</button>
+					</div>
+				</div>
+				<table id="part_table"
+					data-toggle="table"
+					data-click-to-select="true"
+					data-side-pagination="client"
+					data-pagination="true"
+					data-height="525"
+					data-page-list="[5, 10, 50, 100]"
+					data-search="true"
+					data-id-field="index"
+					data-unique-id="index"
+					data-show-columns="true"
+					data-show-export="true"
+					data-row-style="set_table_font"
+					data-toolbar="#home_toolbar">
+					<thead>
+						<tr>
+							<th data-field="index">項次</th>
+							<th data-field="number" data-formatter="guide_num_format" data-events="guide_event_response">品號</th>
+							<th data-field="name">品名</th>
+							<th data-field="format">規格</th>
+							<th data-field="fignum">圖號</th>
+							<th data-field="supplier" data-formatter="guide_supplier_format" data-events="guide_event_response" >廠商</th>
+							<th data-field="unit">單位</th>
+							<th data-field="stock_quantity">庫存數量</th>
+							<th data-field="cost">單位成本</th>
+							<th data-field="stock_amount">庫存金額</th>
+						</tr>
+					</thead>
+				</table>					
+			</div>
+		</div>
 	</body>
+	<script language="JavaScript">
+		var body = $("body");
+		$(document).on({
+			ajaxStart: function() { body.addClass("loading"); },
+			ajaxStop: function() { body.removeClass("loading"); }
+		});
+		
+		function set_table_font(row, index) {
+		  return {
+			css: {"font-family": "Monospace, Courier New, sans-serif"}
+		  };
+		}
+		
+		async function receive_to_db( data ){
+			data.id = user_id;
+			try{
+				var response = await receive_promise( $("#part_table"), "", data );
+				if( response == true ){
+					return true;
+				}
+				else{
+					alert( response )
+					return false;
+				}
+			}
+			catch(e){
+				alert( "資料庫錯誤:" + e  );
+				return false;
+			}
+		}
+	</script>
 </html>
