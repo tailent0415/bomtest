@@ -27,9 +27,15 @@
 				display: none;
 				color: #c6a300;
 			}
+			
+			.toppos {
+			　	height: 100px;
+			　	position: relative;
+			}
 		</style>
 	</head>
 	<body>
+		<div class="toppos" id="user_title" >User: Guest</div>
 		<div class="nonepanel" id="0" onclick="open_page( this.id )" >首頁</div>
 		<div class="nonepanel" id="1" onclick="open_page( this.id )" >查詢</div>
 		<div class="flip" id="2" >新增</div>
@@ -51,7 +57,9 @@
 			<div id="7_1" onclick="open_page( this.id )" >新增/修改</div>
 		</div>
 		<div class="nonepanel" id="8" onclick="open_page( this.id )" >紀錄</div>
+		
 		<script type="text/javascript">
+			var username;
 			$(".flip").click(function(){
 				switch( this.id ){
 					case "1":
@@ -87,6 +95,11 @@
 			
 			function open_page( page_num ){
 				var page_name = "";
+				if ( username == "Guest" ){
+					page_num = "0";
+					alert( "請先登入Google帳號" );
+				}
+				
 				switch( page_num ){
 					case "0":
 						page_name = "welcome.html";
@@ -129,15 +142,21 @@
 				if ( page_name != "" ){
 					window.open( page_name, "frame_display" );
 				}
+				if ( username == "Guest" ){
+					alert( "請先登入Google帳號" );
+				}
+				
 			}
 			
 			
 			$(document).ready(function(){
 				var url = location.href;
 				var temp = url.split("?");
-				if ( temp[1] != "undefined" ){
-					alert(temp[1]);
+				username = temp[1];
+				if ( username != "undefined" ){
+					username = "Guest"
 				}
+				document.getElementById("user_title").innerHTML = "User:"+ " " + username;
 			});
 		</script>
 	</body>
