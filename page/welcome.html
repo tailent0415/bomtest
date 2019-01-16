@@ -5,6 +5,7 @@
 		<meta charset="utf-8">
 		<meta name="google-signin-client_id" content="65164552845-kt5nqknig8520gtv3o66aqej0t5a2pfp.apps.googleusercontent.com">
 		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="/SubScripts/class_user_id.js"></script>
 		<style>
 			.login_icon { 
 				position:absolute;
@@ -61,8 +62,8 @@
 				user_id = user_email.substring( 0, user_email.indexOf("@") );
 				user_name = googleUser.getBasicProfile().getName();
 				document.getElementById("user_title").innerHTML = "Hello"+ " " + user_name;
-				UserID.SetID( user_id );
 				alert( user_id );
+				UserID.SetID( user_id );
 			};
 
 			// google login failure report
