@@ -135,8 +135,9 @@
 			$(document).ready(function(){
 				var url = location.href;
 				var temp = url.split("?");
-				alert(url);
-				alert(temp);
+				if ( temp[1] != "undefined" ){
+					alert(temp[1]);
+				}
 			});
 		</script>
 	</body>
