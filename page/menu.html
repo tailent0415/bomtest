@@ -152,7 +152,7 @@
 				var url = location.href;
 				var temp = url.split("?");
 				username = temp[1];
-				if ( username == "undefined" ){
+				if ( username == undefined ){
 					username = "Guest";
 				}
 				document.getElementById("user_title").innerHTML = "User:"+ " " + username;
