@@ -52,7 +52,6 @@
 		<div class="nonepanel" id="8" onclick="open_page( this.id )" >紀錄</div>
 		<script type="text/javascript">
 			$(".flip").click(function(){
-				alert( this.id );
 				switch( this.id ){
 					case "1":
 						$("#home").slideToggle("fast");
@@ -126,8 +125,8 @@
 						break;
 					default:
 				}
-				alert( page_num );
 				alert( UserID.GetID );
+				alert( page_name );
 				if ( page_name != "" ){
 					window.open( page_name, "frame_display" );
 				}
