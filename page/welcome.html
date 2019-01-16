@@ -59,8 +59,7 @@
 			function onSuccess( googleUser ){
 				user_email = googleUser.getBasicProfile().getEmail();
 				user_id = user_email.substring( 0, user_email.indexOf("@") );
-				user_name = googleUser.getBasicProfile().getName();
-				document.getElementById("user_title").innerHTML = "Hello"+ " " + user_name;
+				document.getElementById("user_title").innerHTML = "Hello"+ " " + user_id;
 				var link_name = "menu.html?" + user_id;
 				window.open( link_name, "frame_menu" );
 			};

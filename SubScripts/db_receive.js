@@ -1,3 +1,22 @@
+
+async function receive_to_db( tabID, eleID, data ){
+	data.id = user_id;
+	try{
+		var response = await receive_promise( tabID, eleID, data );
+		if( response == true ){
+			return true;
+		}
+		else{
+			alert( response )
+			return false;
+		}
+	}
+	catch(e){
+		alert( "資料庫錯誤:" + e  );
+		return false;
+	}
+}
+
 // receive promise
 function receive_promise( tabID, eleID, data ){
 	return new Promise(function (resolve, reject){
