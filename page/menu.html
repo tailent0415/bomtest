@@ -29,31 +29,31 @@
 		</style>
 	</head>
 	<body>
-		<div class="nonepanel" name="0" onclick="open_page( this.name )" >首頁</div>
-		<div class="nonepanel" name="1" onclick="open_page( this.name )" >查詢</div>
-		<div class="flip" name="2" >新增</div>
-		<div class="panel" name="menu1" >
-			<div name="2_0" onclick="open_page( this.name )" >料件</div>
-			<div name="2_1" onclick="open_page( this.name )" >成品/半成品</div>
+		<div class="nonepanel" id="0" onclick="open_page( this.id )" >首頁</div>
+		<div class="nonepanel" id="1" onclick="open_page( this.id )" >查詢</div>
+		<div class="flip" id="2" >新增</div>
+		<div class="panel" id="menu1" >
+			<div id="2_0" onclick="open_page( this.id )" >料件</div>
+			<div id="2_1" onclick="open_page( this.id )" >成品/半成品</div>
 		</div>
-		<div class="nonepanel" name="3" onclick="open_page( this.name )" >修改</div>
-		<div class="flip" name="4" >庫存</div>
-		<div class="panel" name="menu3" >
-			<div name="4_0" onclick="open_page( this.name )" >入庫</div>
-			<div name="4_1" onclick="open_page( this.name )" >領用</div>
+		<div class="nonepanel" id="3" onclick="open_page( this.id )" >修改</div>
+		<div class="flip" id="4" >庫存</div>
+		<div class="panel" id="menu3" >
+			<div id="4_0" onclick="open_page( this.id )" >入庫</div>
+			<div id="4_1" onclick="open_page( this.id )" >領用</div>
 		</div>
-		<div class="nonepanel" name="5" onclick="open_page( this.name )" >BOM</div>
-		<div class="nonepanel" name="6" onclick="open_page( this.name )" >製令</div>
-		<div class="flip" name="7" >廠商</div>
-		<div class="panel" name="menu6" >
-			<div name="7_0" onclick="open_page( this.name )" >查詢</div>
-			<div name="7_1" onclick="open_page( this.name )" >新增/修改</div>
+		<div class="nonepanel" id="5" onclick="open_page( this.id )" >BOM</div>
+		<div class="nonepanel" id="6" onclick="open_page( this.id )" >製令</div>
+		<div class="flip" id="7" >廠商</div>
+		<div class="panel" id="menu6" >
+			<div id="7_0" onclick="open_page( this.id )" >查詢</div>
+			<div id="7_1" onclick="open_page( this.id )" >新增/修改</div>
 		</div>
-		<div class="nonepanel" name="8" onclick="open_page( this.name )" >紀錄</div>
+		<div class="nonepanel" id="8" onclick="open_page( this.id )" >紀錄</div>
 		<script type="text/javascript">
 			$(".flip").click(function(){
-				alert( this.name );
-				switch( this.name ){
+				alert( this.id );
+				switch( this.id ){
 					case "1":
 						$("#home").slideToggle("fast");
 						break;
@@ -126,6 +126,7 @@
 						break;
 					default:
 				}
+				alert( page_num );
 				alert( UserID.GetID );
 				if ( page_name != "" ){
 					window.open( page_name, "frame_display" );
