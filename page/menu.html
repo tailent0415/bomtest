@@ -97,7 +97,6 @@
 				var page_name = "";
 				if ( username == "Guest" ){
 					page_num = "0";
-					alert( "請先登入Google帳號" );
 				}
 				
 				switch( page_num ){
@@ -153,8 +152,8 @@
 				var url = location.href;
 				var temp = url.split("?");
 				username = temp[1];
-				if ( username != "undefined" ){
-					username = "Guest"
+				if ( username == "undefined" ){
+					username = "Guest";
 				}
 				document.getElementById("user_title").innerHTML = "User:"+ " " + username;
 			});
