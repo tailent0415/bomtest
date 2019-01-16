@@ -1,11 +1,11 @@
 // receive database information
-function receive_db_info(){
+function receive_db_info( info ){
 	var attr = {
+		"id": info.user_id,
+		"tabID": info.tabID,
 		"state": "get_all_data"
 	};
 	receive_to_db( attr );
-	receive_db_partlist();
-	receive_db_supplier_name();
 };
 
 // receive database part number

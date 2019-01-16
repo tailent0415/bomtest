@@ -21,7 +21,7 @@
 			<div id="home" class="tab-pane fade in active">
 				<div id="home_toolbar">
 					<div class="col-auto">
-						<button type="button" class="btn btn-primary" onclick="receive_db_info()" >更新數據</button>
+						<button type="button" class="btn btn-primary" onclick="upd_partnum_table()" >更新數據</button>
 					</div>
 				</div>
 				<table id="part_table"
@@ -58,10 +58,30 @@
 	</body>
 	<script language="JavaScript">
 		var body = $("body");
+		var username;
+		
 		$(document).on({
 			ajaxStart: function() { body.addClass("loading"); },
 			ajaxStop: function() { body.removeClass("loading"); }
 		});
+		
+			
+		$(document).ready(function(){
+			var url = location.href;
+			var temp = url.split("?");
+			username = temp[1];
+			upd_partnum_table();
+		});
+		
+		
+		function upd_partnum_table(){
+			var info = {
+				"id": username,
+				"tabID": $("#part_list")
+			};
+			receive_db_info( info )
+		}
+		
 	</script>
 	<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
 	<script type="text/javascript" src="/SubScripts/db_send.js"></script>

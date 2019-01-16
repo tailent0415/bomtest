@@ -94,10 +94,6 @@
 			
 			function open_page( page_num ){
 				var page_name = "";
-				if ( username == "Guest" ){
-					page_num = "0";
-				}
-				
 				switch( page_num ){
 					case "0":
 						page_name = "welcome.html";
@@ -137,12 +133,15 @@
 						break;
 					default:
 				}
-				if ( page_name != "" ){
+				if ( page_name != "" && username != "Guest" ){
+					page_name = page_name + "?" + username;
 					window.open( page_name, "frame_display" );
 				}
-				if ( username == "Guest" ){
+				else{
+					window.open( "welcome.html", "frame_display" );
 					alert( "請先登入Google帳號" );
 				}
+				
 				
 			}
 			
