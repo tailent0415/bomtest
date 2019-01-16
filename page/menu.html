@@ -126,12 +126,17 @@
 						break;
 					default:
 				}
-				alert( UserID.GetID() );
-				alert( page_name );
 				if ( page_name != "" ){
 					window.open( page_name, "frame_display" );
 				}
 			}
+			
+			
+			$(document).ready(function(){
+				var url = location.href;
+				var temp = url.split("?");
+				alert(temp);
+			});
 		</script>
 	</body>
 </html>
