@@ -62,7 +62,7 @@
 				user_id = user_email.substring( 0, user_email.indexOf("@") );
 				user_name = googleUser.getBasicProfile().getName();
 				document.getElementById("user_title").innerHTML = "Hello"+ " " + user_name;
-				var link_name = "menu.html" + "?" + user_id;
+				var link_name = "menu.html?" + user_id;
 				window.open( link_name, "frame_menu" );
 			};
 
@@ -72,7 +72,7 @@
 			};
 			
 			$(document).ready(function(){
-				alert("6");
+				alert("0");
 			});
 		</script>
 		<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
