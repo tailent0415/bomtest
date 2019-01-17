@@ -17,12 +17,10 @@ async function receive_to_db( data ){
 
 // receive promise
 function receive_promise( data ){
-	alert( data.state );
 	return new Promise(function (resolve, reject){
-		alert( "1" );
 		$.ajax({
 			type: "post",
-			url: "https://script.google.com/macros/s/AKfycbzyVUOVl7SgoAkxDAWGCgB9LkAHHi_6eLACe6tAgDy6usw62j4/exec",
+			url: "https://script.google.com/macros/s/AKfycbwAH7Qh3pBNrqXIpLz-ntmbFdnU1B0CttGJun2V9NyHVV03lY_s/exec",
 			data: data,
 			dataType: "JSON",
 			timeout: 10000,
