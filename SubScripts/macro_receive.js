@@ -2,10 +2,9 @@
 function receive_db_info( info ){
 	var attr = {
 		"id": info.id,
-		"tabID": info.tabID,
 		"state": "get_all_data"
 	};
-	receive_to_db( attr );
+	receive_to_db( info.tabID, attr );
 };
 
 // receive database part number

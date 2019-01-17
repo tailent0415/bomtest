@@ -1,8 +1,6 @@
-async function receive_to_db( data ){
+async function receive_to_db( tabID, data ){
 	try{
-		alert( data.id );
-		alert( data.state );
-		var response = await receive_promise( data );
+		var response = await receive_promise( tabID, data );
 		if( response == true ){
 			return true;
 		}
@@ -18,7 +16,7 @@ async function receive_to_db( data ){
 }
 
 // receive promise
-function receive_promise( data ){
+function receive_promise( tabID, data ){
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "post",
@@ -29,15 +27,15 @@ function receive_promise( data ){
 			success: function(response){
 				switch( data.state ){
 					case "get_all_data":
-						data.tabID.bootstrapTable('destroy').bootstrapTable({
+						tabID.bootstrapTable('destroy').bootstrapTable({
 							exportDataType: "all"
 						});
 					case "get_record_data":
 					case "get_supplier_list":
-						data.tabID.bootstrapTable('removeAll');
-						data.tabID.bootstrapTable('load', response);
-						data.tabID.bootstrapTable('selectPage', '1');
-						data.tabID.bootstrapTable('scrollTo', 'top');
+						tabID.bootstrapTable('removeAll');
+						tabID.bootstrapTable('load', response);
+						tabID.bootstrapTable('selectPage', '1');
+						tabID.bootstrapTable('scrollTo', 'top');
 						resolve( true );
 						break;
 					default:
