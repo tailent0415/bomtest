@@ -17,7 +17,9 @@ async function receive_to_db( data ){
 
 // receive promise
 function receive_promise( data ){
+	alert( data.state );
 	return new Promise(function (resolve, reject){
+		alert( "1" );
 		$.ajax({
 			type: "post",
 			url: "https://script.google.com/macros/s/AKfycbzyVUOVl7SgoAkxDAWGCgB9LkAHHi_6eLACe6tAgDy6usw62j4/exec",
@@ -25,7 +27,6 @@ function receive_promise( data ){
 			dataType: "JSON",
 			timeout: 10000,
 			success: function(response){
-				alert( data.state );
 				switch( data.state ){
 					case "get_all_data":
 						data.tabID.bootstrapTable('destroy').bootstrapTable({
