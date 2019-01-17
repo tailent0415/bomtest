@@ -17,6 +17,8 @@ async function receive_to_db( data ){
 
 // receive promise
 function receive_promise( data ){
+	alert( data.state );
+	
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "post",
@@ -30,17 +32,12 @@ function receive_promise( data ){
 						data.tabID.bootstrapTable('destroy').bootstrapTable({
 							exportDataType: "all"
 						});
-						alert("1");
 					case "get_record_data":
 					case "get_supplier_list":
 						data.tabID.bootstrapTable('removeAll');
-						alert("2");
 						data.tabID.bootstrapTable('load', response);
-						alert("3");
 						data.tabID.bootstrapTable('selectPage', '1');
-						alert("4");
 						data.tabID.bootstrapTable('scrollTo', 'top');
-						alert("5");
 						resolve( true );
 						break;
 					case "get_all_partnum":
@@ -448,6 +445,7 @@ function receive_promise( data ){
 				}
 			},
 			error: function(err){
+				alert( err.responseText );
 				reject( err.status + err.responseText );
 			}
 		});
