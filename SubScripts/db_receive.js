@@ -17,8 +17,6 @@ async function receive_to_db( data ){
 
 // receive promise
 function receive_promise( data ){
-	alert( data.state );
-	
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "post",
@@ -27,6 +25,7 @@ function receive_promise( data ){
 			dataType: "JSON",
 			timeout: 10000,
 			success: function(response){
+				alert( data.state );
 				switch( data.state ){
 					case "get_all_data":
 						data.tabID.bootstrapTable('destroy').bootstrapTable({
@@ -445,8 +444,8 @@ function receive_promise( data ){
 				}
 			},
 			error: function(err){
-				alert( err.responseText );
 				reject( err.status + err.responseText );
+				alert("error");
 			}
 		});
 	});
