@@ -1,24 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
 <html lang="zh-tw">
-<head>
-	<link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-	<frameset COLS="200,*" >
-		<frame src="page/menu.html" name="frame_menu">
-		<frame src="page/welcome.html" name="frame_display">
-	</frameset>
-</body>
-<script language="JavaScript">
-	var body = $("body");
-	$(document).on({
-		ajaxStart: function() { body.addClass("loading"); },
-		ajaxStop: function() { body.removeClass("loading"); }
-	});
-</script>
-<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
-<script type="text/javascript" src="/SubScripts/db_send.js"></script>
-<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
-<script type="text/javascript" src="/SubScripts/set_table_style.js"></script>
+<frameset COLS="200,*" >
+	<frame src="page/menu.html" name="frame_menu">
+	<frame src="page/welcome.html" name="frame_display">
+</frameset>
 </html>
