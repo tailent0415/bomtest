@@ -1,11 +1,11 @@
 // receive database information
-function receive_db_info( info ){
+function receive_db_info( param ){
 	var attr = {
-		"id": info.id,
+		"id": param.id,
 		"state": "get_all_data"
 	};
 	var Refnum = {
-		"tabID": info.tabID
+		"tabID": param.tabID
 	}
 	
 	receive_to_db( Refnum, attr );
@@ -32,11 +32,15 @@ function receive_part_info( source_str, part_num ){
 }
 
 // receive database supplier name
-function receive_db_supplier_name(){
+function receive_db_supplier_name( param ){
 	var attr = {
+		"id": param.id,
 		"state": "get_all_supplier_name"
 	};
-	receive_to_db(attr);
+	var Refnum = {
+		"supplier_obj": param.supplier_obj
+	};
+	receive_to_db( Refnum, attr );
 }
 
 // receive single supplier information
@@ -49,11 +53,14 @@ function receive_supplier_info( supplier_name ){
 }
 
 // receive all supplier information
-function receive_supplier_list(){
+function receive_supplier_list( param ){
 	var attr = {
 		"state": "get_supplier_list",
 	};
-	receive_to_db( attr );
+	var Refnum = {
+		"supplier_obj": param.supplier_obj
+	};
+	receive_to_db( Refnum, attr );
 }
 
 // receive product parameter to table row

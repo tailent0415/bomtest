@@ -59,15 +59,19 @@
 			var url = location.href;
 			var temp = url.split("?");
 			username = temp[1];
-			receive_supplier_list()
+			var param = {
+				"id": username,
+				"supplier_obj": ${"#supplier_list"}
+			};
+			receive_db_supplier_name( param );
 		});
 		
 		function add_supplier_name( currdata ){
-			var info = {
+			var param = {
 				"id": username,
 				"supplier": currdata
 			};
-			send_new_supplier_name( info );
+			send_new_supplier_name( param );
 		}
 
 		

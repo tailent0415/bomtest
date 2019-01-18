@@ -18,6 +18,7 @@ async function receive_to_db( Refnum, data ){
 // receive promise
 function receive_promise( Refnum, data ){
 	var tabID = Refnum.tabID;
+	var supplier_obj = Refnum.supplier_obj;
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "post",
@@ -37,6 +38,18 @@ function receive_promise( Refnum, data ){
 						tabID.bootstrapTable('load', response);
 						tabID.bootstrapTable('selectPage', '1');
 						tabID.bootstrapTable('scrollTo', 'top');
+						resolve( true );
+						break;
+					case "get_all_supplier_name":
+						if( response[0].supplier == undefined || response.supplier == "" ){
+							return;
+						}
+						supplier_list_options = "";
+						for(var i=0; i < response.length; i++){
+							supplier_list_options += '<option value="'+response[i].supplier+'" />';
+						}
+						supplier_obj.empty();
+						supplier_obj.append( supplier_list_options );
 						resolve( true );
 						break;
 					default:
