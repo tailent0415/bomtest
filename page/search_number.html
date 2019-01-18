@@ -30,7 +30,6 @@
 					data-click-to-select="true"
 					data-side-pagination="client"
 					data-pagination="true"
-					data-height="auto"
 					data-page-list="[5, 10, 50, 100]"
 					data-search="true"
 					data-id-field="index"
@@ -94,6 +93,7 @@
 			var temp = url.split("?");
 			username = temp[1];
 			upd_partnum_table();
+			$('#part_table').bootstrapTable({ height: $(window).height() - 120 });
 		});
 		
 		
