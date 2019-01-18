@@ -55,57 +55,57 @@
 				</table>					
 			</div>
 		</div>
-	</body>
-	<script language="JavaScript">
-		var body = $("body");
-		var username;
-		$(document).on({
-			ajaxStart: function(){
-				body.addClass("loading");
-			},
-			ajaxStop: function(){ 
-				body.removeClass("loading");
+		<script language="JavaScript">
+			var body = $("body");
+			var username;
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+			
+			
+			function guide_num_format( val ){
+				return ("<a class='guide_part_number' href='javascript:void(0)' >" + val + "</a>");
 			}
-		});
-		
-		
-		function guide_num_format( val ){
-			return ("<a class='guide_part_number' href='javascript:void(0)' >" + val + "</a>");
-		}
-		
-		function guide_supplier_format( val ){
-			return ("<a class='guide_part_supplier' href='javascript:void(0)' >" + val + "</a>");
-		}
-		
-		window.guide_event_response = {
-			'click .guide_part_number': function (e, value, row, index) {
-				chenge_page_to_bom( value );
-			},
-			'click .guide_part_supplier': function (e, value, row, index) {
-				chenge_page_to_supplier( value );
-			},
-		};
-		
-		
-		$(document).ready(function(){
-			var url = location.href;
-			var temp = url.split("?");
-			username = temp[1];
-			upd_partnum_table();
-			$('#part_table').bootstrapTable({ height: $(window).height() - 120 });
-		});
-		
-		
-		function upd_partnum_table(){
-			var info = {
-				"id": username,
-				"tabID": $("#part_table")
+			
+			function guide_supplier_format( val ){
+				return ("<a class='guide_part_supplier' href='javascript:void(0)' >" + val + "</a>");
+			}
+			
+			window.guide_event_response = {
+				'click .guide_part_number': function (e, value, row, index) {
+					chenge_page_to_bom( value );
+				},
+				'click .guide_part_supplier': function (e, value, row, index) {
+					chenge_page_to_supplier( value );
+				},
 			};
-			receive_db_info( info );
-		}
-	</script>
-	<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
-	<script type="text/javascript" src="/SubScripts/db_send.js"></script>
-	<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
-	<script type="text/javascript" src="/SubScripts/set_table_style.js"></script>
+			
+			
+			$(document).ready(function(){
+				var url = location.href;
+				var temp = url.split("?");
+				username = temp[1];
+				upd_partnum_table();
+				$('#part_table').bootstrapTable({ height: $(window).height() - 120 });
+			});
+			
+			
+			function upd_partnum_table(){
+				var info = {
+					"id": username,
+					"tabID": $("#part_table")
+				};
+				receive_db_info( info );
+			}
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/set_table_style.js"></script>
+	</body>
 </html>
