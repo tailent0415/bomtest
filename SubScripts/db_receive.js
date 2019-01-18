@@ -2,6 +2,7 @@ async function receive_to_db( data ){
 	try{
 		var response = await receive_promise( data );
 		if( response.flag == true ){
+			alert( response.flag );
 			return response.data;
 		}
 		else{

@@ -5,6 +5,7 @@ function receive_db_info( info ){
 		"state": "get_all_data"
 	};
 	var response = receive_to_db( attr );
+	alert( response );
 	return response;
 };
 
