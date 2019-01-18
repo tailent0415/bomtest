@@ -41,8 +41,6 @@ function receive_promise( Refnum, data ){
 						resolve( true );
 						break;
 					case "get_all_supplier_name":
-						
-						alert( supplier_obj );
 						if( response[0].supplier == undefined || response.supplier == "" ){
 							return;
 						}
@@ -50,7 +48,6 @@ function receive_promise( Refnum, data ){
 						for(var i=0; i < response.length; i++){
 							supplier_list_options += '<option value="'+response[i].supplier+'" />';
 						}
-						alert( supplier_list_options );
 						supplier_obj.empty();
 						supplier_obj.append( supplier_list_options );
 						resolve( true );

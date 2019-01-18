@@ -40,8 +40,9 @@ function receive_db_supplier_name( param ){
 	var Refnum = {
 		"supplier_obj": param.supplier_obj
 	};
-	
-	
+	alert( attr.id );
+	alert( attr.state );
+	alert( Refnum.supplier_obj );
 	receive_to_db( Refnum, attr );
 }
 
