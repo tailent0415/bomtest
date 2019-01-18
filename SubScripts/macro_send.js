@@ -20,13 +20,13 @@ function send_new_part(){
 }
 
 // send a new supplier name
-function send_new_supplier_name( info ){
-	if( info.currdata.trim() == "" ){
+function send_new_supplier_name( param ){
+	if( param.currdata.trim() == "" ){
 		return;
 	}
 	var attr = {
-		"id": info.id,
-		"supplier": info.currdata,
+		"id": param.id,
+		"supplier": param.currdata,
 		"state": "add_supplier_data"
 	};
 	send_to_db( attr );
