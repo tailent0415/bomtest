@@ -61,8 +61,14 @@
 		var username;
 		
 		$(document).on({
-			ajaxStart: function() { body.addClass("loading"); },
-			ajaxStop: function() { body.removeClass("loading"); }
+			ajaxStart: function(){
+				alert("start");
+				body.addClass("loading");
+			},
+			ajaxStop: function(){ 
+				body.removeClass("loading");
+				alert("stop");
+			}
 		});
 		
 		
