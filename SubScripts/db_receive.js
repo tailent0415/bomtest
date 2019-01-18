@@ -1,6 +1,6 @@
-async function receive_to_db( tabID, data ){
+async function receive_to_db( data ){
 	try{
-		var response = await receive_promise( tabID, data );
+		var response = await receive_promise( data );
 		if( response.flag == true ){
 			return response.data;
 		}
@@ -16,7 +16,7 @@ async function receive_to_db( tabID, data ){
 }
 
 // receive promise
-function receive_promise( tabID, data ){
+function receive_promise( data ){
 	var ResMsg = {
 		"flag": false,
 		"data": ""
