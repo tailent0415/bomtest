@@ -17,6 +17,7 @@
 		<script src="/CoreScripts/tableExport.js"></script>
 	</head>
 	<body>
+		<div class="load_modal"></div>
 		<div class="tab-content">
 			<div id="home" class="tab-pane fade in active">
 				<div id="home_toolbar">
@@ -62,12 +63,10 @@
 		
 		$(document).on({
 			ajaxStart: function(){
-				alert("start");
 				body.addClass("loading");
 			},
 			ajaxStop: function(){ 
 				body.removeClass("loading");
-				alert("stop");
 			}
 		});
 		
