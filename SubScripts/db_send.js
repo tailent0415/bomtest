@@ -1,3 +1,20 @@
+// send data to database
+async function send_to_db( data ){
+	try{
+		var response = await send_promise( data );
+		if( response == true ){
+			return true;
+		}
+		else{
+			alert( response )
+			return false;
+		}
+	}
+	catch(e){
+		alert( "資料庫錯誤:" + e  );
+	}
+}
+
 // send promise
 function send_promise( data ){
 	return new Promise(function (resolve, reject){

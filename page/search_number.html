@@ -30,7 +30,7 @@
 					data-click-to-select="true"
 					data-side-pagination="client"
 					data-pagination="true"
-					data-page-list="[5, 10, 50, 100]"
+					data-page-list="[10, 50, 100]"
 					data-search="true"
 					data-id-field="index"
 					data-unique-id="index"
@@ -59,7 +59,6 @@
 	<script language="JavaScript">
 		var body = $("body");
 		var username;
-		
 		$(document).on({
 			ajaxStart: function(){
 				body.addClass("loading");
@@ -100,9 +99,18 @@
 		function upd_partnum_table(){
 			var info = {
 				"id": username,
-				"tabID": $("#part_table")
 			};
-			receive_db_info( info );
+			var tabID = $("#part_table");
+			var response = receive_db_info( info );
+			if( response != false ){
+				tabID.bootstrapTable('destroy').bootstrapTable({
+					exportDataType: "all"
+				});
+				tabID.bootstrapTable('removeAll');
+				tabID.bootstrapTable('load', response);
+				tabID.bootstrapTable('selectPage', '1');
+				tabID.bootstrapTable('scrollTo', 'top');
+			}
 		}
 	</script>
 	<script type="text/javascript" src="/SubScripts/db_receive.js"></script>

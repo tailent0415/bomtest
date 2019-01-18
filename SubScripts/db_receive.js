@@ -1,11 +1,11 @@
 async function receive_to_db( tabID, data ){
 	try{
 		var response = await receive_promise( tabID, data );
-		if( response == true ){
-			return true;
+		if( response.flag == true ){
+			return response.data;
 		}
 		else{
-			alert( response );
+			alert( response.data );
 			return false;
 		}
 	}
@@ -17,6 +17,10 @@ async function receive_to_db( tabID, data ){
 
 // receive promise
 function receive_promise( tabID, data ){
+	var ResMsg = {
+		"flag": false,
+		"data": ""
+	}
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "post",
@@ -24,27 +28,22 @@ function receive_promise( tabID, data ){
 			data: data,
 			dataType: "JSON",
 			timeout: 10000,
-			success: function(response){
+			success: function( response ){
 				switch( data.state ){
 					case "get_all_data":
-						tabID.bootstrapTable('destroy').bootstrapTable({
-							exportDataType: "all"
-						});
 					case "get_record_data":
 					case "get_supplier_list":
-						tabID.bootstrapTable('removeAll');
-						tabID.bootstrapTable('load', response);
-						tabID.bootstrapTable('selectPage', '1');
-						tabID.bootstrapTable('scrollTo', 'top');
-						resolve( true );
+						ResMsg.flag = true;
+						ResMsg.data = response;
 						break;
 					default:
-						resolve( "undefined function" );
+						ResMsg.data = "undefined function";
 				}
+				resolve( ResMsg );
 			},
 			error: function(err){
-				reject( err.status + err.responseText );
-				alert("error");
+				ResMsg.data = err.status + err.responseText;
+				reject( ResMsg );
 			}
 		});
 	});

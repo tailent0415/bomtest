@@ -4,7 +4,8 @@ function receive_db_info( info ){
 		"id": info.id,
 		"state": "get_all_data"
 	};
-	receive_to_db( info.tabID, attr );
+	var response = receive_to_db( attr );
+	return response;
 };
 
 // receive database part number

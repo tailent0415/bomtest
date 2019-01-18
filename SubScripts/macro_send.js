@@ -19,6 +19,18 @@ function send_new_part(){
 	}	
 }
 
+// send a new supplier name
+function send_new_supplier_name( info ){
+	if( info.currdata.trim() == "" ){
+		return;
+	}
+	var attr = {
+		"id": info.id,
+		"supplier": info.currdata,
+		"state": "add_supplier_data"
+	};
+	send_to_db( attr );
+}
 
 // send a new product data to database
 function send_new_product(){
