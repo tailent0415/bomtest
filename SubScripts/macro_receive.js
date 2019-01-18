@@ -4,9 +4,11 @@ function receive_db_info( info ){
 		"id": info.id,
 		"state": "get_all_data"
 	};
-	var response = receive_to_db( attr );
-	alert( response );
-	return response;
+	var Refnum = {
+		"tabID": info.tabID
+	}
+	
+	receive_to_db( Refnum, attr );
 };
 
 // receive database part number

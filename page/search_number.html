@@ -99,18 +99,9 @@
 		function upd_partnum_table(){
 			var info = {
 				"id": username,
+				"tabID": $("#part_table")
 			};
-			var tabID = $("#part_table");
-			var response = receive_db_info( info );
-			if( response != false ){
-				tabID.bootstrapTable('destroy').bootstrapTable({
-					exportDataType: "all"
-				});
-				tabID.bootstrapTable('removeAll');
-				tabID.bootstrapTable('load', response);
-				tabID.bootstrapTable('selectPage', '1');
-				tabID.bootstrapTable('scrollTo', 'top');
-			}
+			receive_db_info( info );
 		}
 	</script>
 	<script type="text/javascript" src="/SubScripts/db_receive.js"></script>

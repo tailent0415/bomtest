@@ -1,12 +1,11 @@
-async function receive_to_db( data ){
+async function receive_to_db( Refnum, data ){
 	try{
-		var response = await receive_promise( data );
-		if( response.flag == true ){
-			alert( response.flag );
-			return response.data;
+		var response = await receive_promise( Refnum, data );
+		if( response == true ){
+			return true;
 		}
 		else{
-			alert( response.data );
+			alert( response );
 			return false;
 		}
 	}
@@ -17,11 +16,8 @@ async function receive_to_db( data ){
 }
 
 // receive promise
-function receive_promise( data ){
-	var ResMsg = {
-		"flag": false,
-		"data": ""
-	}
+function receive_promise( Refnum, data ){
+	var tabID = Refnum.tabID;
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "post",
@@ -32,19 +28,24 @@ function receive_promise( data ){
 			success: function( response ){
 				switch( data.state ){
 					case "get_all_data":
+						tabID.bootstrapTable('destroy').bootstrapTable({
+							exportDataType: "all"
+						});
 					case "get_record_data":
 					case "get_supplier_list":
-						ResMsg.flag = true;
-						ResMsg.data = response;
+						tabID.bootstrapTable('removeAll');
+						tabID.bootstrapTable('load', response);
+						tabID.bootstrapTable('selectPage', '1');
+						tabID.bootstrapTable('scrollTo', 'top');
+						resolve( true );
 						break;
 					default:
-						ResMsg.data = "undefined function";
+						resolve( "undefined function" );
 				}
-				resolve( ResMsg );
+				
 			},
 			error: function(err){
-				ResMsg.data = err.status + err.responseText;
-				reject( ResMsg );
+				reject( err.status + err.responseText );
 			}
 		});
 	});
