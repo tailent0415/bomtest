@@ -19,7 +19,7 @@
 	<body>
 		<div class="load_modal"></div>
 		<datalist id="supplier_list" class="normal_font"></datalist>
-		<div class="page_container">
+		<div id="add_part" class="page_container">
 			<form class= "tab_form" id="add_part_form">
 				<div class="text_field">
 					<label for="part_num_in">品號 :</label><input class="numtext input_container normal_font" type=text name="part_num1" size="1" maxlength="1" placeholder="3" style="text-transform:uppercase" onchange="check_part_num(3,1,this.value)">
@@ -74,7 +74,32 @@
 			send_new_supplier_name( param );
 		}
 
-		
+		function send_new_part(){
+			var cnt = document.getElementById( "add_part" );
+			var partnum = cnt.getElementsByClassName("numtext");
+			var part_attr = cnt.getElementsByClassName("part_attr");
+			var attr;
+			var num_str = "";
+			if( partnum[0].value == "3" || partnum[0].value == "4" ){
+				for (i = 0; i < partnum.length; i++) {
+					num_str += partnum[i].value;
+				}
+				if( check_part_num( 0, 15, num_str ) ) {
+					var attr = get_doc_part_attr( part_attr );
+					if (attr !== false){
+						attr.state = "add_newdata";
+						attr.number = num_str;
+						send_to_db( attr );
+						send_new_supplier_name( attr.supplier );
+					}
+				}
+			}
+			else{
+				alert( "input has error" );
+			}
+			var form_cnt = document.getElementById( "add_part_form" );
+			form_cnt.reset();
+		}
 		
 	</script>
 	<script type="text/javascript" src="/SubScripts/db_send.js"></script>
@@ -82,4 +107,5 @@
 	<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
 	<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
 	<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+	<script type="text/javascript" src="/SubScripts/get.js"></script>
 </html>
