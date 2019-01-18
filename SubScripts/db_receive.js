@@ -48,6 +48,8 @@ function receive_promise( Refnum, data ){
 						for(var i=0; i < response.length; i++){
 							supplier_list_options += '<option value="'+response[i].supplier+'" />';
 						}
+						alert( supplier_list_options );
+						alert( supplier_obj );
 						supplier_obj.empty();
 						supplier_obj.append( supplier_list_options );
 						resolve( true );
