@@ -38,17 +38,62 @@
 			</form>
 		</div>
 		<script language="JavaScript">
+			var body = $("body");
 			var username;
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+
 			$(document).ready(function(){
 				var url = location.href;
 				var temp = url.split("?");
 				username = temp[1];
 				var param = {
-					"id" : username,
-					"tabID" : $("#supplier_list")
+					"id": username,
+					"supplier_obj": $("#supplier_list")
 				};
-				alert( param.id );
+				receive_db_supplier_name( param );
 			});
+			
+			function add_supplier_name( currdata ){
+				var param = {
+					"id": username,
+					"supplier": currdata
+				};
+				send_new_supplier_name( param );
+			}
+
+			function send_new_part(){
+				var cnt = document.getElementById( "add_part" );
+				var partnum = cnt.getElementsByClassName("numtext");
+				var part_attr = cnt.getElementsByClassName("part_attr");
+				var attr;
+				var num_str = "";
+				if( partnum[0].value == "3" || partnum[0].value == "4" ){
+					for (i = 0; i < partnum.length; i++) {
+						num_str += partnum[i].value;
+					}
+					if( check_part_num( 0, 15, num_str ) ) {
+						var attr = get_doc_part_attr( part_attr );
+						if (attr !== false){
+							attr.state = "add_newdata";
+							attr.number = num_str;
+							send_to_db( attr );
+							send_new_supplier_name( attr.supplier );
+						}
+					}
+				}
+				else{
+					alert( "input has error" );
+				}
+				var form_cnt = document.getElementById( "add_part_form" );
+				form_cnt.reset();
+			}
 			
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
