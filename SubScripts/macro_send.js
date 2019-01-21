@@ -1,23 +1,4 @@
-// send a new part data to database
-function send_new_part(){
-	var cnt = document.getElementById( ele_id );
-	var partnum = cnt.getElementsByClassName("numtext");
-	var part_attr = cnt.getElementsByClassName("part_attr");
-	var attr;
-	var num_str = "";
-	for (i = 0; i < partnum.length; i++) {
-		num_str += partnum[i].value;
-	}
-		
-	if( check_part_num( 0, 15, num_str ) ) {
-		var attr = get_doc_part_attr( part_attr );
-		if (attr !== false){
-			attr.state = "add_newdata";
-			attr.number = num_str;
-			send_to_db( attr );
-		}
-	}	
-}
+
 
 // send a new supplier name
 function send_new_supplier_name( param ){
