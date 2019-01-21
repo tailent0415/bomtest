@@ -69,37 +69,7 @@
 			}
 
 			function send_new_part(){
-				var cnt = document.getElementById( "add_part" );
-				var partnum = cnt.getElementsByClassName("numtext");
-				var part_attr = cnt.getElementsByClassName("part_attr");
-				var attr;
-				var num_str = "";
-				if( partnum[0].value == "3" ){
-					for (i = 0; i < partnum.length; i++) {
-						num_str += partnum[i].value;
-					}
-					if( check_part_num( 0, 15, num_str ) ) {
-						var attr = get_doc_part_attr( part_attr );
-						if (attr !== false){
-							attr.state = "add_newdata";
-							attr.number = num_str;
-							attr.id = username;
-							alert( attr );
-							send_to_db( attr );
-							var param = {
-								"id": username,
-								"supplier": attr.supplier 
-							};
-							alert( param.id );
-							send_new_supplier_name( param );
-						}
-					}
-				}
-				else{
-					alert( "input has error" );
-				}
-				var form_cnt = document.getElementById( "add_part_form" );
-				form_cnt.reset();
+				alert("test");
 			}
 			
 		</script>
