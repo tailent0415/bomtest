@@ -43,7 +43,11 @@
 				var url = location.href;
 				var temp = url.split("?");
 				username = temp[1];
-				alert( username );
+				var param = {
+					"id" : username,
+					"tabID" : $("#supplier_list")
+				};
+				alert( param.id );
 			});
 			
 		</script>
