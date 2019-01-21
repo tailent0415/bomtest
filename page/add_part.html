@@ -83,8 +83,13 @@
 						if (attr !== false){
 							attr.state = "add_newdata";
 							attr.number = num_str;
+							attr.id = username;
 							send_to_db( attr );
-							send_new_supplier_name( attr.supplier );
+							var param = {
+								"id": username,
+								"supplier": attr.supplier 
+							};
+							send_new_supplier_name( param );
 						}
 					}
 				}
