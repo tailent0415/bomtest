@@ -65,7 +65,6 @@
 					"id": username,
 					"supplier": currdata
 				};
-				alert( param.id )
 				send_new_supplier_name( param );
 			}
 
@@ -85,13 +84,11 @@
 							attr.state = "add_newdata";
 							attr.number = num_str;
 							attr.id = username;
-							alert( attr );
 							send_to_db( attr );
 							var param = {
 								"id": username,
 								"supplier": attr.supplier 
 							};
-							alert( param.id );
 							send_new_supplier_name( param );
 						}
 					}
