@@ -74,7 +74,7 @@
 				var part_attr = cnt.getElementsByClassName("part_attr");
 				var attr;
 				var num_str = "";
-				if( partnum[0].value == "3" || partnum[0].value == "4" ){
+				if( partnum[0].value == "3" ){
 					for (i = 0; i < partnum.length; i++) {
 						num_str += partnum[i].value;
 					}
@@ -84,11 +84,13 @@
 							attr.state = "add_newdata";
 							attr.number = num_str;
 							attr.id = username;
+							alert( attr );
 							send_to_db( attr );
 							var param = {
 								"id": username,
 								"supplier": attr.supplier 
 							};
+							alert( param.id );
 							send_new_supplier_name( param );
 						}
 					}
