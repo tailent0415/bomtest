@@ -1,8 +1,6 @@
 // send data to database
 async function send_to_db( data ){
-	alert( data.id );
-	alert( data.number );
-	alert( data.state );
+	data.id = sessionStorage.getItem("login_id");
 	try{
 		var response = await send_promise( data );
 		if( response == true ){

@@ -85,21 +85,14 @@
 			};
 			
 			$(document).ready(function(){
-				var url = location.href;
-				var temp = url.split("?");
-				username = temp[1];
+				username = sessionStorage.getItem("login_id");
 				upd_partnum_table();
 				$('#part_table').bootstrapTable({ height: $(window).height() - 120 });
-				
-				alert( sessionStorage.getItem("login_id") );
 			});
 			
 			function upd_partnum_table(){
-				var info = {
-					"id": username,
-					"tabID": $("#part_table")
-				};
-				receive_db_info( info );
+				sessionStorage.setItem( "table_id", $("#part_table") );
+				receive_db_info();
 			}
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>

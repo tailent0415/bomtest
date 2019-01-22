@@ -1,4 +1,5 @@
 async function receive_to_db( Refnum, data ){
+	data.id = sessionStorage.getItem("login_id");
 	try{
 		var response = await receive_promise( Refnum, data );
 		if( response == true ){
@@ -17,7 +18,9 @@ async function receive_to_db( Refnum, data ){
 
 // receive promise
 function receive_promise( Refnum, data ){
-	var tabID = Refnum.tabID;
+	var tabID = sessionStorage.getItem("table_id");
+	var PageID = sessionStorage.getItem("page_id");
+	alert( PageID );
 	var supplier_obj = Refnum.supplier_obj;
 	return new Promise(function (resolve, reject){
 		$.ajax({
