@@ -1,14 +1,9 @@
 // receive database information
-function receive_db_info( param ){
+function receive_db_info(){
 	var attr = {
 		"state": "get_all_data"
 	};
-	
-	var refnum = {
-		"tabID": param.tabID
-	}
-	
-	receive_to_db( refnum, attr );
+	receive_to_db( attr );
 };
 
 // receive database part number

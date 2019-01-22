@@ -1,7 +1,6 @@
-async function receive_to_db( Refnum, data ){
-	data.id = sessionStorage.getItem( "login_id" );
+async function receive_to_db( data ){
 	try{
-		var response = await receive_promise( Refnum, data );
+		var response = await receive_promise( data );
 		if( response == true ){
 			return true;
 		}
@@ -17,13 +16,11 @@ async function receive_to_db( Refnum, data ){
 }
 
 // receive promise
-function receive_promise( Refnum, data ){
-	var tab_id = sessionStorage.getItem( "tab_id" );
-	var tabID = Refnum.tabID;
-	alert( tab_id );
-	alert( tabID );
-	alert( ( tab_id == tabID ) );
-	var supplier_obj = Refnum.supplier_obj;
+function receive_promise( data ){
+	data.id = sessionStorage.getItem( "login_id" );
+	var table_obj = sessionStorage.getItem( "table_id" );
+	var supplier_obj = sessionStorage.getItem( "supplier_obj" );
+	
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "post",
@@ -34,15 +31,15 @@ function receive_promise( Refnum, data ){
 			success: function( response ){
 				switch( data.state ){
 					case "get_all_data":
-						tabID.bootstrapTable('destroy').bootstrapTable({
+						table_obj.bootstrapTable('destroy').bootstrapTable({
 							exportDataType: "all"
 						});
 					case "get_record_data":
 					case "get_supplier_list":
-						tabID.bootstrapTable('removeAll');
-						tabID.bootstrapTable('load', response);
-						tabID.bootstrapTable('selectPage', '1');
-						tabID.bootstrapTable('scrollTo', 'top');
+						table_obj.bootstrapTable('removeAll');
+						table_obj.bootstrapTable('load', response);
+						table_obj.bootstrapTable('selectPage', '1');
+						table_obj.bootstrapTable('scrollTo', 'top');
 						resolve( true );
 						break;
 					case "get_all_supplier_name":
