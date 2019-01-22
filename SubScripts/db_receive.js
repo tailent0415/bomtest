@@ -19,6 +19,8 @@ async function receive_to_db( data ){
 // receive promise
 function receive_promise( data ){
 	var tabID = sessionStorage.getItem("table_id");
+	alert( tabID );
+	alert( data.id );
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "post",
