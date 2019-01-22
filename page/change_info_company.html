@@ -3,9 +3,54 @@
 <html lang="zh-tw">
 	<head>
 		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
 		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<p>Change Information Company Page</p>
+		<div class="load_modal"></div>
+		<datalist id="supplier_list" class="normal_font"></datalist>
+		<div id="supplier_revise" class="page_container">
+			<div class= "tab_form">
+				<div class="text_field">
+					<label for="part_supplier_in">廠商 :</label><input id="part_supplier_in" class="part_attr input_container supplier_list_style normal_font" name="part_supplier" list="supplier_list" onchange="supplier_change_btn( this.value )" />
+					<br><label for="part_replace_name_in">廠商名稱更改 :</label><input id="part_replace_name_in" class="part_attr input_container normal_font" name="part_replace_name" type="text" style="width:300px" />
+					<br><label for="part_contact_in">聯絡人 :</label><input id="part_contact_in" class="part_attr input_container normal_font" name="part_contact" type="text" style="width:300px" placeholder="Jacky" />
+					<br><label for="part_phone_in">電話 :</label><input id="part_phone_in" class="part_attr input_container normal_font" name="part_phone" type="text" style="width:300px" placeholder="(03)598-6199 Ext.5553" />
+					<br><label for="part_address_in">地址 :</label><input id="part_address_in" class="part_attr input_container normal_font" name="part_address" type="text" style="width:300px" placeholder="湖口" />
+					<br><label for="part_url_in">網址 :</label><input id="part_url_in" class="part_attr input_container normal_font" name="part_url" type="text" style="width:300px" placeholder="http://my.scientech.com.tw/" />
+				</div>
+			</div>
+			<div>
+				<button type="button" class="btn btn-primary" onclick="supplier_info_upload()" >上傳</button>
+			</div>
+		</div>
+		<script language="JavaScript">
+			var body = $("body");
+			var username;
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+
+			$(document).ready(function(){
+				var url = location.href;
+				var temp = url.split("?");
+				username = temp[1];
+			});
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/macro_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+		<script type="text/javascript" src="/SubScripts/get.js"></script>
 	</body>
 </html>

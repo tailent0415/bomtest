@@ -3,9 +3,52 @@
 <html lang="zh-tw">
 	<head>
 		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
 		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<p>InBound Page</p>
+		<div class="load_modal"></div>
+		<div class= "inbound_cnt" class="page_container">
+			<label for="part_num_in">品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" onfocus="this.oldvalue = this.value;" onchange="quan_change_btn( this );this.oldvalue = this.value;" />
+			<br><label for="part_name_out">品名 :</label>
+			<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" ></textarea>
+			<br><label for="part_inventory_out">庫存 :</label><input id="part_inventory_out" class="part_attr input_container normal_font" name="inventory" type="number" style="width:100px" disabled="true" value="0" />
+			<br><label for="part_variable_in">變量 :</label><input id="part_variable_in" class="part_attr input_container normal_font" name="part_varval" type="number" style="width:100px" value="0" />
+			<br><label for="part_location_in">位置 :</label><input id="part_location_in" class="part_attr input_container normal_font" name="part_location" type="text" style="width:100px" placeholder="湖口" />
+			<br><label for="part_goal_in">目的 : </label>
+			<br><textarea id="part_goal_in" class="part_attr normal_font" name="part_goal" rows="5" cols="50" wrap="hard" ></textarea>
+			<br><button type="button" class="btn btn-primary btn_field" onclick="send_inventory_quantity('add')">入庫</button>
+			<button type="button" class="btn btn-primary btn_field" onclick="send_inventory_quantity('sub')">領用</button>
+		</div>
+		<script language="JavaScript">
+			var body = $("body");
+			var username;
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+
+			$(document).ready(function(){
+				var url = location.href;
+				var temp = url.split("?");
+				username = temp[1];
+			});
+			
+			
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/macro_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+		<script type="text/javascript" src="/SubScripts/get.js"></script>
 	</body>
 </html>
