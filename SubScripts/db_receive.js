@@ -1,7 +1,7 @@
-async function receive_to_db( data ){
-	data.id = sessionStorage.getItem("login_id");
+async function receive_to_db( Refnum, data ){
+	data.id = sessionStorage.getItem( "login_id" );
 	try{
-		var response = await receive_promise( data );
+		var response = await receive_promise( Refnum, data );
 		if( response == true ){
 			return true;
 		}
@@ -17,10 +17,9 @@ async function receive_to_db( data ){
 }
 
 // receive promise
-function receive_promise( data ){
-	var tabID = sessionStorage.getItem("table_id");
-	alert( tabID );
-	alert( data.id );
+function receive_promise( Refnum, data ){
+	var tabID = Refnum.tabID;
+	var supplier_obj = Refnum.supplier_obj;
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "post",
