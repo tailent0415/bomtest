@@ -67,7 +67,6 @@
 				}
 			});
 			
-			
 			function guide_num_format( val ){
 				return ("<a class='guide_part_number' href='javascript:void(0)' >" + val + "</a>");
 			}
@@ -85,7 +84,6 @@
 				},
 			};
 			
-			
 			$(document).ready(function(){
 				var url = location.href;
 				var temp = url.split("?");
@@ -93,7 +91,6 @@
 				upd_partnum_table();
 				$('#part_table').bootstrapTable({ height: $(window).height() - 120 });
 			});
-			
 			
 			function upd_partnum_table(){
 				var info = {
