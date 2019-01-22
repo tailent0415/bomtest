@@ -1,5 +1,8 @@
 // send data to database
 async function send_to_db( data ){
+	alert( data.id );
+	alert( data.number );
+	alert( data.state );
 	try{
 		var response = await send_promise( data );
 		if( response == true ){
