@@ -90,6 +90,8 @@
 				username = temp[1];
 				upd_partnum_table();
 				$('#part_table').bootstrapTable({ height: $(window).height() - 120 });
+				
+				alert( sessionStorage.getItem("login_id") );
 			});
 			
 			function upd_partnum_table(){
