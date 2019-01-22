@@ -134,7 +134,7 @@
 					default:
 				}
 				username = sessionStorage.getItem("login_id");
-				if ( page_name != "" && username != "Guest" ){
+				if ( page_name != "" && username != null ){
 					window.open( page_name, "frame_display" );
 				}
 				else{

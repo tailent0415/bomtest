@@ -22,7 +22,7 @@
 			<div>
 				<div id="home_toolbar">
 					<div class="col-auto">
-						<button type="button" class="btn btn-primary" onclick="upd_partnum_table()" >更新數據</button>
+						<button type="button" class="btn btn-primary" onclick="receive_db_info()" >更新數據</button>
 					</div>
 				</div>
 				<table id="part_table"
@@ -86,14 +86,11 @@
 			
 			$(document).ready(function(){
 				username = sessionStorage.getItem("login_id");
-				upd_partnum_table();
+				sessionStorage.setItem( "table_id", $("#part_table") );
+				receive_db_info();
 				$('#part_table').bootstrapTable({ height: $(window).height() - 120 });
 			});
 			
-			function upd_partnum_table(){
-				sessionStorage.setItem( "table_id", $("#part_table") );
-				receive_db_info();
-			}
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
