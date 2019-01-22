@@ -84,6 +84,8 @@
 			};
 			
 			$(document).ready(function(){
+				var tab_id = $("#part_table");
+				sessionStorage.setItem( "tab_id", tab_id );
 				upd_partnum_table();
 				$('#part_table').bootstrapTable({ height: $(window).height() - 120 });
 			});
