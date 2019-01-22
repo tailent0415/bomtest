@@ -17,7 +17,7 @@
 	</head>
 	<body>
 		<div class="load_modal"></div>
-		<div id="add_part" class="page_container">
+		<div id="add_product" class="page_container">
 			<form class="tab_form" id="add_product_form">
 				<label for="part_num_in">品號 :</label><input class="numtext input_container normal_font" type=text name="part_num1" size="1" maxlength="1" placeholder="1" style="text-transform:uppercase" onchange="check_part_num(3,1,this.value)">
 				<b>－</b><input class="numtext input_container normal_font" type=text name="part_num2" size="2" maxlength="2" placeholder="AA" style="text-transform:uppercase" onchange="check_part_num(2,2,this.value)" >
@@ -90,7 +90,7 @@
 			
 			// send a new product data to database
 			function send_new_product(){
-				var cnt = document.getElementById( ele_id );
+				var cnt = document.getElementById( "add_product" );
 				var partnum = cnt.getElementsByClassName("numtext");
 				var part_attr = cnt.getElementsByClassName("part_attr");
 				var num_str = "";
@@ -103,7 +103,7 @@
 				else{
 					alert( "input has error" );
 				}
-				var form_cnt = document.getElementById( form_id );
+				var form_cnt = document.getElementById( "add_product_form" );
 				form_cnt.reset();
 				$("#product_table_add").bootstrapTable('removeAll');
 			}

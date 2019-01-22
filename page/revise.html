@@ -3,9 +3,200 @@
 <html lang="zh-tw">
 	<head>
 		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
+		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/multiple-search/bootstrap-table-multiple-search.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>		
 		<script src="/CoreScripts/jquery.min.js"></script>
 	</head>
 	<body>
-		<p>Revise Page</p>
+		<div class="load_modal"></div>
+		<div id="revise_cnt" class="page_container">
+			<div id="revise_title" style="display:none">
+				<table id="revise_table"
+					data-toggle="table"
+					data-side-pagination="client"
+					data-pagination="false"
+					data-visible = "false"
+					data-height="525"
+					data-row-style="set_table_font"
+					data-id-field="index"
+					data-unique-id="index" >
+					<thead>
+						<tr>
+							<th data-field="index">項次</th>
+							<th data-field="number" data-formatter="edit_partnum">品號</th>
+							<th data-field="name">品名</th>
+							<th data-field="quantity" data-formatter="edit_quan">數量</th>
+							<th data-field="cost">單位成本</th>
+							<th data-field="totalcost">成本加總</th>
+							<th data-field="supplier">廠商</th>
+							<th data-field="format">規格</th>
+							<th data-field="delrow" data-formatter="formatter_delbtn">刪除</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<script language="JavaScript">
+			var body = $("body");
+			var username;
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+
+			$(document).ready(function(){
+				var url = location.href;
+				var temp = url.split("?");
+				username = temp[1];
+				init_revise_interface();
+			});
+			
+			// revise interface control
+			function init_revise_interface(){
+				var cnt = document.getElementById( "revise_cnt" );
+				var div_first_obj = document.getElementById( "revise" );
+				if( div_first_obj !== null ){
+					remove_revise_interface();
+				}
+				div_first_obj = document.createElement( "div" );
+				div_first_obj.id = "revise";
+				div_first_obj.setAttribute("class", "tab_form");
+				cnt.appendChild(div_first_obj);
+				var div_second_obj = document.createElement( "div" );
+				div_second_obj.setAttribute("class", "text_field");
+				var data_str = '<label for="part_num_in">品號 : </label><input id="part_num_in" class="input_container part_list_style normal_font" name="part_num_list" list="part_list" onchange="update_revise_type( this.value )"/>';
+				div_second_obj.innerHTML = data_str;
+				div_first_obj.appendChild(div_second_obj);
+			}
+			
+			// update revise interface type
+			function update_revise_type( num_value ){
+				
+				if( check_part_num( 0, 15, normal_part_number( num_value ) ) ){
+					
+					remove_revise_interface();
+				
+					var revise_table_obj = document.getElementById( "revise_title" );
+					var cnt = document.getElementById( "revise_cnt" );
+					div_first_obj = document.createElement( "div" );
+					div_first_obj.id = "revise";
+					div_first_obj.setAttribute("class", "tab_form");
+					cnt.appendChild(div_first_obj);
+												
+					var div_second_obj = document.createElement( "div" );
+					div_second_obj.setAttribute("class", "text_field");
+					div_first_obj.appendChild(div_second_obj);
+					
+					var data_str = "";
+					var table_title = new Array();
+					data_str += '<label for="part_num_in">品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" value="' + num_value + '" onchange="update_revise_type( this.value )"/>';
+					data_str += '<br><label for="part_name_in">品名 :</label>';
+					data_str += '<br><textarea id="part_name_in" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" ></textarea>';
+					switch( num_value[0] ){
+						case "1":
+						case "2":
+							data_str += '<br><label for="part_format_in">規格 :</label>';
+							data_str += '<br><textarea id="part_format_in" class="part_attr normal_font" name="part_format" rows="2" cols="50" wrap="hard" ></textarea>'
+							data_str += '<br><label for="part_unit_in">單位 :</label><select id="part_unit_in" type="text" class="part_attr input_container normal_font" name="part_unit" style="width:70px" ><option value="SET">SET</option><option value="PCS">PCS</option></select>';
+							data_str += '<br><label for="part_remark_in">備註 : </label>';
+							data_str += '<br><textarea id="part_remark_in" class="part_attr normal_font" name="part_remark" rows="5" cols="50" wrap="hard" ></textarea>';
+							data_str += '<br><div class="col-xs-2" style="margin-top:5px;margin-bottom:5px"><button type="button" class="col-xs-12 btn btn-primary" onclick="append_btn_res()" >新增</button></div>';
+							data_str += '<div class="col-xs-2" style="margin-top:5px;margin-bottom:5px" ><button type="button" class="col-xs-12 btn btn-primary" onclick="send_revise_product()" >上傳</button></div>';
+							data_str += '<div class="col-xs-8 align_right"><label for="part_totalcost_out">總成本 :</label><input type=text id="part_totalcost_out" class="part_attr input_container" style="width:200px;margin-top:15px" name="part_totalcost" disabled="true" value="0"></div>';
+							div_second_obj.innerHTML = data_str;
+							div_first_obj.appendChild(div_second_obj);
+							div_first_obj.after( revise_table_obj );
+							revise_table_obj.style.display = "inline";
+							receive_part_info( "revise_product_data", num_value )
+							break;
+						case "3":
+						case "4":
+							data_str += '<br><label for="part_format_in">規格 :</label>';
+							data_str += '<br><textarea id="part_format_in" class="part_attr normal_font" name="part_format" rows="2" cols="50" wrap="hard" ></textarea>'
+							data_str += '<br><label for="part_fignum_in">圖號 :</label><input id="part_fignum_in" type="text" class="part_attr input_container normal_font" name="part_fignum" type="text" style="width:200px" />';
+							data_str += '<br><label for="part_supplier_in">廠商 :</label><input id="part_supplier_in" type="text" class="part_attr input_container" name="part_supplier" list="supplier_list" type="text" style="width:100px" onchange="add_supplier_name( this.value )" />';
+							data_str += '<br><label for="part_unit_in">單位 :</label><select id="part_unit_in" type="text" class="part_attr input_container normal_font" name="part_unit" style="width:70px" ><option value="SET">SET</option><option value="PCS">PCS</option></select>';
+							data_str += '<br><label for="part_cost_in">成本 :</label><input id="part_cost_in" type="text" class="part_attr input_container normal_font" name="part_cost" type="text" style="width:100px" />';
+							data_str += '<br><label for="part_quantity_in">數量 :</label><input id="part_quantity_in" type="text" class="part_attr input_container normal_font" name="part_quantity" type="text" style="width:60px" />';
+							data_str += '<div class="btn_field"><button type="button" class="btn btn-primary" onclick="send_revise_part()">修改</button></div>';
+							div_second_obj.innerHTML = data_str;
+							div_first_obj.appendChild(div_second_obj);
+							revise_table_obj.style.display = "none";
+							receive_part_info( "revise_part_data", num_value )
+							break;
+						default:
+					}
+				}
+				else{
+					init_revise_interface();
+				}
+			}
+			
+			// remove revise interface
+			function remove_revise_interface(){
+				var cnt = document.getElementById( "revise_cnt" );
+				var div_obj = document.getElementById( "revise" );
+				document.getElementById( "revise_title" ).style.display = "none";
+				cnt.removeChild(div_obj);
+			}
+			
+			
+			
+			
+			// table part number sub function
+			function edit_partnum( param, row, index ){
+				if(param.func == 1){
+					return ("<pre onclick='change_partnum_type_static(" + index + ")'>" + param.val + "</pre>");
+				}
+				else if(param.func == 2){
+					return ("<input list='part_list' id='part_num_input' class='part_list_style normal_font' onblur='change_partnum_type_dynamic(" + index + ",this.value)' value=" + param.val + " ><datalist>" + part_list_options + "</datalist>");
+				}
+			}
+			
+			// table part quantity sub function
+			function edit_quan( param, row, index ){
+				if(param.func == 1){
+					return ("<p onclick='change_quan_input(" + index + "," + param.val + ")'>" + param.val + "</p>");
+				}
+				else if(param.func == 2){
+					return ("<input type='number' size='3' onblur='update_total_cost(" + index + ",this.value )' value='" + param.val + "'/>");
+				}
+			}
+			
+			// table formatter delete button
+			function formatter_delbtn( val, row, index ){
+				return ("<button class='delbtn btn btn-danger glyphicon glyphicon-remove row-remove' onclick='remove_table_row(" + index + ")'></button>");
+			}
+			
+			
+			// add supplier new name
+			function add_supplier_name( currdata ){
+				var param = {
+					"id": username,
+					"supplier": currdata
+				};
+				send_new_supplier_name( param );
+			}
+			
+			
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/macro_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+		<script type="text/javascript" src="/SubScripts/get.js"></script>
 	</body>
 </html>
