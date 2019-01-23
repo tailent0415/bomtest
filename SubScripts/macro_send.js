@@ -1,4 +1,8 @@
-
+// send a new supplier name
+function send_new_partnum( attr ){
+	attr.state = "add_newdata";
+	send_to_db( attr );
+}
 
 // send a new supplier name
 function send_new_supplier_name( param ){
@@ -6,12 +10,16 @@ function send_new_supplier_name( param ){
 		return;
 	}
 	var attr = {
-		"id": param.id,
 		"supplier": param.currdata,
 		"state": "add_supplier_data"
 	};
 	send_to_db( attr );
 }
+
+
+
+
+
 
 // send a new product data to database
 function send_new_product(){

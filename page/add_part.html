@@ -53,13 +53,6 @@
 				$("#supplier_list").append( supplier_list_options );
 			});
 			
-			function add_supplier_name( currdata ){
-				var param = {
-					"supplier": currdata
-				};
-				send_new_supplier_name( param );
-			}
-
 			function send_new_part(){
 				var cnt = document.getElementById( "add_part" );
 				var partnum = cnt.getElementsByClassName("numtext");
@@ -73,15 +66,9 @@
 					if( check_part_num( 0, 15, num_str ) ) {
 						var attr = get_doc_part_attr( part_attr );
 						if (attr !== false){
-							attr.state = "add_newdata";
 							attr.number = num_str;
-							attr.id = username;
-							send_to_db( attr );
-							var param = {
-								"id": username,
-								"supplier": attr.supplier 
-							};
-							send_new_supplier_name( param );
+							send_new_partnum( attr );
+							add_supplier_name( attr.supplier  );
 						}
 					}
 				}
@@ -91,6 +78,16 @@
 				var form_cnt = document.getElementById( "add_part_form" );
 				form_cnt.reset();
 			}
+			
+			function add_supplier_name( currdata ){
+				var param = {
+					"supplier": currdata
+				};
+				send_new_supplier_name( param );
+			}
+			
+			
+			
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
 		<script type="text/javascript" src="/SubScripts/macro_send.js"></script>

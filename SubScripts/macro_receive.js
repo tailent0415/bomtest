@@ -11,6 +11,15 @@ function receive_db_info( param ){
 	receive_to_db( refnum, attr );
 };
 
+// receive database supplier name
+function receive_db_supplier_name(){
+	var attr = {
+		"state": "get_all_supplier_name"
+	};
+	receive_to_db( "", attr );
+}
+
+
 // receive database part number
 function receive_db_partlist(){
 	var attr = {
@@ -31,13 +40,7 @@ function receive_part_info( source_str, part_num ){
 	}
 }
 
-// receive database supplier name
-function receive_db_supplier_name(){
-	var attr = {
-		"state": "get_all_supplier_name"
-	};
-	receive_to_db( "", attr );
-}
+
 
 // receive single supplier information
 function receive_supplier_info( supplier_name ){
