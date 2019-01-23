@@ -18,11 +18,7 @@ async function receive_to_db( Refnum, data ){
 
 // receive promise
 function receive_promise( Refnum, data ){
-	var tab_id = sessionStorage.getItem( "tab_id" );
 	var tabID = Refnum.tabID;
-	alert( tab_id );
-	alert( tabID );
-	alert( ( tab_id == tabID ) );
 	var supplier_obj = Refnum.supplier_obj;
 	return new Promise(function (resolve, reject){
 		$.ajax({
