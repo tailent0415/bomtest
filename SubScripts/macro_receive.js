@@ -32,15 +32,11 @@ function receive_part_info( source_str, part_num ){
 }
 
 // receive database supplier name
-function receive_db_supplier_name( param ){
+function receive_db_supplier_name(){
 	var attr = {
-		"id": param.id,
 		"state": "get_all_supplier_name"
 	};
-	var Refnum = {
-		"supplier_obj": param.supplier_obj
-	};
-	receive_to_db( Refnum, attr );
+	receive_to_db( "", attr );
 }
 
 // receive single supplier information
