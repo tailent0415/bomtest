@@ -50,7 +50,6 @@ function receive_promise( Refnum, data ){
 							supplier_list_options += '<option value="'+response[i].supplier+'" />';
 						}
 						sessionStorage.setItem( "supplier_options", supplier_list_options );
-
 						resolve( true );
 						break;
 					default:
