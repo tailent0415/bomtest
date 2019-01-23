@@ -45,6 +45,7 @@
 		</div>
 		<script language="JavaScript">
 			var body = $("body");
+			var element_refnum = "revise_cnt"
 			var username;
 			$(document).on({
 				ajaxStart: function(){
@@ -56,15 +57,12 @@
 			});
 
 			$(document).ready(function(){
-				var url = location.href;
-				var temp = url.split("?");
-				username = temp[1];
 				init_revise_interface();
 			});
 			
 			// revise interface control
 			function init_revise_interface(){
-				var cnt = document.getElementById( "revise_cnt" );
+				var cnt = document.getElementById( element_refnum );
 				var div_first_obj = document.getElementById( "revise" );
 				if( div_first_obj !== null ){
 					remove_revise_interface();
@@ -86,9 +84,10 @@
 				if( check_part_num( 0, 15, normal_part_number( num_value ) ) ){
 					
 					remove_revise_interface();
-				
+					
 					var revise_table_obj = document.getElementById( "revise_title" );
-					var cnt = document.getElementById( "revise_cnt" );
+					
+					var cnt = document.getElementById( element_refnum );
 					div_first_obj = document.createElement( "div" );
 					div_first_obj.id = "revise";
 					div_first_obj.setAttribute("class", "tab_form");
@@ -183,7 +182,6 @@
 			// add supplier new name
 			function add_supplier_name( currdata ){
 				var param = {
-					"id": username,
 					"supplier": currdata
 				};
 				send_new_supplier_name( param );

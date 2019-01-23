@@ -148,9 +148,13 @@
 			$(document).ready(function(){
 				username = sessionStorage.getItem("login_id");
 				if ( username == undefined ){
-					username = "Guest";
+					document.getElementById("user_title").innerHTML = "User: Guest";
+					setTimeout(function(){}, 1000);
+					window.location.reload();
 				}
-				document.getElementById("user_title").innerHTML = "User:"+ " " + username;
+				else{
+					document.getElementById("user_title").innerHTML = "User:"+ " " + username;
+				}
 			});
 		</script>
 	</body>
