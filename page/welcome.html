@@ -35,7 +35,7 @@
 		</style>
 	</head>
 	<body>
-		<p>當前版本: 1.0.1.41</p>
+		<p>當前版本: 1.0.1.42</p>
 		<div class="login_container">
 			<div class="login_icon" id="my-signin2"></div>
 			<div class="login_id align_left"><p id="user_title">尚未登入</p></div>
@@ -59,8 +59,9 @@
 				user_email = googleUser.getBasicProfile().getEmail();
 				user_id = user_email.substring( 0, user_email.indexOf("@") );
 				document.getElementById( "user_title" ).innerHTML = "Hello" + " " + user_id;
-				window.open( "menu.html", "frame_menu" );
 				sessionStorage.setItem( "login_id", user_id );
+				receive_db_supplier_name();
+				window.open( "menu.html", "frame_menu" );
 			};
 
 			// google login failure report
