@@ -133,7 +133,6 @@
 						break;
 					default:
 				}
-				username = sessionStorage.getItem("login_id");
 				if ( page_name != "" && username != null ){
 					window.open( page_name, "frame_display" );
 				}
@@ -146,11 +145,11 @@
 			
 			
 			$(document).ready(function(){
-				username = sessionStorage.getItem("login_id");
+				var url = location.href;
+				var temp = url.split("?");
+				username = temp[1];
 				if ( username == undefined ){
 					document.getElementById("user_title").innerHTML = "User: Guest";
-					setTimeout(function(){}, 1000);
-					window.location.reload();
 				}
 				else{
 					document.getElementById("user_title").innerHTML = "User:"+ " " + username;
