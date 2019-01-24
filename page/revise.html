@@ -47,8 +47,8 @@
 		<script language="JavaScript">
 			var body = $("body");
 			var table_refnum = $("#revise_table");
-			var element_refnum = "revise_cnt"
-			var username;
+			var element_refnum = "revise_cnt";
+			
 			$(document).on({
 				ajaxStart: function(){
 					body.addClass("loading");
@@ -223,7 +223,7 @@
 			// addend new row to product table
 			function append_btn(){
 				res_product_add_btn( table_refnum );
-			};
+			}
 			
 			// upload a new product data to database
 			function upload_btn(){
