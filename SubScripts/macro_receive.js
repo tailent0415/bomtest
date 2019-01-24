@@ -21,11 +21,11 @@ function receive_db_supplier_name(){
 
 
 // receive database part number
-function receive_db_partlist(){
+function receive_db_part_number(){
 	var attr = {
 		"state": "get_all_partnum"
 	};
-	receive_to_db(attr);
+	receive_to_db( "", attr);
 }
 
 // receive database part infomation , and update interface

@@ -52,6 +52,17 @@ function receive_promise( Refnum, data ){
 						sessionStorage.setItem( "supplier_options", supplier_list_options );
 						resolve( true );
 						break;
+					case "get_all_partnum":
+						if( response[0].number == undefined || response.number == "" ){
+							return;
+						}
+						part_list_options = "";
+						for(var i=0; i < response.length; i++){
+							part_list_options += '<option value="'+response[i].number+'" />';
+						}
+						sessionStorage.setItem( "part_options", part_list_options );
+						resolve( true );
+						break;
 					default:
 						resolve( "undefined function" );
 				}

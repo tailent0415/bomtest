@@ -16,6 +16,7 @@
 	</head>
 	<body>
 		<div class="load_modal"></div>
+		<datalist id="part_list" class="normal_font"></datalist>
 		<div id="add_product" class="page_container">
 			<form class="tab_form" id="add_product_form">
 				<label for="part_num_in">品號 :</label><input class="numtext input_container normal_font" type=text name="part_num1" size="1" maxlength="1" placeholder="1" style="text-transform:uppercase" onchange="check_part_num(3,1,this.value)">
@@ -76,9 +77,9 @@
 			});
 
 			$(document).ready(function(){
-				var url = location.href;
-				var temp = url.split("?");
-				username = temp[1];
+				var part_list_options = sessionStorage.getItem( "part_options" );
+				$("#part_list").empty();
+				$("#part_list").append( part_list_options );
 			});
 						
 			// addend new row to product table
@@ -99,8 +100,22 @@
 					for (i = 0; i < partnum.length; i++) {
 						num_str += partnum[i].value;
 					}
-					part_attr.number = num_str;
-					send_new_partnum( part_attr );
+					if( check_part_num( 0, 15, num_str ) ) {
+						var attr = get_doc_part_attr( part_attr );
+						if (attr !== false){
+							var data_str = "";
+							var data = table_refnum.bootstrapTable('getData');
+							for( var i=0; i<data.length; i++ ){
+								data_str += "index=" + i + "&number=" + data[i].number.val + "&quantity=" + data[i].quantity.val + ";";
+							}
+							attr.state = "add_newdata";
+							attr.number = num_str;
+							attr.bomcode = data_str;
+							if( data_str !== "" ){
+								send_new_partnum(attr);
+							}
+						}
+					}
 				}
 				else{
 					alert( "input has error" );
@@ -109,8 +124,7 @@
 				form_cnt.reset();
 				table_refnum.bootstrapTable('removeAll');
 			}
-			
-			
+
 			// table part number sub function
 			function edit_partnum( param, row, index ){
 				if(param.func == 1){
