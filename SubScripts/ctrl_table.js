@@ -5,6 +5,8 @@ function set_table_font(row, index) {
   };
 }
 
+
+// set table part number input type
 function set_table_partnum_input_type( table_refnum, curr_type, idx, source_val ){
 	
 	if ( curr_type == "static" ){

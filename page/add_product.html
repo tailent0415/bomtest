@@ -66,6 +66,7 @@
 			var body = $("body");
 			var table_refnum = $("#product_table_add");
 			var element_refnum = "add_product";
+			var part_list_options;
 			var username;
 			$(document).on({
 				ajaxStart: function(){
@@ -77,7 +78,7 @@
 			});
 
 			$(document).ready(function(){
-				var part_list_options = sessionStorage.getItem( "part_options" );
+				part_list_options = sessionStorage.getItem( "part_options" );
 				$("#part_list").empty();
 				$("#part_list").append( part_list_options );
 			});
@@ -131,7 +132,7 @@
 					return ("<pre onclick='change_static_type(" + index + ")'>" + param.val + "</pre>");
 				}
 				else if(param.func == 2){
-					return ("<input list='part_list' id='part_num_input' class='part_list_style normal_font' onblur='change_dynamic_type(" + index + ",this.value)' value=" + param.val + " ><datalist>" + part_list_options + "</datalist>");
+					return ("<input list='part_list' id='part_num_input' class='part_list_style normal_font' onblur='change_dynamic_type(" + index + ",this.value)' value=" + param.val + " >");
 				}
 			}
 			
