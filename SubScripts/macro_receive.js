@@ -46,7 +46,6 @@ function receive_product_param( param ){
 
 // receive database part infomation
 function revise_part_info( param ){
-	alert( "test" );
 	var part_num = param.number;
 	if( check_part_num( 0, 15, normal_part_number( part_num ) ) ){
 		var attr = {

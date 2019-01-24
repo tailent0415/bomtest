@@ -112,7 +112,6 @@
 					data_str += '<label for="part_num_in">品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" value="' + num_value + '" onchange="update_revise_type( this.value )"/>';
 					data_str += '<br><label for="part_name_in">品名 :</label>';
 					data_str += '<br><textarea id="part_name_in" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" ></textarea>';
-					alert( num_value[0] );
 					switch( num_value[0] ){
 						case "1":
 						case "2":
@@ -151,7 +150,6 @@
 								"container": cnt,
 								"number": num_value
 							};
-							alert( param.number );
 							revise_part_info( param );
 							break;
 						default:
