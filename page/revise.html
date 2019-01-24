@@ -112,7 +112,7 @@
 					data_str += '<label for="part_num_in">品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" value="' + num_value + '" onchange="update_revise_type( this.value )"/>';
 					data_str += '<br><label for="part_name_in">品名 :</label>';
 					data_str += '<br><textarea id="part_name_in" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" ></textarea>';
-					
+					alert( num_value[0] );
 					switch( num_value[0] ){
 						case "1":
 						case "2":
@@ -145,12 +145,13 @@
 							data_str += '<br><label for="part_quantity_in">數量 :</label><input id="part_quantity_in" type="text" class="part_attr input_container normal_font" name="part_quantity" type="text" style="width:60px" />';
 							data_str += '<div class="btn_field"><button type="button" class="btn btn-primary" onclick="revise_btn()">修改</button></div>';
 							div_second_obj.innerHTML = data_str;
-							div_first_obj.appendChild(div_second_obj);
+							div_first_obj.appendChild( div_second_obj );
 							revise_table_obj.style.display = "none";
 							var param = {
 								"container": cnt,
 								"number": num_value
 							};
+							alert( param.number );
 							revise_part_info( param );
 							break;
 						default:
@@ -158,6 +159,88 @@
 				}
 				else{
 					init_revise_interface();
+				}
+			}
+			
+			// table part number sub function
+			function edit_partnum( param, row, index ){
+				if(param.func == 1){
+					return ("<pre onclick='change_static_type(" + index + ")'>" + param.val + "</pre>");
+				}
+				else if(param.func == 2){
+					return ("<input list='part_list' id='part_num_input' class='part_list_style normal_font' onblur='change_dynamic_type(" + index + ",this.value)' value=" + param.val + " >");
+				}
+			}
+			
+			// table part quantity sub function
+			function edit_quan( param, row, index ){
+				if(param.func == 1){
+					return ("<p onclick='change_quan_input(" + index + "," + param.val + ")'>" + param.val + "</p>");
+				}
+				else if(param.func == 2){
+					return ("<input type='number' size='3' onblur='calc_total_cost(" + index + ",this.value )' value='" + param.val + "'/>");
+				}
+			}
+			
+			// calculate total cost and update	
+			function calc_total_cost( idx, val ){
+				var cnt = document.getElementById( element_refnum );
+				upd_total_cost( cnt, table_refnum, idx, val );
+			}
+
+			// static change partnum input type
+			function change_static_type( idx, source_val ){
+				set_table_partnum_input_type( table_refnum, "static", idx, source_val )
+			}
+			
+			// dynamic change partnum input type
+			function change_dynamic_type( idx, source_val ){
+				set_table_partnum_input_type( table_refnum, "dynamic", idx, source_val )
+			}
+			
+			// table formatter delete button
+			function formatter_delbtn( val, row, index ){
+				return ("<button class='delbtn btn btn-danger glyphicon glyphicon-remove row-remove' onclick='remove_table_row(" + index + ")'></button>");
+			}
+			
+			// remove table row
+			function remove_table_row( idx ){
+				rem_table_row( table_refnum, idx );
+			}
+			
+			// add supplier new name
+			function add_supplier_name( currdata ){
+				var param = {
+					"supplier": currdata
+				};
+				send_new_supplier_name( param );
+			}
+			
+			
+			//--------Button Response-------//
+			// addend new row to product table
+			function append_btn(){
+				res_product_add_btn( table_refnum );
+			}
+			
+			// upload a new product data to database
+			function upload_btn(){
+				var cnt = document.getElementById( element_refnum );
+				if( res_product_upload_btn( cnt, table_refnum ) ){
+					var form_cnt = document.getElementById( "add_product_form" );
+					form_cnt.reset();
+					table_refnum.bootstrapTable( 'removeAll' );
+				}
+				else{
+					alert( "input error" );
+				}
+			}
+			
+			// send replace part data to database
+			function revise_btn(){
+				var cnt = document.getElementById( element_refnum );
+				if( res_revise_btn( cnt ) == false ){
+					alert( "Revise Error" );
 				}
 			}
 			
