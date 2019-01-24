@@ -29,7 +29,7 @@ function send_promise( data ){
 				if ( response !== false ){
 					switch( data.state ){
 						case "add_newdata":
-							receive_db_partlist();
+							receive_db_part_number();
 							alert("新增完成");
 							resolve( true );
 							break;

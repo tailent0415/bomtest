@@ -109,11 +109,10 @@
 							for( var i=0; i<data.length; i++ ){
 								data_str += "index=" + i + "&number=" + data[i].number.val + "&quantity=" + data[i].quantity.val + ";";
 							}
-							attr.state = "add_newdata";
 							attr.number = num_str;
 							attr.bomcode = data_str;
 							if( data_str !== "" ){
-								send_new_partnum(attr);
+								send_new_partnum( attr );
 							}
 						}
 					}
