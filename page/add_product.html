@@ -85,7 +85,7 @@
 			function append_btn_res(){
 				var data_attr = new Array();
 				var data_attr = table_refnum.bootstrapTable("getData",false);
-				table_refnum.bootstrapTable( "append", add_product_part_row( data_attr.length ) );
+				table_refnum.bootstrapTable( "append", add_product_part_row( "add_product", data_attr.length ) );
 				table_refnum.bootstrapTable( "scrollTo", 'bottom' );
 			};
 			
@@ -127,7 +127,7 @@
 					return ("<p onclick='change_quan_input(" + index + "," + param.val + ")'>" + param.val + "</p>");
 				}
 				else if(param.func == 2){
-					return ("<input type='number' size='3' onblur='update_total_cost(" + index + ",this.value )' value='" + param.val + "'/>");
+					return ("<input type='number' size='3' onblur='calc_total_cost(" + index + ",this.value )' value='" + param.val + "'/>");
 				}
 			}
 			
@@ -138,75 +138,13 @@
 			
 			// remove table row
 			function remove_table_row( idx ){
-				var attr = table_refnum.bootstrapTable('getRowByUniqueId', idx );
-				
-				table_refnum.bootstrapTable('remove', {
-					field: "index",
-					values: Array.of(idx)
-				});
-				
-				var i = 1;
-				while( attr !== null ){
-					var replace_index = idx+i-1;
-					table_refnum.bootstrapTable('updateRow', {
-						index: replace_index,
-						row: {
-							index: replace_index,
-						}
-					});
-					attr = table_refnum.bootstrapTable('getRowByUniqueId', idx+i+1 );
-					i++;
-				}
+				rem_table_row( table_refnum, idx )
 			}
-			
-			// add table new row
-			function add_product_part_row( idx ){
-				var rows = [];
-				var num_param ={
-					"func": 1,
-					"val": "undefined"
-				};
 
-				rows.push({
-					index: idx,
-					number: num_param,
-					name: "",
-					quantity: "",
-					cost: "",
-					totalcost: "",
-					supplier: "",
-					format: "",
-					delrow: ""
-				});
-				
-				return rows;
-			}		
-			
 			// calculate total cost and update	
-			function update_total_cost( idx, val ){
-				var attr = table_refnum.bootstrapTable('getRowByUniqueId', idx );
-				if ( isNaN( parseInt( val ) ) ){
-					val = 0;
-				}
-				
-				var quan_param ={
-					"func": 1,
-					"val": val
-				};
-				
-				if( typeof attr.cost !== "number"){
-					attr.cost = 0;
-				}
-				
-				table_refnum.bootstrapTable('updateRow', {
-					index: idx,
-					row: {
-						quantity: quan_param,
-						totalcost: attr.cost * val,
-					}
-				});
-				
-				data_attr = table_refnum.bootstrapTable("getData",false);
+			function calc_total_cost( idx, val ){
+				upd_total_cost( table_refnum, idx, val );
+				var data_attr = table_refnum.bootstrapTable("getData",false);
 				var product_cost = 0;
 				var value = 0;
 				for( var i = 0; i<data_attr.length; i++ ){
@@ -232,6 +170,6 @@
 		<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
 		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
 		<script type="text/javascript" src="/SubScripts/get.js"></script>
-		<script type="text/javascript" src="/SubScripts/set_table_style.js"></script>
+		<script type="text/javascript" src="/SubScripts/ctrl_table.js"></script>
 	</body>
 </html>
