@@ -129,9 +129,11 @@
 			// table part number sub function
 			function edit_partnum( param, row, index ){
 				if(param.func == 1){
+					alert( "s" )
 					return ("<pre onclick='change_static_type(" + index + ")'>" + param.val + "</pre>");
 				}
 				else if(param.func == 2){
+					alert( "d" )
 					return ("<input list='part_list' id='part_num_input' class='part_list_style normal_font' onblur='change_dynamic_type(" + index + ",this.value)' value=" + param.val + " >");
 				}
 			}
