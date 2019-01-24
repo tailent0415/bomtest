@@ -97,9 +97,8 @@
 				if( check_part_num( 0, 15, normal_part_number( num_value ) ) ){
 					
 					remove_revise_interface();
-					
-					var revise_table_obj = document.getElementById( "revise_title" );
 					var cnt = document.getElementById( element_refnum );
+					var revise_table_obj = document.getElementById( "revise_title" );
 					div_first_obj = document.createElement( "div" );
 					div_first_obj.id = "revise";
 					div_first_obj.setAttribute("class", "tab_form");
@@ -129,7 +128,12 @@
 							div_first_obj.appendChild(div_second_obj);
 							div_first_obj.after( revise_table_obj );
 							revise_table_obj.style.display = "inline";
-							receive_part_info( "revise_product_data", num_value )
+							var param = {
+								"tabID": table_refnum,
+								"container": cnt,
+								"number" num_value
+							};
+							revise_product_info( param );
 							break;
 						case "3":
 							data_str += '<br><label for="part_format_in">規格 :</label>';
@@ -143,7 +147,11 @@
 							div_second_obj.innerHTML = data_str;
 							div_first_obj.appendChild(div_second_obj);
 							revise_table_obj.style.display = "none";
-							receive_part_info( "revise_part_data", num_value )
+							var param = {
+								"container": cnt,
+								"number" num_value
+							};
+							revise_part_info( param );
 							break;
 						default:
 					}

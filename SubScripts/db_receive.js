@@ -19,7 +19,9 @@ async function receive_to_db( Refnum, data ){
 // receive promise
 function receive_promise( Refnum, data ){
 	var tabID = Refnum.tabID;
+	var cnt = Refnum.container;
 	var supplier_obj = Refnum.supplier_obj;
+	
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "post",
@@ -69,7 +71,7 @@ function receive_promise( Refnum, data ){
 							return;
 						}
 						switch(data.func){
-							case "product":
+							case "product": // receive product param
 								if( response.number !== undefined ){
 									var num_param ={
 										func: 1,
@@ -91,6 +93,101 @@ function receive_promise( Refnum, data ){
 											format: response.format
 										}
 									});
+									resolve( true );
+								}
+								break;
+							case "revise_part_data": // revise part data
+								var var_val = cnt.getElementsByClassName("part_attr");
+								for (var i=0; i<var_val.length; i++){
+									switch( var_val[i].name ){
+										case "part_name":
+											var_val[i].value = response.name;
+											break;
+										case "part_format":
+											var_val[i].value = response.format;
+											break;
+										case "part_fignum":
+											var_val[i].value = response.fignum;
+											break;
+										case "part_supplier":
+											var_val[i].value = response.supplier;
+											break;
+										case "part_unit":
+											var_val[i].value = response.unit;
+											break;
+										case "part_cost":
+											var_val[i].value = response.cost;
+											break;
+										case "part_quantity":
+											var_val[i].value = response.stock_quantity;
+											break;
+										default:
+									}
+								}
+								resolve( true );
+								break;
+							case "revise_product_data": // revise product data
+								var var_val = cnt.getElementsByClassName("part_attr");
+								tabID.bootstrapTable('removeAll');
+								if(response.data == undefined){
+									for (var i=0; i<var_val.length; i++){
+										switch( var_val[i].name ){	
+											case "part_name":
+												var_val[i].value = "";
+												break;
+											case "part_remark":
+												var_val[i].value = "";
+												break;
+											case "part_totalcost":
+												var_val[i].value = "";
+												break;
+											default:
+										}
+									}
+								}
+								else{
+									for( var i=0; i<var_val.length; i++ ){
+										switch( var_val[i].name ){	
+											case "part_name":
+												var_val[i].value = response.name;
+												break;
+											case "part_remark":
+												var_val[i].value = response.remark;
+												break;
+											case "part_totalcost":
+												var_val[i].value = response.cost;
+												break;
+											default:
+										};
+									}
+									
+									var rec_data;
+									var new_data = new Array();
+									for( var i=0; i<response.data.length; i++ ){
+										rec_data = response.data[i];
+										var num_param ={
+											func: 1,
+											val: rec_data.number
+										};
+										var quan_param ={
+											func: 1,
+											val: rec_data.quantity
+										};
+										new_data[i] = {
+										  "index": rec_data.index,
+										  "number": num_param,
+										  "name": rec_data.name,
+										  "quantity": quan_param,
+										  "cost": rec_data.cost,
+										  "totalcost": rec_data.totalcost,
+										  "supplier": rec_data.supplier,
+										  "format": rec_data.format,
+										  "delrow": ""
+										};
+									}
+									tabID.bootstrapTable('load', new_data);
+									tabID.bootstrapTable('selectPage', '1');
+									tabID.bootstrapTable('scrollTo', 'top');
 									resolve( true );
 								}
 								break;
