@@ -78,6 +78,7 @@
 
 			$(document).ready(function(){
 				var part_list_options = sessionStorage.getItem( "part_options" );
+				alert( part_list_options );
 				$("#part_list").empty();
 				$("#part_list").append( part_list_options );
 			});
@@ -86,7 +87,7 @@
 			function append_btn_res(){
 				var data_attr = new Array();
 				var data_attr = table_refnum.bootstrapTable("getData",false);
-				table_refnum.bootstrapTable( "append", add_product_part_row( "add_product", data_attr.length ) );
+				table_refnum.bootstrapTable( "append", add_table_part_row( "add_product", data_attr.length ) );
 				table_refnum.bootstrapTable( "scrollTo", 'bottom' );
 			};
 			
@@ -176,6 +177,35 @@
 					}
 				}
 			}
+			
+			// dynamic change partnum input type
+			function change_partnum_type_dynamic( idx, source_val ){
+				if( check_part_num_noshow( 0, 15, normal_part_number( source_val ) ) ){
+					var data = table_refnum.bootstrapTable( 'getData', false );
+					var same_check = true;
+					for (var i=0; i<data.length; i++){
+						if( i !== idx ){
+							if( data[i].number.val == source_val ){
+								same_check = false;
+								break;
+							}
+						}
+					}
+					if(same_check){
+						var param = {
+							"index": idx,
+							"value": source_val,
+							"tabID": table_refnum
+						}
+						receive_product_param( param, idx, source_val );
+					}
+					else{
+						alert( "請勿輸入相同品號" );
+					}
+				}
+				upd_table_part_row( table_refnum, "add_product", idx )
+			}
+			
 			
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>

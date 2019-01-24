@@ -63,6 +63,40 @@ function receive_promise( Refnum, data ){
 						sessionStorage.setItem( "part_options", part_list_options );
 						resolve( true );
 						break;
+					case "get_single_data":
+						if( response.name == undefined || response.name == "" ){
+							resolve( "錯誤的檔案" );
+							return;
+						}
+						switch(data.func){
+							case "product":
+								if( response.number !== undefined ){
+									var num_param ={
+										func: 1,
+										val: response.number
+									};
+									var quan_param ={
+										func: 1,
+										val: 0
+									};
+									tabID.bootstrapTable('updateRow', {
+										index: data.index,
+										row: {
+											index: data.index,
+											number: num_param,
+											name: response.name,
+											quantity: quan_param,
+											cost: response.cost,
+											supplier: response.supplier,
+											format: response.format
+										}
+									});
+									resolve( true );
+								}
+								break;
+							default:
+						}
+						
 					default:
 						resolve( "undefined function" );
 				}

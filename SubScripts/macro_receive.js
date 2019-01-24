@@ -25,8 +25,34 @@ function receive_db_part_number(){
 	var attr = {
 		"state": "get_all_partnum"
 	};
-	receive_to_db( "", attr);
+	receive_to_db( "", attr );
 }
+
+// receive product parameter to table row
+function receive_product_param( param ){
+	var attr = {
+		"state": "get_single_data",
+		"func": "product",
+		"number": param.value,
+		"index": param.index
+	};
+	
+	var refnum = {
+		"tabID": param.tabID
+	}
+	
+	receive_to_db( refnum, attr);
+}
+
+
+
+
+
+
+
+
+
+
 
 // receive database part infomation , and update interface
 function receive_part_info( source_str, part_num ){
@@ -62,16 +88,7 @@ function receive_supplier_list( param ){
 	receive_to_db( Refnum, attr );
 }
 
-// receive product parameter to table row
-function receive_product_param( idx, val ){
-	var attr = {
-		"state": "get_single_data",
-		"func": "product",
-		"number": val,
-		"index": idx
-	};
-	receive_to_db(attr);
-}
+
 
 
 

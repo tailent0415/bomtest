@@ -5,9 +5,41 @@ function set_table_font(row, index) {
   };
 }
 
+// update table row
+function upd_table_part_row( table_refnum, type, idx ){	
+	switch( type ){
+		case "add_product":
+			var num_param ={
+				func: 1,
+				val: "undefined"
+			};
+			
+			var quan_param ={
+				func: 1,
+				val: 0
+			};
+			
+			table_refnum.bootstrapTable('updateRow', {
+				index: idx,
+				row: {
+					index: idx,
+					number: num_param,
+					name: "",
+					quantity: quan_param,
+					cost: "",
+					supplier: "",
+					format: ""
+				}
+			});
+			
+			break;
+		default:
+	};
+}
+
 
 // add table new row
-function add_product_part_row( type, idx ){
+function add_table_part_row( type, idx ){
 	var rows = [];
 	switch( type ){
 		case "add_product":
@@ -35,6 +67,8 @@ function add_product_part_row( type, idx ){
 	return rows;
 }
 
+
+// update table total cost
 function upd_total_cost( table_refnum, idx, val ){
 	var attr = table_refnum.bootstrapTable('getRowByUniqueId', idx );
 	
