@@ -38,6 +38,11 @@ function send_promise( data ){
 							alert("修改完成");
 							resolve( true );
 							break;
+						case "replace_data":
+							receive_db_supplier_name();
+							alert("修改完成");
+							resolve( true );
+							break;
 						case "add_inventory_quantity":
 							var attr = {
 								"state": "get_single_data",

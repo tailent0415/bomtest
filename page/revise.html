@@ -122,8 +122,8 @@
 							data_str += '<br><label for="part_unit_in">單位 :</label><select id="part_unit_in" type="text" class="part_attr input_container normal_font" name="part_unit" style="width:70px" ><option value="SET">SET</option><option value="PCS">PCS</option></select>';
 							data_str += '<br><label for="part_remark_in">備註 : </label>';
 							data_str += '<br><textarea id="part_remark_in" class="part_attr normal_font" name="part_remark" rows="5" cols="50" wrap="hard" ></textarea>';
-							data_str += '<br><div class="col-xs-2" style="margin-top:5px;margin-bottom:5px"><button type="button" class="col-xs-12 btn btn-primary" onclick="append_btn_res()" >新增</button></div>';
-							data_str += '<div class="col-xs-2" style="margin-top:5px;margin-bottom:5px" ><button type="button" class="col-xs-12 btn btn-primary" onclick="send_revise_product()" >上傳</button></div>';
+							data_str += '<br><div class="col-xs-2" style="margin-top:5px;margin-bottom:5px"><button type="button" class="col-xs-12 btn btn-primary" onclick="append_btn()" >新增</button></div>';
+							data_str += '<div class="col-xs-2" style="margin-top:5px;margin-bottom:5px" ><button type="button" class="col-xs-12 btn btn-primary" onclick="upload_btn()" >上傳</button></div>';
 							data_str += '<div class="col-xs-8 align_right"><label for="part_totalcost_out">總成本 :</label><input type=text id="part_totalcost_out" class="part_attr input_container" style="width:200px;margin-top:15px" name="part_totalcost" disabled="true" value="0"></div>';
 							div_second_obj.innerHTML = data_str;
 							div_first_obj.appendChild(div_second_obj);
@@ -139,7 +139,7 @@
 							data_str += '<br><label for="part_unit_in">單位 :</label><select id="part_unit_in" type="text" class="part_attr input_container normal_font" name="part_unit" style="width:70px" ><option value="SET">SET</option><option value="PCS">PCS</option></select>';
 							data_str += '<br><label for="part_cost_in">成本 :</label><input id="part_cost_in" type="text" class="part_attr input_container normal_font" name="part_cost" type="text" style="width:100px" />';
 							data_str += '<br><label for="part_quantity_in">數量 :</label><input id="part_quantity_in" type="text" class="part_attr input_container normal_font" name="part_quantity" type="text" style="width:60px" />';
-							data_str += '<div class="btn_field"><button type="button" class="btn btn-primary" onclick="send_revise_part()">修改</button></div>';
+							data_str += '<div class="btn_field"><button type="button" class="btn btn-primary" onclick="revise_btn()">修改</button></div>';
 							div_second_obj.innerHTML = data_str;
 							div_first_obj.appendChild(div_second_obj);
 							revise_table_obj.style.display = "none";
@@ -175,30 +175,14 @@
 			
 			// calculate total cost and update	
 			function calc_total_cost( idx, val ){
-				upd_total_cost( table_refnum, idx, val );
-				var data_attr = table_refnum.bootstrapTable("getData",false);
-				var product_cost = 0;
-				var value = 0;
-				for( var i = 0; i<data_attr.length; i++ ){
-					value = parseFloat( data_attr[i].totalcost );
-					if( isNaN(value) ){
-						value = 0;
-					}
-					product_cost += value;
-				}
 				var cnt = document.getElementById( element_refnum );
-				var part_attr = cnt.getElementsByClassName("part_attr");
-				for( var i=0; i<part_attr.length; i++ ){
-					if( part_attr[i].name == "part_totalcost" ){
-						part_attr[i].value = product_cost;
-					}
-				}
+				upd_total_cost( cnt, table_refnum, idx, val );
 			}
 
+			// static change partnum input type
 			function change_static_type( idx, source_val ){
 				set_table_partnum_input_type( table_refnum, "static", idx, source_val )
 			}
-			
 			
 			// dynamic change partnum input type
 			function change_dynamic_type( idx, source_val ){
@@ -224,6 +208,33 @@
 			}
 			
 			
+			//--------Button Response-------//
+			// addend new row to product table
+			function append_btn(){
+				res_product_add_btn( table_refnum );
+			};
+			
+			// upload a new product data to database
+			function upload_btn(){
+				var cnt = document.getElementById( element_refnum );
+				if( res_product_upload_btn( cnt, table_refnum ) ){
+					var form_cnt = document.getElementById( "add_product_form" );
+					form_cnt.reset();
+					table_refnum.bootstrapTable( 'removeAll' );
+				}
+				else{
+					alert( "input error" );
+				}
+			}
+			
+			// send replace part data to database
+			function revise_btn(){
+				var cnt = document.getElementById( element_refnum );
+				if( res_revise_btn( cnt ) == false ){
+					alert( "Revise Error" );
+				}
+			}
+			
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
 		<script type="text/javascript" src="/SubScripts/macro_send.js"></script>
@@ -231,5 +242,7 @@
 		<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
 		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
 		<script type="text/javascript" src="/SubScripts/get.js"></script>
+		<script type="text/javascript" src="/SubScripts/ctrl_table.js"></script>
+		<script type="text/javascript" src="/SubScripts/response_button.js"></script>
 	</body>
 </html>

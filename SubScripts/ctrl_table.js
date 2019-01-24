@@ -112,7 +112,7 @@ function add_table_part_row( type, idx ){
 
 
 // update table total cost
-function upd_total_cost( table_refnum, idx, val ){
+function upd_total_cost( cnt, table_refnum, idx, val ){
 	var attr = table_refnum.bootstrapTable('getRowByUniqueId', idx );
 	
 	if ( isNaN( parseInt( val ) ) ){
@@ -134,6 +134,25 @@ function upd_total_cost( table_refnum, idx, val ){
 			"totalcost": attr.cost * val,
 		}
 	});
+	
+	var data_attr = table_refnum.bootstrapTable("getData",false);
+	var product_cost = 0;
+	var value = 0;
+	for( var i = 0; i<data_attr.length; i++ ){
+		value = parseFloat( data_attr[i].totalcost );
+		if( isNaN(value) ){
+			value = 0;
+		}
+		product_cost += value;
+	}
+	
+	var part_attr = cnt.getElementsByClassName("part_attr");
+	for( var i=0; i<part_attr.length; i++ ){
+		if( part_attr[i].name == "part_totalcost" ){
+			part_attr[i].value = product_cost;
+		}
+	}
+	
 }
 
 

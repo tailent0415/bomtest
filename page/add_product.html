@@ -33,8 +33,8 @@
 				<br><label for="part_remark_in">備註 : </label>
 				<br><textarea id="part_remark_in" class="part_attr normal_font" name="part_remark" rows="5" cols="50" wrap="hard" ></textarea>
 				<br><div id="add_product_toolbar">
-					<button type="button" class="btn btn-primary" onclick='append_btn_res()' >新增表單</button>
-					<button type="button" class="btn btn-primary" onclick='send_new_product()' >資料上傳</button>
+					<button type="button" class="btn btn-primary" onclick='append_btn()' >新增表單</button>
+					<button type="button" class="btn btn-primary" onclick='upload_btn()' >資料上傳</button>
 					<br><label for="part_totalcost_out">總成本 :</label><input type=text id="part_totalcost_out" class="part_attr input_container normal_font" style="width:200px;margin-top:15px" name="part_totalcost" disabled="true" value="0" >
 				</div>
 				<table id="product_table_add"
@@ -81,49 +81,7 @@
 				$("#part_list").empty();
 				$("#part_list").append( part_list_options );
 			});
-						
-			// addend new row to product table
-			function append_btn_res(){
-				var data_attr = new Array();
-				var data_attr = table_refnum.bootstrapTable("getData",false);
-				table_refnum.bootstrapTable( "append", add_table_part_row( "add_product", data_attr.length ) );
-				table_refnum.bootstrapTable( "scrollTo", 'bottom' );
-			};
 			
-			// send a new product data to database
-			function send_new_product(){
-				var cnt = document.getElementById( element_refnum );
-				var partnum = cnt.getElementsByClassName("numtext");
-				var part_attr = cnt.getElementsByClassName("part_attr");
-				var num_str = "";
-				if( partnum[0].value == "1" || partnum[0].value == "2" ){
-					for (i = 0; i < partnum.length; i++) {
-						num_str += partnum[i].value;
-					}
-					if( check_part_num( 0, 15, num_str ) ) {
-						var attr = get_doc_part_attr( part_attr );
-						if (attr !== false){
-							var data_str = "";
-							var data = table_refnum.bootstrapTable('getData');
-							for( var i=0; i<data.length; i++ ){
-								data_str += "index=" + i + "&number=" + data[i].number.val + "&quantity=" + data[i].quantity.val + ";";
-							}
-							attr.number = num_str;
-							attr.bomcode = data_str;
-							if( data_str !== "" ){
-								send_new_partnum( attr );
-							}
-						}
-					}
-				}
-				else{
-					alert( "input has error" );
-				}
-				var form_cnt = document.getElementById( "add_product_form" );
-				form_cnt.reset();
-				table_refnum.bootstrapTable('removeAll');
-			}
-
 			// table part number sub function
 			function edit_partnum( param, row, index ){
 				if(param.func == 1){
@@ -156,24 +114,8 @@
 
 			// calculate total cost and update	
 			function calc_total_cost( idx, val ){
-				upd_total_cost( table_refnum, idx, val );
-				var data_attr = table_refnum.bootstrapTable("getData",false);
-				var product_cost = 0;
-				var value = 0;
-				for( var i = 0; i<data_attr.length; i++ ){
-					value = parseFloat( data_attr[i].totalcost );
-					if( isNaN(value) ){
-						value = 0;
-					}
-					product_cost += value;
-				}
 				var cnt = document.getElementById( element_refnum );
-				var part_attr = cnt.getElementsByClassName("part_attr");
-				for( var i=0; i<part_attr.length; i++ ){
-					if( part_attr[i].name == "part_totalcost" ){
-						part_attr[i].value = product_cost;
-					}
-				}
+				upd_total_cost( cnt, table_refnum, idx, val );
 			}
 			
 			function change_static_type( idx, source_val ){
@@ -187,6 +129,26 @@
 			}
 			
 			
+			
+			//--------Button Response-------//
+			// addend new row to product table
+			function append_btn(){
+				res_product_add_btn( table_refnum );
+			};
+			
+			// send a new product data to database
+			function upload_btn(){
+				var cnt = document.getElementById( element_refnum );
+				if( res_product_upload_btn( cnt, table_refnum ) == false ){
+					alert( "input error" );
+				}
+				else{
+					var form_cnt = document.getElementById( "add_product_form" );
+					form_cnt.reset();
+					table_refnum.bootstrapTable( 'removeAll' );
+				}
+			}
+			
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
 		<script type="text/javascript" src="/SubScripts/macro_send.js"></script>
@@ -195,5 +157,6 @@
 		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
 		<script type="text/javascript" src="/SubScripts/get.js"></script>
 		<script type="text/javascript" src="/SubScripts/ctrl_table.js"></script>
+		<script type="text/javascript" src="/SubScripts/response_button.js"></script>
 	</body>
 </html>

@@ -16,6 +16,13 @@ function send_new_supplier_name( param ){
 	send_to_db( attr );
 }
 
+// send replace part data to database
+function send_revise_part( attr ){
+	attr.state = "replace_data"
+	send_to_db( attr );
+}
+
+
 
 // send a revise product data to database
 function send_revise_product(){
@@ -41,20 +48,7 @@ function send_revise_product(){
 }
 
 
-// send replace part data to database
-function send_revise_part(){
-	var cnt = document.getElementById( ele_id );
-	var part_attr = cnt.getElementsByClassName("part_attr");
-	var attr = get_doc_part_attr( part_attr );
-	if( attr !== false ){
-		attr.number = normal_part_number( attr.number );
-		if( check_part_num( 0, 15, attr.number ) ){
-			attr.state = "replace_data";
-			send_to_db( attr );
-		}
-	}
 
-}
 
 
 // send inventory variable to database
