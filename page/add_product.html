@@ -129,10 +129,10 @@
 			// table part number sub function
 			function edit_partnum( param, row, index ){
 				if(param.func == 1){
-					return ("<pre onclick='change_partnum_type_static(" + index + ")'>" + param.val + "</pre>");
+					return ("<pre onclick='change_static_type(" + index + ")'>" + param.val + "</pre>");
 				}
 				else if(param.func == 2){
-					return ("<input list='part_list' id='part_num_input' class='part_list_style normal_font' onblur='change_partnum_type_dynamic(" + index + ",this.value)' value=" + param.val + " ><datalist>" + part_list_options + "</datalist>");
+					return ("<input list='part_list' id='part_num_input' class='part_list_style normal_font' onblur='change_dynamic_type(" + index + ",this.value)' value=" + param.val + " ><datalist>" + part_list_options + "</datalist>");
 				}
 			}
 			
@@ -178,32 +178,14 @@
 				}
 			}
 			
+			function change_static_type( idx, source_val ){
+				set_table_partnum_input_type( table_refnum, "static", idx, source_val )
+			}
+			
+			
 			// dynamic change partnum input type
-			function change_partnum_type_dynamic( idx, source_val ){
-				if( check_part_num_noshow( 0, 15, normal_part_number( source_val ) ) ){
-					var data = table_refnum.bootstrapTable( 'getData', false );
-					var same_check = true;
-					for (var i=0; i<data.length; i++){
-						if( i !== idx ){
-							if( data[i].number.val == source_val ){
-								same_check = false;
-								break;
-							}
-						}
-					}
-					if(same_check){
-						var param = {
-							"index": idx,
-							"value": source_val,
-							"tabID": table_refnum
-						}
-						receive_product_param( param, idx, source_val );
-					}
-					else{
-						alert( "請勿輸入相同品號" );
-					}
-				}
-				upd_table_part_row( table_refnum, "add_product", idx )
+			function change_dynamic_type( idx, source_val ){
+				set_table_partnum_input_type( table_refnum, "dynamic", idx, source_val )
 			}
 			
 			

@@ -5,36 +5,77 @@ function set_table_font(row, index) {
   };
 }
 
-// update table row
-function upd_table_part_row( table_refnum, type, idx ){	
-	switch( type ){
-		case "add_product":
-			var num_param ={
-				func: 1,
-				val: "undefined"
-			};
-			
-			var quan_param ={
-				func: 1,
-				val: 0
-			};
-			
-			table_refnum.bootstrapTable('updateRow', {
-				index: idx,
-				row: {
-					index: idx,
-					number: num_param,
-					name: "",
-					quantity: quan_param,
-					cost: "",
-					supplier: "",
-					format: ""
+function set_table_partnum_input_type( table_refnum, curr_type, idx, source_val ){
+	
+	if ( curr_type == "static" ){
+		var param = table_refnum.bootstrapTable( 'getRowByUniqueId', idx );
+		if(param.number.val == "undefined"){
+			param_val = "";
+		}
+		else{
+			param_val = param.number.val;
+		}
+		var num_param ={
+			func: 2,
+			val: param_val
+		};
+		table_refnum.bootstrapTable('updateRow', {
+			index: idx,
+			row: {
+				number: num_param
+			}
+		});
+		return;
+	}
+	
+	if ( curr_type == "dynamic" ){
+		if( check_part_num_noshow( 0, 15, normal_part_number( source_val ) ) ){
+			var data = table_refnum.bootstrapTable( 'getData', false );
+			var same_check = true;
+			for (var i=0; i<data.length; i++){
+				if( i !== idx ){
+					if( data[i].number.val == source_val ){
+						same_check = false;
+						break;
+					}
 				}
-			});
-			
-			break;
-		default:
-	};
+			}
+			if(same_check){
+				var param = {
+					"index": idx,
+					"value": source_val,
+					"tabID": table_refnum
+				}
+				receive_product_param( param );
+			}
+			else{
+				alert( "請勿輸入相同品號" );
+			}
+		}
+		var num_param ={
+			func: 1,
+			val: "undefined"
+		};
+		
+		var quan_param ={
+			func: 1,
+			val: 0
+		};
+		
+		table_refnum.bootstrapTable('updateRow', {
+			index: idx,
+			row: {
+				index: idx,
+				number: num_param,
+				name: "",
+				quantity: quan_param,
+				cost: "",
+				supplier: "",
+				format: ""
+			}
+		});
+		return;
+	}
 }
 
 
