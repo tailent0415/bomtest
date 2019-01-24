@@ -133,19 +133,19 @@
 			//--------Button Response-------//
 			// addend new row to product table
 			function append_btn(){
-				res_product_add_btn( table_refnum );
+				res_append_row_btn( table_refnum );
 			};
 			
 			// send a new product data to database
 			function upload_btn(){
 				var cnt = document.getElementById( element_refnum );
-				if( res_product_upload_btn( cnt, table_refnum ) == false ){
-					alert( "input error" );
-				}
-				else{
+				if( res_product_upload_btn( cnt, table_refnum ) ){
 					var form_cnt = document.getElementById( "add_product_form" );
 					form_cnt.reset();
 					table_refnum.bootstrapTable( 'removeAll' );
+				}
+				else{
+					alert( "input error" );
 				}
 			}
 			

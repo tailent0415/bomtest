@@ -21,7 +21,6 @@ function receive_promise( Refnum, data ){
 	var tabID = Refnum.tabID;
 	var cnt = Refnum.container;
 	var supplier_obj = Refnum.supplier_obj;
-	
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "post",
@@ -191,6 +190,21 @@ function receive_promise( Refnum, data ){
 									resolve( true );
 								}
 								break;
+							case "upd_quantity_data": // update quantity data
+									var var_val = cnt.getElementsByClassName("part_attr");
+									for (var i=0; i<var_val.length; i++){
+										switch( var_val[i].name ){
+											case "part_name":
+												var_val[i].value = response.name;
+												break;
+											case "inventory":
+												var_val[i].value = response.stock_quantity;
+												break;
+											default:
+										}
+									}
+									resolve( true );
+									break;
 							default:
 						}
 						

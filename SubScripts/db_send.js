@@ -1,8 +1,8 @@
 // send data to database
-async function send_to_db( data ){
+async function send_to_db( Refnum, data ){
 	data.id = sessionStorage.getItem("login_id");
 	try{
-		var response = await send_promise( data );
+		var response = await send_promise( Refnum, data );
 		if( response == true ){
 			return true;
 		}
@@ -17,7 +17,8 @@ async function send_to_db( data ){
 }
 
 // send promise
-function send_promise( data ){
+function send_promise( Refnum, data ){
+	var cnt = Refnum.container;
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "get",
@@ -33,6 +34,12 @@ function send_promise( data ){
 							alert("新增完成");
 							resolve( true );
 							break;
+							
+						case "add_supplier_data":
+							receive_db_supplier_name();
+							alert("新增完成");
+							resolve( true );
+							break;
 						case "replace_supplier":
 							receive_db_supplier_name();
 							alert("修改完成");
@@ -44,12 +51,11 @@ function send_promise( data ){
 							resolve( true );
 							break;
 						case "add_inventory_quantity":
-							var attr = {
-								"state": "get_single_data",
+							var param = {
 								"number": data.number,
-								"func": 'quantity'
-							};
-							receive_to_db(attr);
+								"container": cnt
+							}
+							upd_inventory_quan( param );
 							resolve( true );
 							break;
 						case "rem_record_data":

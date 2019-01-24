@@ -12,6 +12,7 @@
 	</head>
 	<body>
 		<div class="load_modal"></div>
+		<datalist id="part_list" class="normal_font"></datalist>
 		<div id= "inbound_cnt" class="page_container">
 			<label for="part_num_in">品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" onfocus="this.oldvalue = this.value;" onchange="quan_change_btn( this );this.oldvalue = this.value;" />
 			<br><label for="part_name_out">品名 :</label>
@@ -21,11 +22,11 @@
 			<br><label for="part_location_in">位置 :</label><input id="part_location_in" class="part_attr input_container normal_font" name="part_location" type="text" style="width:100px" placeholder="湖口" />
 			<br><label for="part_goal_in">目的 : </label>
 			<br><textarea id="part_goal_in" class="part_attr normal_font" name="part_goal" rows="5" cols="50" wrap="hard" ></textarea>
-			<br><button type="button" class="btn btn-primary btn_field" onclick="send_inventory_quantity('add')">入庫</button>
-			<button type="button" class="btn btn-primary btn_field" onclick="send_inventory_quantity('sub')">領用</button>
+			<button type="button" class="btn btn-primary btn_field" onclick="inbound_btn()">入庫</button>
 		</div>
 		<script language="JavaScript">
 			var body = $("body");
+			var element_refnum = "inbound_cnt";
 			var username;
 			$(document).on({
 				ajaxStart: function(){
@@ -37,11 +38,21 @@
 			});
 
 			$(document).ready(function(){
-				var url = location.href;
-				var temp = url.split("?");
-				username = temp[1];
 			});
 			
+			
+			// update inventory quantity
+			function upd_inventory_quantity_btn( currdata ){
+				var cnt = document.getElementById( element_refnum );
+				res_quantity_btn( cnt, currdata );
+			}
+			
+			// inbound button click
+			function inbound_btn(){
+				var cnt = document.getElementById( element_refnum );
+				res_inventory_quan_btn( cnt, "add" );
+			}
+
 			
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
