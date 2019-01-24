@@ -94,7 +94,30 @@
 			// update revise interface type
 			function update_revise_type( num_value ){
 				if( check_part_num( 0, 15, normal_part_number( num_value ) ) ){
-					alert("test");
+					remove_revise_interface();
+					
+					var cnt = document.getElementById( element_refnum );
+					var revise_table_obj = document.getElementById( "revise_title" );
+					div_first_obj = document.createElement( "div" );
+					div_first_obj.id = "revise";
+					div_first_obj.setAttribute("class", "tab_form");
+					cnt.appendChild(div_first_obj);
+												
+					var div_second_obj = document.createElement( "div" );
+					div_second_obj.setAttribute("class", "text_field");
+					div_first_obj.appendChild(div_second_obj);
+					
+					var data_str = "";
+					var table_title = new Array();
+					data_str += '<label for="part_num_in">品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" value="' + num_value + '" onchange="update_revise_type( this.value )"/>';
+					data_str += '<br><label for="part_name_in">品名 :</label>';
+					data_str += '<br><textarea id="part_name_in" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" ></textarea>';
+					
+					div_second_obj.innerHTML = data_str;
+					div_first_obj.appendChild( div_second_obj );
+					div_first_obj.after( revise_table_obj );
+					alert( num_value[0] )
+					
 				}
 				else{
 					init_revise_interface();
