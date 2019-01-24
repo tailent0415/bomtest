@@ -128,12 +128,12 @@
 							div_first_obj.appendChild(div_second_obj);
 							div_first_obj.after( revise_table_obj );
 							revise_table_obj.style.display = "inline";
-							var param = {
+							/*var param = {
 								"tabID": table_refnum,
 								"container": cnt,
 								"number" num_value
 							};
-							revise_product_info( param );
+							revise_product_info( param );*/
 							break;
 						case "3":
 							data_str += '<br><label for="part_format_in">規格 :</label>';
@@ -144,14 +144,14 @@
 							data_str += '<br><label for="part_cost_in">成本 :</label><input id="part_cost_in" type="text" class="part_attr input_container normal_font" name="part_cost" type="text" style="width:100px" />';
 							data_str += '<br><label for="part_quantity_in">數量 :</label><input id="part_quantity_in" type="text" class="part_attr input_container normal_font" name="part_quantity" type="text" style="width:60px" />';
 							data_str += '<div class="btn_field"><button type="button" class="btn btn-primary" onclick="revise_btn()">修改</button></div>';
-							div_second_obj.innerHTML = data_str;
+							/*div_second_obj.innerHTML = data_str;
 							div_first_obj.appendChild(div_second_obj);
 							revise_table_obj.style.display = "none";
 							var param = {
 								"container": cnt,
 								"number" num_value
 							};
-							revise_part_info( param );
+							revise_part_info( param );*/
 							break;
 						default:
 					}
