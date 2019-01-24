@@ -66,7 +66,6 @@
 			var body = $("body");
 			var table_refnum = $("#product_table_add");
 			var element_refnum = "add_product";
-			var part_list_options;
 			var username;
 			$(document).on({
 				ajaxStart: function(){
@@ -78,7 +77,7 @@
 			});
 
 			$(document).ready(function(){
-				part_list_options = sessionStorage.getItem( "part_options" );
+				var part_list_options = sessionStorage.getItem( "part_options" );
 				$("#part_list").empty();
 				$("#part_list").append( part_list_options );
 			});
@@ -152,7 +151,7 @@
 			
 			// remove table row
 			function remove_table_row( idx ){
-				rem_table_row( table_refnum, idx )
+				rem_table_row( table_refnum, idx );
 			}
 
 			// calculate total cost and update	

@@ -16,6 +16,7 @@
 	</head>
 	<body>
 		<div class="load_modal"></div>
+		<datalist id="part_list" class="normal_font"></datalist>
 		<div id="revise_cnt" class="page_container">
 			<div id="revise_title" style="display:none">
 				<table id="revise_table"
@@ -45,6 +46,7 @@
 		</div>
 		<script language="JavaScript">
 			var body = $("body");
+			var table_refnum = $("#revise_table");
 			var element_refnum = "revise_cnt"
 			var username;
 			$(document).on({
@@ -57,6 +59,9 @@
 			});
 
 			$(document).ready(function(){
+				var part_list_options = sessionStorage.getItem( "part_options" );
+				$("#part_list").empty();
+				$("#part_list").append( part_list_options );
 				init_revise_interface();
 			});
 			
@@ -78,6 +83,14 @@
 				div_first_obj.appendChild(div_second_obj);
 			}
 			
+			// remove revise interface
+			function remove_revise_interface(){
+				var cnt = document.getElementById( "revise_cnt" );
+				var div_obj = document.getElementById( "revise" );
+				document.getElementById( "revise_title" ).style.display = "none";
+				cnt.removeChild(div_obj);
+			}
+			
 			// update revise interface type
 			function update_revise_type( num_value ){
 				
@@ -86,7 +99,6 @@
 					remove_revise_interface();
 					
 					var revise_table_obj = document.getElementById( "revise_title" );
-					
 					var cnt = document.getElementById( element_refnum );
 					div_first_obj = document.createElement( "div" );
 					div_first_obj.id = "revise";
@@ -120,7 +132,6 @@
 							receive_part_info( "revise_product_data", num_value )
 							break;
 						case "3":
-						case "4":
 							data_str += '<br><label for="part_format_in">規格 :</label>';
 							data_str += '<br><textarea id="part_format_in" class="part_attr normal_font" name="part_format" rows="2" cols="50" wrap="hard" ></textarea>'
 							data_str += '<br><label for="part_fignum_in">圖號 :</label><input id="part_fignum_in" type="text" class="part_attr input_container normal_font" name="part_fignum" type="text" style="width:200px" />';
@@ -142,24 +153,13 @@
 				}
 			}
 			
-			// remove revise interface
-			function remove_revise_interface(){
-				var cnt = document.getElementById( "revise_cnt" );
-				var div_obj = document.getElementById( "revise" );
-				document.getElementById( "revise_title" ).style.display = "none";
-				cnt.removeChild(div_obj);
-			}
-			
-			
-			
-			
 			// table part number sub function
 			function edit_partnum( param, row, index ){
 				if(param.func == 1){
-					return ("<pre onclick='change_partnum_type_static(" + index + ")'>" + param.val + "</pre>");
+					return ("<pre onclick='change_static_type(" + index + ")'>" + param.val + "</pre>");
 				}
 				else if(param.func == 2){
-					return ("<input list='part_list' id='part_num_input' class='part_list_style normal_font' onblur='change_partnum_type_dynamic(" + index + ",this.value)' value=" + param.val + " ><datalist>" + part_list_options + "</datalist>");
+					return ("<input list='part_list' id='part_num_input' class='part_list_style normal_font' onblur='change_dynamic_type(" + index + ",this.value)' value=" + param.val + " >");
 				}
 			}
 			
@@ -169,8 +169,40 @@
 					return ("<p onclick='change_quan_input(" + index + "," + param.val + ")'>" + param.val + "</p>");
 				}
 				else if(param.func == 2){
-					return ("<input type='number' size='3' onblur='update_total_cost(" + index + ",this.value )' value='" + param.val + "'/>");
+					return ("<input type='number' size='3' onblur='calc_total_cost(" + index + ",this.value )' value='" + param.val + "'/>");
 				}
+			}
+			
+			// calculate total cost and update	
+			function calc_total_cost( idx, val ){
+				upd_total_cost( table_refnum, idx, val );
+				var data_attr = table_refnum.bootstrapTable("getData",false);
+				var product_cost = 0;
+				var value = 0;
+				for( var i = 0; i<data_attr.length; i++ ){
+					value = parseFloat( data_attr[i].totalcost );
+					if( isNaN(value) ){
+						value = 0;
+					}
+					product_cost += value;
+				}
+				var cnt = document.getElementById( element_refnum );
+				var part_attr = cnt.getElementsByClassName("part_attr");
+				for( var i=0; i<part_attr.length; i++ ){
+					if( part_attr[i].name == "part_totalcost" ){
+						part_attr[i].value = product_cost;
+					}
+				}
+			}
+
+			function change_static_type( idx, source_val ){
+				set_table_partnum_input_type( table_refnum, "static", idx, source_val )
+			}
+			
+			
+			// dynamic change partnum input type
+			function change_dynamic_type( idx, source_val ){
+				set_table_partnum_input_type( table_refnum, "dynamic", idx, source_val )
 			}
 			
 			// table formatter delete button
@@ -178,6 +210,10 @@
 				return ("<button class='delbtn btn btn-danger glyphicon glyphicon-remove row-remove' onclick='remove_table_row(" + index + ")'></button>");
 			}
 			
+			// remove table row
+			function remove_table_row( idx ){
+				rem_table_row( table_refnum, idx );
+			}
 			
 			// add supplier new name
 			function add_supplier_name( currdata ){
