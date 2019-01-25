@@ -117,6 +117,7 @@ body {
 	50% 50% 
 	no-repeat;
 }
+
 body.loading .load_modal {
 	overflow: hidden;   
 }
