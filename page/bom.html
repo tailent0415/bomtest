@@ -80,9 +80,10 @@
 						"container": cnt
 					};
 					receive_to_db( Refnum, attr ).then( function(result){
-					if ( result == false ){
-						init_bomtable_interface();
-					}};
+						if ( result == false ){
+							init_bomtable_interface();
+						};
+					)};
 				}
 				else{
 					init_bomtable_interface();
