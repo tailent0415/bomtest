@@ -35,7 +35,7 @@
 		</style>
 	</head>
 	<body>
-		<p>當前版本: 1.0.2.17</p>
+		<p>當前版本: 1.0.2.18</p>
 		<div class="login_container">
 			<div class="login_icon" id="my-signin2"></div>
 			<div class="login_id align_left"><p id="user_title">尚未登入</p></div>
@@ -64,10 +64,12 @@
 				receive_db_supplier_name();
 				var list_a = undefined;
 				var list_b = undefined;
-				while ( list_a === undefined || list_b === undefined ){
+				while ( list_a == undefined || list_b == undefined ){
 					list_a = sessionStorage.getItem( "supplier_options" );
 					list_b = sessionStorage.getItem( "part_options" );
 				}
+				alert( list_a === undefined);
+				alert( list_b === undefined);
 				alert( list_a );
 				alert( list_b );
 				var link_to_menu = "menu.html?" + user_id;
