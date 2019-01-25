@@ -15,7 +15,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
 	</head>
 	<body>
-		<div class="loader"></div>
+		<div class="load_modal"></div>
 		<datalist id="part_list" class="normal_font"></datalist>
 		<div id="revise_cnt" class="page_container">
 			<div id="revise_title" style="display:none">
@@ -64,8 +64,6 @@
 				$("#part_list").empty();
 				$("#part_list").append( part_list_options );
 				init_revise_interface();
-				setTimeout(function(){}, 3000);
-				body.removeClass("loading");
 			});
 			
 			// revise interface control

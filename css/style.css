@@ -103,31 +103,18 @@ body {
 	font-family: Monospace, Courier New, sans-serif;
 }
 
-
 .load_modal {
-	display: none;
-	position: absolute;
-	left: 50%;
-	top: 40%;
-	z-index: 1;
-	border: 10px solid #f3f3f3;
-	border-radius: 50%;
-	border-top: 10px solid #3498db;
-	width: 60px;
-	height: 60px;
-	-webkit-animation: spin 2s linear infinite; /* Safari */
-	animation: spin 2s linear infinite;
-}
-
-/* Safari */
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+	display:    none;
+	position:   fixed;
+	z-index:    1000;
+	top:        0;
+	left:       0;
+	height:     100%;
+	width:      100%;
+	background: rgba( 255, 255, 255, .8 ) 
+	url('/css/loading.gif')
+	50% 50% 
+	no-repeat;
 }
 
 body.loading .load_modal {
