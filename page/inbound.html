@@ -38,9 +38,11 @@
 			});
 
 			$(document).ready(function(){
+				body.addClass("loading");
 				var part_list_options = sessionStorage.getItem( "part_options" );
 				$("#part_list").empty();
 				$("#part_list").append( part_list_options );
+				body.removeClass("loading");
 			});
 			
 			
