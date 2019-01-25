@@ -18,8 +18,11 @@ function receive_db_supplier_name(){
 	var attr = {
 		"state": "get_all_supplier_name"
 	};
-	
+	sessionStorage.setItem( "supplier_options", undefined );
 	receive_to_db( "", attr ).then( function(result){
+		if (result == false ){
+			sessionStorage.setItem( "supplier_options", "" );
+		}
 		return( result );
 	});
 }
@@ -30,7 +33,11 @@ function receive_db_part_number(){
 	var attr = {
 		"state": "get_all_partnum"
 	};
+	sessionStorage.setItem( "part_options", undefined );
 	receive_to_db( "", attr ).then( function(result){
+		if (result == false ){
+			sessionStorage.setItem( "part_options", "" );
+		}
 		return( result );
 	});
 }
