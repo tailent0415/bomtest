@@ -64,6 +64,9 @@
 				$("#part_list").empty();
 				$("#part_list").append( part_list_options );
 				init_revise_interface();
+				setTimeout(function() { 
+					body.removeClass("loading"); 
+				}, 1000);
 			});
 			
 			// revise interface control

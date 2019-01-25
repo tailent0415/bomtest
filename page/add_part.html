@@ -48,9 +48,13 @@
 			});
 
 			$(document).ready(function(){
+				body.addClass("loading");
 				var supplier_list_options = sessionStorage.getItem( "supplier_options" );
 				$("#supplier_list").empty();
 				$("#supplier_list").append( supplier_list_options );
+				setTimeout(function() { 
+					body.removeClass("loading"); 
+				}, 1000);
 			});
 			
 			function add_part_btn(){
