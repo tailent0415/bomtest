@@ -61,9 +61,50 @@
 				div_second_obj.innerHTML = data_str;
 				div_first_obj.appendChild(div_second_obj);
 			}
+			
+			// Update Bomtable interface type
+			function update_bomtable_type( num_value, data_ind ){
+				if( check_part_num( 0, 15, normal_part_number( num_value ) ) ){
+					if( data_ind == -1 ){
+						bom_node_array[ bom_node_array.length ] = num_value;
+						data_ind = bom_node_array.length-1;
+					};
+					var cnt = document.getElementById( element_refnum );
+					var attr = {
+						"state": "get_single_data",
+						"number": num_value,
+						"func": "bom_data",
+						"index": data_ind
+					};
+					var Refnum = {
+						"container": cnt
+					};
+					receive_to_db( Refnum, attr ).then( function(result){
+					if ( result == false ){
+						init_bomtable_interface();
+					}};
+				}
+				else{
+					init_bomtable_interface();
+				}
+			}
+			
+			// Remove Bomtable interface
+			function remove_bomtable_interface(){
+				var cnt = document.getElementById( element_refnum );
+				var div_obj = document.getElementById( "bom" );
+				cnt.removeChild(div_obj);
+			}
 
-
-
+			// Bomtable Page
+			function bomtable_go_page( data_ind ){
+				if( data_ind < 0 || data_ind >= bom_node_array.length ){
+					return;
+				}
+				num_value = bom_node_array[ data_ind ];
+				update_bomtable_type( num_value, data_ind );
+			}
+			
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
 		<script type="text/javascript" src="/SubScripts/macro_send.js"></script>
