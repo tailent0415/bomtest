@@ -16,7 +16,10 @@ function receive_db_supplier_name(){
 	var attr = {
 		"state": "get_all_supplier_name"
 	};
-	alert( receive_to_db( "", attr ) );
+	
+	receive_to_db( "", attr ).then( function(result){
+		alert( result );
+	});
 }
 
 
