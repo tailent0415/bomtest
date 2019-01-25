@@ -22,7 +22,6 @@ function receive_db_supplier_name(){
 	receive_to_db( "", attr ).then( function(result){
 		return( result );
 	});
-	return undefined;
 }
 
 
@@ -34,7 +33,6 @@ function receive_db_part_number(){
 	receive_to_db( "", attr ).then( function(result){
 		return( result );
 	});
-	return undefined;
 }
 
 // receive product parameter to table row
