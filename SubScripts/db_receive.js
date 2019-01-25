@@ -205,6 +205,148 @@ function receive_promise( Refnum, data ){
 									}
 									resolve( true );
 									break;
+							case "bom_data": 
+								div_first_obj = document.createElement( "div" );
+								div_first_obj.id = "bom";
+								div_first_obj.setAttribute("class", "tab_form");
+								cnt.appendChild(div_first_obj);
+								
+								var div_second_obj = document.createElement( "div" );
+								div_second_obj.setAttribute("class", "text_field");
+								div_first_obj.appendChild(div_second_obj);
+								
+								var data_str = "";
+								var table_title = new Array();
+								data_str += '<label for="part_num_in">品號 :</label><input id="part_num_in" class="input_container part_list_style normal_font" name="part_num_list" list="part_list" value="' + data.number + '" onchange="update_bomtable_type( this.value, -1 )"/>';
+								data_str += '<a onclick="bomtable_go_page(' + (data.index-1) + ')"><i class="fa fa-arrow-circle-left fa-2x fa-fw"></i></a>';
+								data_str += '<a onclick="bomtable_go_page(' + (data.index+1) + ')"><i class="fa fa-arrow-circle-right fa-2x"></i></a>';
+								switch ( data.number[0] ){
+									case '1':
+										data_str += '<br><label for="part_cost_out">總成本 :</label><input id="part_cost_out" class="input_container normal_font" style="width:100px" disabled="true" value="' + response.cost + '" />';
+										data_str += '<br><label for="part_name_out">品名 :</label>';
+										data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" >' + response.name + '</textarea>';
+										data_str += '<br><label for="part_remark_out">備註 : </label><br><textarea id="part_remark_out" class="normal_font" rows="5" cols="50" wrap="hard" disabled="true" />' + response.remark + '</textarea>';
+										table_title = [ '品號', '品名', '成本', '數量', '規格', '備註', '庫存' ];
+										break;
+									case '2':
+										data_str += '<br><label for="part_cost_out">總成本 :</label><input id="part_cost_out" class="input_container normal_font" style="width:100px" disabled="true" value="' + response.cost + '" />';
+										data_str += '<br><label for="part_name_out">品名 :</label>';
+										data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" >' + response.name + '</textarea>';
+										data_str += '<br><label for="part_remark_out">備註 :</label><br><textarea id="part_remark_out" class="normal_font" rows="5" cols="50" wrap="hard" disabled="true" />' + response.remark + '</textarea>';
+										table_title = [ '品號', '品名', '成本', '數量', '廠商', '規格', '庫存'  ];
+										break;
+									case '3':
+									case '4':
+										data_str += '<br><label for="part_name_out">品名 :</label>';
+										data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" >' + response.name + '</textarea>';
+										data_str += '<br><label for="part_format_out">規格 :</label>';
+										data_str += '<br><textarea id="part_format_out" class="part_attr normal_font" name="part_format" rows="2" cols="50" wrap="hard" disabled="true">' + response.format + '</textarea>'
+										data_str += '<br><label for="part_supplier_out">廠商 :</label><input id="part_supplier_out" class="input_container normal_font" style="width:100px" disabled="true" value="' + response.supplier + '" />';
+										data_str += '<br><label for="part_unit_out">單位 :</label><input id="part_unit_out" class="input_container normal_font" style="width:60px" disabled="true" value="' + response.unit + '" />';
+										data_str += '<br><label for="part_cost_out">成本 :</label><input id="part_cost_out" class="input_container normal_font" style="width:200px" disabled="true" value="' + response.cost + '" />';
+										data_str += '<br><label for="part_fignum_out">圖號 :</label><input id="part_fignum_out" class="input_container normal_font" style="width:200px" disabled="true" value="' + response.fignum + '" />';
+										break;
+									default:
+										resolve( "input error" );
+										return;
+								}
+								data_str += '<br><label for="part_stock_out">庫存 :</label><input id="part_stock_out" class="input_container normal_font" style="width:60px" disabled="true" value="' + response.stock_quantity + '" />';
+								div_second_obj.innerHTML = data_str;
+								div_first_obj.appendChild(div_second_obj);
+								var title_len = table_title.length;
+								if( title_len <= 0 ){
+									return;
+								}
+								
+								if( response.data == undefined ){
+									resolve( "BOM 不存在" );
+									return;
+								}
+								table_obj = document.createElement( "table" );
+								thead_obj = document.createElement( "thead" );
+								tbody_obj = document.createElement( "tbody" );
+								tr_obj = document.createElement( "tr" );
+								table_obj.border = "1";
+								var title_str = "";
+								var style_str = "";
+								for( var i=0; i<title_len; i++ ){
+									switch( table_title[i] ){
+										case '品號':
+											style_str = "style='width:170px;text-align:center' ";
+											break;
+										case '品名':
+											style_str = "style='width:200px;text-align:center' ";
+											break;
+										case '成本':
+											style_str = "style='width:80px;text-align:center' ";
+											break;
+										case '數量':
+											style_str = "style='width:80px;text-align:center' ";
+											break;
+										case '廠商':
+											style_str = "style='width:100px;text-align:center' ";
+											break;
+										case '規格':
+											style_str = "style='width:200px;text-align:center' ";
+											break;
+										case '庫存':
+											style_str = "style='width:80px;text-align:center' ";
+											break;
+										case '備註':
+											style_str = "style='width:200px;text-align:center' ";
+											break;
+										default:
+									}
+									title_str += "<td " + style_str + ">" + table_title[i] + "</td>";
+								}
+								tr_obj.innerHTML = title_str;
+								thead_obj.appendChild( tr_obj );
+								table_obj.appendChild( thead_obj );
+								var data_len = response.data.length;
+								var data_str = "";
+								for( var i=0; i<data_len; i++ ){
+									tr_obj = document.createElement( "tr" );
+									data_str = "";
+									for( var j=0; j<title_len; j++ ){
+										switch( table_title[j] ){
+											case '品號':
+												var number_str = response.data[i].number;
+												var hnumber = "<a style='font-family: Monospace, Courier New, sans-serif' onclick = 'update_bomtable_type( this.text, -1 )' >" + number_str + "</a>";
+												res_str = hnumber;
+												break;
+											case '品名':
+												res_str = response.data[i].name;
+												break;
+											case '成本':
+												res_str = response.data[i].cost;
+												break;
+											case '數量':
+												res_str = response.data[i].quantity;
+												break;
+											case '廠商':
+												res_str = response.data[i].supplier;
+												break;
+											case '規格':
+												res_str = response.data[i].format;
+												break;
+											case '庫存':
+												res_str = response.data[i].stock_quantity;
+												break;
+											case '備註':
+												res_str = response.data[i].remark;
+												break;
+											default:
+										}
+										data_str += "<td style='height:35px;text-align:center' >" + res_str + "</td>";
+									}
+									tr_obj.innerHTML = data_str;
+									tbody_obj.appendChild( tr_obj );
+								}
+								table_obj.appendChild( tbody_obj );
+								div_first_obj.appendChild( table_obj );
+								resolve( true );
+								break;
+								
 							default:
 						}
 						
