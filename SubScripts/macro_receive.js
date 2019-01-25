@@ -8,9 +8,7 @@ function receive_db_info( param ){
 		"tabID": param.tabID
 	}
 	
-	receive_to_db( refnum, attr ).then( function(result){
-		return( result );
-	});
+	receive_to_db( refnum, attr );
 };
 
 // receive database supplier name
@@ -19,12 +17,7 @@ function receive_db_supplier_name(){
 		"state": "get_all_supplier_name"
 	};
 	sessionStorage.setItem( "supplier_options", undefined );
-	receive_to_db( "", attr ).then( function(result){
-		if (result == false ){
-			sessionStorage.setItem( "supplier_options", "" );
-		}
-		return( result );
-	});
+	receive_to_db( "", attr );
 }
 
 
@@ -34,12 +27,7 @@ function receive_db_part_number(){
 		"state": "get_all_partnum"
 	};
 	sessionStorage.setItem( "part_options", undefined );
-	receive_to_db( "", attr ).then( function(result){
-		if (result == false ){
-			sessionStorage.setItem( "part_options", "" );
-		}
-		return( result );
-	});
+	receive_to_db( "", attr );
 }
 
 // receive product parameter to table row
@@ -55,9 +43,7 @@ function receive_product_param( param ){
 		"tabID": param.tabID
 	}
 	
-	receive_to_db( refnum, attr ).then( function(result){
-		return( result );
-	});
+	receive_to_db( refnum, attr );
 }
 
 // receive database part infomation
@@ -74,9 +60,7 @@ function revise_part_info( param ){
 			"container": param.container
 		}
 		
-		receive_to_db( refnum, attr ).then( function(result){
-			return( result );
-		});
+		receive_to_db( refnum, attr );
 	}
 }
 
@@ -95,9 +79,7 @@ function revise_product_info( param ){
 			"container": param.container
 		}
 		
-		receive_to_db( refnum, attr ).then( function(result){
-			return( result );
-		});
+		receive_to_db( refnum, attr );
 
 	}
 }
@@ -116,9 +98,7 @@ function upd_inventory_quan( param ){
 			"container": param.container
 		}
 
-		receive_to_db( refnum, attr ).then( function(result){
-			return( result );
-		});
+		receive_to_db( refnum, attr );
 
 	}
 }

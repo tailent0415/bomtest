@@ -5,42 +5,27 @@
 		<meta charset="utf-8">
 		<meta name="google-signin-client_id" content="65164552845-kt5nqknig8520gtv3o66aqej0t5a2pfp.apps.googleusercontent.com">
 		<script src="/CoreScripts/jquery.min.js"></script>
-		<style>
-			.login_icon { 
-				position:absolute;
-				width:185px;
-				height:35px;
-				top:60px;
-				left:5px;
-			}
-
-			.login_id { 
-				position:absolute;
-				width:200px;
-				height:15px;
-				top:90px;
-				left:8px;
-			}   
-
-			.login_container { 
-				margin-top:5px; 
-				margin-left:5px; 
-				margin-right:auto; 
-				margin-bottom:30px; 
-				border: 1px solid 000000; 
-			}
-			.align_left{
-				text-align: left;	
-			}
-		</style>
+		<link rel="stylesheet" href="/css/style.css">
 	</head>
 	<body>
-		<p>當前版本: 1.0.2.18</p>
+		<p>當前版本: 1.0.2.19</p>
+		<div class="load_modal"></div>
 		<div class="login_container">
 			<div class="login_icon" id="my-signin2"></div>
 			<div class="login_id align_left"><p id="user_title">尚未登入</p></div>
 		</div>
 		<script>
+			var body = $("body");
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+		
+		
 			// google login render icon
 			function renderButton(){
 				gapi.signin2.render('my-signin2', {
@@ -62,16 +47,6 @@
 				sessionStorage.setItem( "login_id", user_id );
 				receive_db_part_number();
 				receive_db_supplier_name();
-				var list_a = undefined;
-				var list_b = undefined;
-				while ( list_a == undefined || list_b == undefined ){
-					list_a = sessionStorage.getItem( "supplier_options" );
-					list_b = sessionStorage.getItem( "part_options" );
-				}
-				alert( list_a === undefined);
-				alert( list_b === undefined);
-				alert( list_a );
-				alert( list_b );
 				var link_to_menu = "menu.html?" + user_id;
 				window.open( link_to_menu, "frame_menu" );
 			};
