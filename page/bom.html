@@ -34,9 +34,9 @@
 
 			$(document).ready(function(){
 				body.addClass("loading");
-				var part_list_options = sessionStorage.getItem( "part_options" );
+				/*var part_list_options = sessionStorage.getItem( "part_options" );
 				$("#part_list").empty();
-				$("#part_list").append( part_list_options );
+				$("#part_list").append( part_list_options );*/
 				init_bomtable_interface();
 				setTimeout(function() { 
 					body.removeClass("loading"); 
@@ -50,11 +50,11 @@
 				var div_first_obj = document.getElementById( "bom" );
 				if( div_first_obj !== null ){
 					remove_bomtable_interface();
-				}
+				};
 				div_first_obj = document.createElement( "div" );
-				div_first_obj.id = "bom"
+				div_first_obj.id = "bom";
 				div_first_obj.setAttribute("class", "tab_form");
-				cnt.appendChild(div_first_obj);
+				cnt.appendChild( div_first_obj );
 				var div_second_obj = document.createElement( "div" );
 				div_second_obj.setAttribute("class", "text_field");
 				var data_str = '<label for="part_num_in">品號 : </label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" onchange="update_bomtable_type( this.value, -1 )"/>';
@@ -68,7 +68,7 @@
 					if( data_ind == -1 ){
 						bom_node_array[ bom_node_array.length ] = num_value;
 						data_ind = bom_node_array.length-1;
-					};
+					}
 					var cnt = document.getElementById( element_refnum );
 					var attr = {
 						"state": "get_single_data",
@@ -83,7 +83,7 @@
 						if ( result == false ){
 							init_bomtable_interface();
 						};
-					)};
+					});
 				}
 				else{
 					init_bomtable_interface();
