@@ -16,12 +16,13 @@
 	</head>
 	<body>
 		<div class="load_modal"></div>
-		<datalist id="part_list" class="normal_font"></datalist>
-        <div id="record_toolbar" calss="page_container">
+        <div id="record" calss="page_container">
             <form class="tab_form" id="record_form">
-                <div class="col-auto">
-                    <button type="button" class="btn btn-primary" onclick="rem_record_btn()" >刪除</button>
-                    <button type="button" class="btn btn-primary" onclick="upd_record_btn()" >更新數據</button>
+                <div id="record_toolbar">
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-primary" onclick="rem_record_btn()" >刪除</button>
+                        <button type="button" class="btn btn-primary" onclick="upd_record_btn()" >更新數據</button>
+                    </div>
                 </div>
                 <table id="record_table"
                     data-toggle="table"
@@ -66,23 +67,21 @@
 			});
 
 			$(document).ready(function(){
-                upd_record_btn();
+                /*upd_record_btn();*/
 			});
             
-            // update record table
+            /*// update record table
             function upd_record_btn(){
                 var param = {
                     "tabID": table_refnum
                 };
                 receive_record( param );
-            
             }
             
             // remove select record
             function rem_record_btn(){
                 res_rem_record_btn( table_refnum );
-            }
-            
+            }*/
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
 		<script type="text/javascript" src="/SubScripts/macro_send.js"></script>

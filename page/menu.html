@@ -34,6 +34,7 @@
 		</style>
 	</head>
 	<body>
+        <div class="load_modal"></div>
 		<div class="toppos" id="user_title" >User: Guest</div>
 		<div class="nonepanel" id="0" onclick="open_page( this.id )" >首頁</div>
 		<div class="nonepanel" id="1" onclick="open_page( this.id )" >查詢</div>
@@ -149,11 +150,20 @@
 				username = temp[1];
 				if ( username == undefined ){
 					document.getElementById("user_title").innerHTML = "User: Guest";
+                    var user_id = "m9913008";
+                    var link_to_menu = "menu.html?" + user_id;
+                    sessionStorage.setItem( "login_id", user_id );
+                    receive_db_part_number();
+				    receive_db_supplier_name();
+                    window.open( link_to_menu, "frame_menu" );
 				}
 				else{
 					document.getElementById("user_title").innerHTML = "User:"+ " " + username;
 				}
 			});
 		</script>
+		<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+        <script type="text/javascript" src="/SubScripts/db_send.js"></script>
 	</body>
 </html>

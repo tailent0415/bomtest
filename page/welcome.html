@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="/css/style.css">
 	</head>
 	<body>
-		<p>當前版本: 1.0.2.32</p>
+		<p>當前版本: 1.0.2.33</p>
 		<div class="load_modal"></div>
 		<div class="login_container">
 			<div class="login_icon" id="my-signin2"></div>
@@ -43,10 +43,10 @@
 			function onSuccess( googleUser ){
 				user_email = googleUser.getBasicProfile().getEmail();
 				user_id = user_email.substring( 0, user_email.indexOf("@") );
-				receive_db_part_number();
-				receive_db_supplier_name();
 				document.getElementById( "user_title" ).innerHTML = "Hello" + " " + user_id;
 				sessionStorage.setItem( "login_id", user_id );
+				receive_db_part_number();
+				receive_db_supplier_name();
 				var link_to_menu = "menu.html?" + user_id;
 				window.open( link_to_menu, "frame_menu" );
 			};
