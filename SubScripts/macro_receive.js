@@ -104,11 +104,17 @@ function upd_inventory_quan( param ){
 }
 
 // receive record
-function receive_record(){
+function receive_record( param ){
 	var attr = {
 		"state": "get_record_data",
 	};
-	receive_to_db( "", attr );
+    
+		
+    var refnum = {
+        "tabID": param.tabID
+    };
+    
+	receive_to_db( refnum, attr );
 }
 
 

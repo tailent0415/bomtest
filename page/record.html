@@ -21,7 +21,7 @@
             <form class="tab_form" id="record_form">
                 <div class="col-auto">
                     <button type="button" class="btn btn-primary" onclick="rem_record_btn()" >刪除</button>
-                    <button type="button" class="btn btn-primary" onclick="receive_record()" >更新數據</button>
+                    <button type="button" class="btn btn-primary" onclick="upd_record_btn()" >更新數據</button>
                 </div>
                 <table id="record_table"
                     data-toggle="table"
@@ -66,8 +66,17 @@
 			});
 
 			$(document).ready(function(){
-                receive_record();
+                upd_record_btn();
 			});
+            
+            // update record table
+            function upd_record_btn(){
+                var param = {
+                    "tabID": table_refnum
+                };
+                receive_record( param );
+            
+            }
             
             // remove select record
             function rem_record_btn(){

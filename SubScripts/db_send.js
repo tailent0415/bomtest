@@ -18,6 +18,7 @@ async function send_to_db( Refnum, data ){
 
 // send promise
 function send_promise( Refnum, data ){
+    var tabID = Refnum.tabID;
 	var cnt = Refnum.container;
 	return new Promise(function (resolve, reject){
 		$.ajax({
@@ -59,7 +60,7 @@ function send_promise( Refnum, data ){
 							resolve( true );
 							break;
 						case "rem_record_data":
-							receive_record();
+							receive_record( Refnum );
 							alert("已移除紀錄");
 							resolve( true );
 							break;
