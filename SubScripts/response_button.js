@@ -1,4 +1,23 @@
 // append row to table
+function res_rem_record_btn( table_refnum ){
+    var sel_target = new Array();
+    var del_index = new Array();
+    sel_target = table_refnum.bootstrapTable('getSelections');
+    for( var i=0; i<sel_target.length; i++ ){
+        del_index[i] = sel_target[i].index
+    }
+    var json_array = get_json_array( del_index );
+    var attr = {
+        "state": "rem_record_data",
+        "del_index": json_array
+    };
+    send_to_db( attr );
+	return true;
+}
+
+
+
+// append row to table
 function res_append_row_btn( table_refnum ){
 	var data_attr = new Array();
 	var data_attr = table_refnum.bootstrapTable("getData",false);

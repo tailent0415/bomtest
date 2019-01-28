@@ -34,9 +34,9 @@
 
 			$(document).ready(function(){
 				body.addClass("loading");
-				/*var part_list_options = sessionStorage.getItem( "part_options" );
+				var part_list_options = sessionStorage.getItem( "part_options" );
 				$("#part_list").empty();
-				$("#part_list").append( part_list_options );*/
+				$("#part_list").append( part_list_options );
 				init_bomtable_interface();
 				setTimeout(function() { 
 					body.removeClass("loading"); 

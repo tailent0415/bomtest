@@ -6,7 +6,7 @@ function receive_db_info( param ){
 	
 	var refnum = {
 		"tabID": param.tabID
-	}
+	};
 	
 	receive_to_db( refnum, attr );
 };
@@ -103,6 +103,13 @@ function upd_inventory_quan( param ){
 	}
 }
 
+// receive record
+function receive_record(){
+	var attr = {
+		"state": "get_record_data",
+	};
+	receive_to_db( "", attr );
+}
 
 
 
@@ -133,10 +140,3 @@ function receive_supplier_list( param ){
 }
 
 
-// receive record
-function receive_record(){
-	var attr = {
-		"state": "get_record_data",
-	};
-	receive_to_db( attr );
-}
