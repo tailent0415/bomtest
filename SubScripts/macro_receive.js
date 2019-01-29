@@ -118,31 +118,28 @@ function receive_record( param ){
 }
 
 
-
-
-
-
-
-
-
-// receive single supplier information
-function receive_supplier_info( supplier_name ){
-	var attr = {
-		"state": "get_supplier_info",
-		"supplier": supplier_name
-	};
-	receive_to_db(attr);
-}
-
 // receive all supplier information
 function receive_supplier_list( param ){
 	var attr = {
 		"state": "get_supplier_list",
 	};
-	var Refnum = {
-		"supplier_obj": param.supplier_obj
+	var refnum = {
+		"tabID": param.tabID
 	};
-	receive_to_db( Refnum, attr );
+	receive_to_db( refnum, attr );
+}
+
+
+// receive single supplier information
+function receive_supplier_info( param ){
+	var attr = {
+		"state": "get_supplier_info",
+		"supplier": param.supplier
+	};
+	var refnum = {
+		"container": param.container
+	};
+	receive_to_db( refnum, attr );
 }
 
 

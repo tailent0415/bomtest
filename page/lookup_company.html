@@ -19,7 +19,7 @@
 		<div class="page_container">
 			<div>
 				<div id="supplier_toolbar">
-					<button type="button" class="btn btn-primary" onclick="supplier_delete_btn()" >刪除</button>
+					<button type="button" class="btn btn-primary" onclick="rem_supplier_btn()" >刪除</button>
 				</div>
 				<table id="supplier_table"
 					data-toggle="table"
@@ -50,6 +50,7 @@
 		</div>
 		<script language="JavaScript">
 			var body = $("body");
+            var table_refnum = $("#supplier_table");
 			var username;
 			$(document).on({
 				ajaxStart: function(){
@@ -61,11 +62,20 @@
 			});
 
 			$(document).ready(function(){
-				var url = location.href;
-				var temp = url.split("?");
-				username = temp[1];
+                get_supplier_list();
 			});
-			
+            
+            
+            function get_supplier_list(){
+                var param = {
+                    "tabID": table_refnum
+                };
+                receive_supplier_list( param );
+            }
+            
+            function rem_supplier_btn(){
+                res_rem_supplier_btn( table_refnum );
+            }
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
 		<script type="text/javascript" src="/SubScripts/macro_send.js"></script>
@@ -73,5 +83,7 @@
 		<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
 		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
 		<script type="text/javascript" src="/SubScripts/get.js"></script>
+		<script type="text/javascript" src="/SubScripts/ctrl_table.js"></script>
+		<script type="text/javascript" src="/SubScripts/response_button.js"></script>
 	</body>
 </html>

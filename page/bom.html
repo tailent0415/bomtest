@@ -15,6 +15,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
 	</head>
 	<body>
+        <div class="load_modal"></div>
 		<datalist id="part_list" class="normal_font"></datalist>
 		<div id="bom_cnt" class="page_container">
 		</div>
@@ -50,7 +51,7 @@
 				var div_first_obj = document.getElementById( "bom" );
 				if( div_first_obj !== null ){
 					remove_bomtable_interface();
-				};
+				}
 				div_first_obj = document.createElement( "div" );
 				div_first_obj.id = "bom";
 				div_first_obj.setAttribute("class", "tab_form");
@@ -79,6 +80,7 @@
 					var Refnum = {
 						"container": cnt
 					};
+                    remove_bomtable_interface();
 					receive_to_db( Refnum, attr ).then( function(result){
 						if ( result == false ){
 							init_bomtable_interface();
@@ -94,7 +96,7 @@
 			function remove_bomtable_interface(){
 				var cnt = document.getElementById( element_refnum );
 				var div_obj = document.getElementById( "bom" );
-				cnt.removeChild(div_obj);
+				cnt.removeChild( div_obj );
 			}
 
 			// Bomtable Page

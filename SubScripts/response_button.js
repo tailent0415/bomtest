@@ -1,4 +1,23 @@
-// append row to table
+// remove supplier data
+function res_rem_supplier_btn( table_refnum ){
+    var sel_target = new Array();
+    var del_index = new Array();
+    sel_target = table_refnum.bootstrapTable('getSelections');
+    for( var i=0; i<sel_target.length; i++ ){
+        del_index[i] = sel_target[i].index
+    }
+    var json_array = get_json_array( del_index );
+    var attr = {
+        "state": "rem_supplier_data",
+        "del_index": json_array
+    };
+    var refnum = {
+        "tabID": table_refnum
+    };
+    send_to_db( refnum, attr );
+}
+
+// remove record data
 function res_rem_record_btn( table_refnum ){
     var sel_target = new Array();
     var del_index = new Array();
@@ -11,7 +30,11 @@ function res_rem_record_btn( table_refnum ){
         "state": "rem_record_data",
         "del_index": json_array
     };
-    send_to_db( attr );
+    var refnum = {
+        "tabID": table_refnum
+    };
+    
+    send_to_db( refnum, attr );
 	return true;
 }
 
@@ -60,6 +83,42 @@ function res_part_revise_btn( cnt ){
 		}
 	}
 	return false;
+}
+
+function res_supplier_upload_btn( cnt ){
+    var enable_swap = false;
+    var part_attr = cnt.getElementsByClassName("part_attr");
+    var attr = get_doc_part_attr( part_attr );
+    if( attr.supplier == "" ){
+        alert( "請輸入廠商名稱" );
+        return false;
+    }
+    
+    if ( attr.replace_name.trim() !== "" ){
+        enable_swap = true;
+    }
+    else{
+        send_new_supplier_name( attr );
+    }
+    attr.state = "replace_supplier";
+    send_to_db( "", attr );
+
+    for (var i=0; i<part_attr.length; i++){
+        switch( part_attr[i].name ){
+            case "part_supplier":
+                if ( enable_swap ){
+                    part_attr[i].value = attr.replace_name;
+                }
+                else{
+                    part_attr[i].value = attr.supplier;
+                }
+                break;
+            case "part_replace_name":
+                part_attr[i].value = "";
+                break;
+            default:
+        }
+    }
 }
 
 

@@ -64,6 +64,47 @@ function receive_promise( Refnum, data ){
 						sessionStorage.setItem( "part_options", part_list_options );
 						resolve( true );
 						break;
+                    case "get_supplier_info":
+                        var var_val = cnt.getElementsByClassName("part_attr");
+                        for (var i=0; i<var_val.length; i++){
+                            switch( var_val[i].name ){
+                                case "part_contact":
+                                    if ( response.contact == undefined ){
+                                        var_val[i].value = "";
+                                    }
+                                    else{
+                                        var_val[i].value = response.contact;
+                                    }
+                                    break;
+                                case "part_phone":
+                                    if ( response.contact == undefined ){
+                                        var_val[i].value = "";
+                                    }
+                                    else{
+                                        var_val[i].value = response.phone;
+                                    }
+                                    break;
+                                case "part_address":
+                                    if ( response.contact == undefined ){
+                                        var_val[i].value = "";
+                                    }
+                                    else{
+                                        var_val[i].value = response.address;
+                                    }
+                                    break;
+                                case "part_url":
+                                    if ( response.contact == undefined ){
+                                        var_val[i].value = "";
+                                    }
+                                    else{
+                                        var_val[i].value = response.url;
+                                    }
+                                    break;
+                                default:
+                            }
+                        }
+                        resolve( true );
+                        break;
 					case "get_single_data":
 						if( response.name == undefined || response.name == "" ){
 							resolve( "錯誤的檔案" );

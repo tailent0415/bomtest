@@ -20,6 +20,7 @@ async function send_to_db( Refnum, data ){
 function send_promise( Refnum, data ){
     var tabID = Refnum.tabID;
 	var cnt = Refnum.container;
+    console.log( data );
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "get",
@@ -35,10 +36,8 @@ function send_promise( Refnum, data ){
 							alert("新增完成");
 							resolve( true );
 							break;
-							
 						case "add_supplier_data":
 							receive_db_supplier_name();
-							alert("新增完成");
 							resolve( true );
 							break;
 						case "replace_supplier":
@@ -66,7 +65,7 @@ function send_promise( Refnum, data ){
 							break;
 						case "rem_supplier_data":
 							receive_db_supplier_name();
-							receive_supplier_list();
+							receive_supplier_list( Refnum );
 							alert("已移除廠商");
 							resolve( true );
 							break;

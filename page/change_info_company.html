@@ -3,12 +3,12 @@
 <html lang="zh-tw">
 	<head>
 		<meta charset="utf-8">
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="/css/style.css">
-		<script src="/CoreScripts/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="/CoreScripts/jquery.min.js"></script>	
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
 	</head>
 	<body>
 		<div class="load_modal"></div>
@@ -16,7 +16,7 @@
 		<div id="supplier_revise" class="page_container">
 			<div class= "tab_form">
 				<div class="text_field">
-					<label for="part_supplier_in">廠商 :</label><input id="part_supplier_in" class="part_attr input_container supplier_list_style normal_font" name="part_supplier" list="supplier_list" onchange="supplier_change_btn( this.value )" />
+					<label for="part_supplier_in">廠商 :</label><input id="part_supplier_in" class="part_attr input_container supplier_list_style normal_font" name="part_supplier" list="supplier_list" onchange="add_supplier_name( this.value )" />
 					<br><label for="part_replace_name_in">廠商名稱更改 :</label><input id="part_replace_name_in" class="part_attr input_container normal_font" name="part_replace_name" type="text" style="width:300px" />
 					<br><label for="part_contact_in">聯絡人 :</label><input id="part_contact_in" class="part_attr input_container normal_font" name="part_contact" type="text" style="width:300px" placeholder="Jacky" />
 					<br><label for="part_phone_in">電話 :</label><input id="part_phone_in" class="part_attr input_container normal_font" name="part_phone" type="text" style="width:300px" placeholder="(03)598-6199 Ext.5553" />
@@ -25,12 +25,12 @@
 				</div>
 			</div>
 			<div>
-				<button type="button" class="btn btn-primary" onclick="supplier_info_upload()" >上傳</button>
+				<button type="button" class="btn btn-primary" onclick="upload_btn()" >上傳</button>
 			</div>
 		</div>
 		<script language="JavaScript">
 			var body = $("body");
-			var username;
+            var element_refnum = "supplier_revise";
 			$(document).on({
 				ajaxStart: function(){
 					body.addClass("loading");
@@ -41,10 +41,33 @@
 			});
 
 			$(document).ready(function(){
-				var url = location.href;
-				var temp = url.split("?");
-				username = temp[1];
+				body.addClass("loading");
+				var supplier_list_options = sessionStorage.getItem( "supplier_options" );
+				$("#supplier_list").empty();
+				$("#supplier_list").append( supplier_list_options );
+				setTimeout(function() { 
+					body.removeClass("loading"); 
+				}, 1000);
 			});
+            
+			// add supplier new name
+			function add_supplier_name( currdata ){
+                var cnt = document.getElementById( element_refnum );
+				var param = {
+                    "container": cnt,
+					"supplier": currdata
+				};
+				send_new_supplier_name( param );
+                receive_supplier_info( param );
+			}
+            
+            
+            // upload new supplier information
+            function upload_btn(){
+                var cnt = document.getElementById( element_refnum );
+                res_supplier_upload_btn( cnt );
+            }
+            
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
 		<script type="text/javascript" src="/SubScripts/macro_send.js"></script>
@@ -52,5 +75,7 @@
 		<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
 		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
 		<script type="text/javascript" src="/SubScripts/get.js"></script>
+		<script type="text/javascript" src="/SubScripts/ctrl_table.js"></script>
+		<script type="text/javascript" src="/SubScripts/response_button.js"></script>
 	</body>
 </html>

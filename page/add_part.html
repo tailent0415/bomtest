@@ -38,6 +38,7 @@
 		</div>
 		<script language="JavaScript">
 			var body = $("body");
+            var element_refnum = "add_part";
 			$(document).on({
 				ajaxStart: function(){
 					body.addClass("loading");
@@ -71,8 +72,43 @@
 				};
 				send_new_supplier_name( param );
 			}
-			
-			
+            
+            // supplier upload information
+            function upload_btn(){
+                var cnt = document.getElementById( element_refnum );
+                var part_attr = cnt.getElementsByClassName("part_attr");
+                var attr = get_doc_part_attr( part_attr );
+                if( attr.supplier == "" ){
+                    alert( "請輸入廠商名稱" );
+                    return false;
+                }
+                var enable_swap = false;
+                if ( attr.replace_name.trim() !== "" ){
+                    enable_swap = true;
+                }
+                else{
+                    supplier_add_new_name( attr.supplier );
+                }
+                attr.state = "replace_supplier";
+                send_to_db( attr );
+
+                for (var i=0; i<part_attr.length; i++){
+                    switch( part_attr[i].name ){
+                        case "part_supplier":
+                            if ( enable_swap ){
+                                part_attr[i].value = attr.replace_name;
+                            }
+                            else{
+                                part_attr[i].value = attr.supplier;
+                            }
+                            break;
+                        case "part_replace_name":
+                            part_attr[i].value = "";
+                            break;
+                        default:
+                    }
+                }
+            }
 			
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>

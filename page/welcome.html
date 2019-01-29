@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="/css/style.css">
 	</head>
 	<body>
-		<p>當前版本: 1.0.2.33</p>
+		<p>當前版本: 1.0.3.0</p>
 		<div class="load_modal"></div>
 		<div class="login_container">
 			<div class="login_icon" id="my-signin2"></div>
@@ -53,7 +53,17 @@
 
 			// google login failure report
 			function onFailure(error){
+                /*//test
+                var user_id = "m9913008";
+                var link_to_menu = "menu.html?" + user_id;
+                sessionStorage.setItem( "login_id", user_id );
+                receive_db_part_number();
+                receive_db_supplier_name();
+                window.open( link_to_menu, "frame_menu" );*/
+                
+                //raw code
 				alert(JSON.stringify( error ) );
+                
 			};
 			
 		</script>
