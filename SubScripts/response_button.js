@@ -1,3 +1,34 @@
+// generate make order and display page
+function res_gen_mo_btn( cnt ){
+    var part_attr = cnt.getElementsByClassName("part_attr");
+    var attr = get_doc_part_attr( part_attr );
+	var param = {
+		"number": attr.number,
+        "items": attr.items,
+        "remark": attr.remark,
+		"container": cnt
+	};
+    gen_new_mo( param );
+}
+
+// quantity change
+function res_quan_change_btn( cnt, currdata ){
+    var partnum = cnt.getElementsByClassName("part_attr");
+    var numValue = "";
+    if( check_part_num( 0, 15, normal_part_number( currdata.value ) ) ){
+        numValue = currdata.value;
+    }
+    else if( check_part_num( 0, 15, normal_part_number( currdata.oldvalue ) ) ){;
+        numValue = currdata.oldvalue;
+    }
+    partnum[0].value = numValue;
+    var param = {
+        "number": numValue,
+        "container": cnt
+    };
+    upd_inventory_quan( param );
+}
+
 // remove supplier data
 function res_rem_supplier_btn( table_refnum ){
     var sel_target = new Array();

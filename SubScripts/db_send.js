@@ -20,7 +20,6 @@ async function send_to_db( Refnum, data ){
 function send_promise( Refnum, data ){
     var tabID = Refnum.tabID;
 	var cnt = Refnum.container;
-    console.log( data );
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "get",
@@ -69,6 +68,15 @@ function send_promise( Refnum, data ){
 							alert("已移除廠商");
 							resolve( true );
 							break;
+                        case "generate_new_mo":
+                            var param = {
+                                "serial": response,
+                                "container": Refnum.container
+                            };
+                            console.log( response );
+							upd_mo_info( param );
+                            resolve( true );
+                            break;
 						default:
 					}
 					

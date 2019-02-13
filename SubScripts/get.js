@@ -71,6 +71,9 @@ function get_doc_part_attr( part_obj ){
 				case "part_totalcost":
 					attr.totalcost = param_value;
 					break;
+				case "part_items":
+					attr.items = param_value;
+					break;
 				default:
 			}
 

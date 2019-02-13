@@ -14,7 +14,7 @@
 		<div class="load_modal"></div>
 		<datalist id="part_list" class="normal_font"></datalist>
 		<div id= "inbound_cnt" class="page_container">
-			<label for="part_num_in">品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" onfocus="this.oldvalue = this.value;" onchange="quan_change_btn( this );this.oldvalue = this.value;" />
+			<label for="part_num_in">品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" onfocus="this.oldvalue = this.value;" onchange="change_btn( this );this.oldvalue = this.value;" />
 			<br><label for="part_name_out">品名 :</label>
 			<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" ></textarea>
 			<br><label for="part_inventory_out">庫存 :</label><input id="part_inventory_out" class="part_attr input_container normal_font" name="inventory" type="number" style="width:100px" disabled="true" value="0" />
@@ -59,7 +59,12 @@
 				var cnt = document.getElementById( element_refnum );
 				res_inventory_quan_btn( cnt, "add" );
 			}
-
+            
+            // quantity change button response
+            function change_btn( currdata ){
+                var cnt = document.getElementById( element_refnum );
+                res_quan_change_btn( cnt, currdata );
+            }
 			
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>

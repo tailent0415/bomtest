@@ -53,16 +53,32 @@
 
 			// google login failure report
 			function onFailure(error){
-                /*//test
+                //test
                 var user_id = "m9913008";
                 var link_to_menu = "menu.html?" + user_id;
                 sessionStorage.setItem( "login_id", user_id );
                 receive_db_part_number();
-                receive_db_supplier_name();
-                window.open( link_to_menu, "frame_menu" );*/
+                sessionStorage.setItem( "supplier_options", undefined );
+                var attr = {
+                    "state": "get_all_supplier_name"
+                };
+                receive_to_db( "", attr ).then( function (result){
+                    console.log( sessionStorage.getItem( "supplier_options" ) );
+                });
                 
-                //raw code
-				alert(JSON.stringify( error ) );
+                
+                
+                window.open( link_to_menu, "frame_menu" );
+                
+                
+                
+                
+                
+                
+                
+                
+                /*//raw code
+				alert(JSON.stringify( error ) );*/
                 
 			};
 			

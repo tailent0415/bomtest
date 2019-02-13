@@ -1,3 +1,15 @@
+// update make order interface
+function upd_mo_info( param ){
+	var attr = {
+		"state": "get_mo_info",
+        "serial": param.serial
+	};
+	var refnum = {
+		"container": param.container
+	};
+    receive_to_db( refnum, attr );
+}
+
 // receive database information
 function receive_db_info( param ){
 	var attr = {

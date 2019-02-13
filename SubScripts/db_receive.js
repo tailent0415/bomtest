@@ -42,6 +42,99 @@ function receive_promise( Refnum, data ){
 						tabID.bootstrapTable('scrollTo', 'top');
 						resolve( true );
 						break;
+                    case "get_mo_info":
+                        div_first_obj = document.createElement( "div" );
+                        div_first_obj.id = "bom";
+                        div_first_obj.setAttribute("class", "tab_form");
+                        cnt.appendChild(div_first_obj);
+                        var div_second_obj = document.createElement( "div" );
+                        div_second_obj.setAttribute("class", "text_field");
+                        div_first_obj.appendChild( div_second_obj );
+                        var data_str = "";
+                        var table_title = new Array();
+                        switch ( response.number[0] ){
+                            case '1':
+                            case '2':
+                                data_str += '<label for="part_serial_out">單號 :</label>';
+                                data_str += '<input id="part_serial_out" class="input_container normal_font" style="width:100px" disabled="true" value="' + data.serial + '" />';
+                                data_str += '<br><label for="part_cost_out">總成本 :</label>';
+                                data_str += '<input id="part_cost_out" class="input_container normal_font" style="width:120px" disabled="true" value="' + parseInt( response.cost ) + '" />';
+                                data_str += '<br><label for="part_name_out">品名 : </label>';
+                                data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" >' + response.name + '</textarea>';
+                                table_title = [ '品號', '品名', '數量', '序號' ];
+                                break;
+                            default:
+                                return;
+                        }
+                        if( response.data == undefined ){
+                            resolve( "BOM 不存在" );
+                            return;
+                        }
+                        div_second_obj.innerHTML = data_str;
+                        div_first_obj.appendChild(div_second_obj);
+                        var title_len = table_title.length;
+                        table_obj = document.createElement( "table" );
+                        thead_obj = document.createElement( "thead" );
+                        tbody_obj = document.createElement( "tbody" );
+                        tr_obj = document.createElement( "tr" );
+                        table_obj.border = "1";
+                        var title_str = "";
+                        var style_str = "";
+                        for( var i=0; i<title_len; i++ ){
+                            switch( table_title[i] ){
+                                case '品號':
+                                    style_str = "style='width:170px;text-align:center' ";
+                                    break;
+                                case '品名':
+                                    style_str = "style='width:200px;text-align:center' ";
+                                    break;
+                                case '數量':
+                                    style_str = "style='width:80px;text-align:center' ";
+                                    break;
+                                case '序號':
+                                    style_str = "style='width:100px;text-align:center' ";
+                                    break;
+                                default:
+                            }
+                            title_str += "<td " + style_str + ">" + table_title[i] + "</td>";
+                        }
+                        tr_obj.innerHTML = title_str;
+                        thead_obj.appendChild( tr_obj );
+                        table_obj.appendChild( thead_obj );
+                        var data_len = response.data.length;
+                        var data_str = "";
+                        var res_str = "";
+                        for( var i=0; i<data_len; i++ ){
+                            tr_obj = document.createElement( "tr" );
+                            data_str = "";
+                            for( var j=0; j<title_len; j++ ){
+                                switch( table_title[j] ){
+                                    case '品號':
+                                        res_str = response.data[i].number;
+                                        break;
+                                    case '品名':
+                                        res_str = response.data[i].name;
+                                        break;
+                                    case '數量':
+                                        res_str = response.data[i].quantity;
+                                        break;
+                                    case '序號':
+                                        var part_num = response.data[i].number;
+                                        var serial_str = response.data[i].serial;
+                                        var serial_arr = serial_str.split(",");
+                                        res_str = '<a href=\"javascript:open_serial_btn(\'' + part_num + '\',\'' + serial_str + '\')\">' + serial_arr.length + '</a>';
+                                        break;
+                                    default:
+                                }
+                                data_str += "<td style='height:35px;text-align:center' >" + res_str + "</td>";
+                            }
+                            tr_obj.innerHTML = data_str;
+                            tbody_obj.appendChild( tr_obj );
+                        }
+                        table_obj.appendChild( tbody_obj );
+                        div_first_obj.appendChild( table_obj );
+                        resolve( true );
+                        break;
 					case "get_all_supplier_name":
 						if( response[0].supplier == undefined || response.supplier == "" ){
 							return;
@@ -232,26 +325,25 @@ function receive_promise( Refnum, data ){
 								}
 								break;
 							case "upd_quantity_data": // update quantity data
-									var var_val = cnt.getElementsByClassName("part_attr");
-									for (var i=0; i<var_val.length; i++){
-										switch( var_val[i].name ){
-											case "part_name":
-												var_val[i].value = response.name;
-												break;
-											case "inventory":
-												var_val[i].value = response.stock_quantity;
-												break;
-											default:
-										}
-									}
-									resolve( true );
-									break;
+                                var var_val = cnt.getElementsByClassName("part_attr");
+                                for (var i=0; i<var_val.length; i++){
+                                    switch( var_val[i].name ){
+                                        case "part_name":
+                                            var_val[i].value = response.name;
+                                            break;
+                                        case "inventory":
+                                            var_val[i].value = response.stock_quantity;
+                                            break;
+                                        default:
+                                    }
+                                }
+                                resolve( true );
+                                break;
 							case "bom_data": 
 								div_first_obj = document.createElement( "div" );
 								div_first_obj.id = "bom";
 								div_first_obj.setAttribute("class", "tab_form");
-								cnt.appendChild(div_first_obj);
-								
+								cnt.appendChild(div_first_obj);								
 								var div_second_obj = document.createElement( "div" );
 								div_second_obj.setAttribute("class", "text_field");
 								div_first_obj.appendChild(div_second_obj);
@@ -263,21 +355,14 @@ function receive_promise( Refnum, data ){
 								data_str += '<a onclick="bomtable_go_page(' + (data.index+1) + ')"><i class="fa fa-arrow-circle-right fa-2x"></i></a>';
 								switch ( data.number[0] ){
 									case '1':
+                                    case '2':
 										data_str += '<br><label for="part_cost_out">總成本 :</label><input id="part_cost_out" class="input_container normal_font" style="width:100px" disabled="true" value="' + response.cost + '" />';
 										data_str += '<br><label for="part_name_out">品名 :</label>';
 										data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" >' + response.name + '</textarea>';
 										data_str += '<br><label for="part_remark_out">備註 : </label><br><textarea id="part_remark_out" class="normal_font" rows="5" cols="50" wrap="hard" disabled="true" />' + response.remark + '</textarea>';
 										table_title = [ '品號', '品名', '成本', '數量', '規格', '備註', '庫存' ];
 										break;
-									case '2':
-										data_str += '<br><label for="part_cost_out">總成本 :</label><input id="part_cost_out" class="input_container normal_font" style="width:100px" disabled="true" value="' + response.cost + '" />';
-										data_str += '<br><label for="part_name_out">品名 :</label>';
-										data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" >' + response.name + '</textarea>';
-										data_str += '<br><label for="part_remark_out">備註 :</label><br><textarea id="part_remark_out" class="normal_font" rows="5" cols="50" wrap="hard" disabled="true" />' + response.remark + '</textarea>';
-										table_title = [ '品號', '品名', '成本', '數量', '廠商', '規格', '庫存'  ];
-										break;
 									case '3':
-									case '4':
 										data_str += '<br><label for="part_name_out">品名 :</label>';
 										data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" >' + response.name + '</textarea>';
 										data_str += '<br><label for="part_format_out">規格 :</label>';

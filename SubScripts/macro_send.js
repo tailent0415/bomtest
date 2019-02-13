@@ -1,3 +1,17 @@
+// generate make order interface
+function gen_new_mo( param ){
+	var attr = {
+		"number": param.number,
+        "items": param.items,
+        "remark": param.remark,
+		"state": "generate_new_mo"
+	};
+	var refnum = {
+		"container": param.container,
+	};
+    send_to_db( refnum, attr );
+}
+
 // send a new supplier name
 function send_new_partnum( attr ){
 	attr.state = "add_newdata";
@@ -6,7 +20,6 @@ function send_new_partnum( attr ){
 
 // send a new supplier name
 function send_new_supplier_name( param ){
-    console.log( param );
 	if( param.supplier.trim() == "" ){
 		return;
 	}
