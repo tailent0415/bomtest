@@ -19,10 +19,10 @@
 		<div class="load_modal"></div>
 		<div class="page_container">
 			<div>
-				<div id="supplier_toolbar">
-					<button type="button" class="btn btn-primary" onclick="rem_supplier_btn()" >刪除</button>
+				<div id="mo_toolbar">
+					<button type="button" class="btn btn-primary" onclick="rem_mo_btn()" >刪除</button>
 				</div>
-				<table id="supplier_table"
+				<table id="mo_table"
 					data-toggle="table"
 					data-side-pagination="client"
 					data-pagination="true"
@@ -32,27 +32,31 @@
 					data-id-field="index"
 					data-unique-id="index"
 					data-show-columns="true"
-					data-toolbar="#supplier_toolbar"
-					data-row-style="set_table_font"
+					data-toolbar="#mo_toolbar"
+					data-row-style="set_serial_table_style"
 					data-page-number="1">
 					<thead>
 						<tr>
 							<th data-field="state" data-checkbox="true"></th>
 							<th data-field="index">項次</th>
-							<th data-field="supplier">廠商名稱</th>
-							<th data-field="contact">聯絡人</th>
-							<th data-field="phone">電話</th>
-							<th data-field="address">地址</th>
-							<th data-field="url">網址</th>
+							<th data-field="manifest" data-formatter="manifest_link">單號</th>
+							<th data-field="number">品號</th>
+							<th data-field="name">品名</th>
+							<th data-field="remark">備註</th>
+							<th data-field="totalcost">製造成本</th>
+                            <th data-field="quantity">製作數量</th>
+                            <th data-field="mostate">製作狀態</th>
 						</tr>
 					</thead>
 				</table>				
 			</div>
 		</div>
 		<script language="JavaScript">
-			var body = $("body");
-            const table_ref = $("#supplier_table");
-            const dbio = new db_io( "", table_ref );
+            const body = $("body");
+            const table_ref = $("#mo_table");
+            const dbio = new db_io( );
+
+            // html start
 			$(document).on({
 				ajaxStart: function(){
 					body.addClass("loading");
@@ -61,13 +65,14 @@
 					body.removeClass("loading");
 				}
 			});
-
+            
+            // html open ready
 			$(document).ready(function(){
-                upd_supplier_data();
+                upd_manifest_data();
 			});
             
-            function upd_supplier_data(){
-                let attr = dbio.GetSupplierData();
+            function upd_manifest_data(){
+                let attr = dbio.GetAllMOInfo();
                 receive_to_db( attr ).then( function( response ){
                     table_ref.bootstrapTable('removeAll');
                     table_ref.bootstrapTable('load', response);
@@ -76,24 +81,38 @@
                 });
             };
             
+			function manifest_link( val, row, index ){
+				return ('<a href=\"javascript:open_manifest_link(\'' + val + '\')\">' + val + '</a>');
+			}
             
-            function rem_supplier_btn(){
+            function open_manifest_link( manifest_num ){
+                var link_to_menu = "mo_outbound.html?" + manifest_num;
+                window.open( link_to_menu, "frame_display" );
+            }
+            
+            function rem_mo_btn(){
+                
+                let attr = dbio.RemMOData();
+                
                 let sel_target = new Array();
-                let del_index = new Array();
                 sel_target = table_ref.bootstrapTable('getSelections');
-                for( var i=0; i<sel_target.length; i++ ){
-                    del_index[i] = sel_target[i].index
+                
+                let len = sel_target.length;
+                let del_sn_arr = new Array( len );
+
+                for( var i=0; i<len; i++ ){
+                    del_sn_arr[i] = table_ref[0].rows[ sel_target[i].index ].getElementsByTagName("td")[2].childNodes[0].innerHTML;
                 }
-                let json_array = get_json_array( del_index );
-                let attr = dbio.RemSupplierData();
-                attr.del_index = json_array;
-                send_to_db( attr ).then( function( response ){
-                    attr = dbio.GetSupplierName();
-                    receive_to_db( attr ).then( function( response ){
-                        upd_supplier_data();
-                    });
+                attr.del_sn = JSON.stringify( del_sn_arr );
+                send_to_db(attr).then( function( response ){
+                    if( response == false ){
+                        return;
+                    }
+                    alert( response );
+                    upd_manifest_data();
                 });
             }
+            
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
 		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>

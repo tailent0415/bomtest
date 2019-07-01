@@ -6,24 +6,12 @@ function get_doc_part_attr( part_obj ){
 		param_value = part_obj[i].value;
 			switch(part_obj[i].name){
 				case "part_num_list":
-					if( check_part_num( 0, 15, normal_part_number( param_value ) ) ) {
+					if( check_part_num_noshow( 0, 15, normal_part_number( param_value ) ) ) {
 						attr.number = param_value;
-					}
-					else{
-						alert( "無此品號" );
-						return false;
 					}
 					break;
 				case "part_name":
-					if ( param_value == "" ){
-						part_obj[i].style.border = '1px solid #FF0000';
-						alert( "請輸入必填資料" );
-						return false;
-					}
-					else{
-						part_obj[i].style.border = '1px solid #AAAAAA';
-						attr.name = param_value;
-					}
+                    attr.name = param_value;
 					break;
 				case "part_replace_name":
 					attr.replace_name = param_value;
@@ -68,17 +56,60 @@ function get_doc_part_attr( part_obj ){
 					break;
 				case "part_varval":
 					attr.varval = param_value;
+                    break;
 				case "part_totalcost":
 					attr.totalcost = param_value;
 					break;
+                case "part_inventory":
+					attr.inventory = param_value;
+					break;
 				case "part_items":
 					attr.items = param_value;
+					break;
+				case "part_serial":
+					attr.serial = param_value;
+					break;
+				case "part_manifest":
+					attr.manifest = param_value;
+					break;
+				case "part_provide":
+					attr.provide = param_value;
+					break;
+				case "part_method":
+					attr.method = param_value;
 					break;
 				default:
 			}
 
 	}
 	return attr;
+}
+
+// get array repeat element
+function get_repeat_ele( data_arr ){
+    if( Array.isArray( data_arr ) ){
+        var new_arr = data_arr.filter( function( ele, index, arr ){
+            return arr.indexOf(ele) !== index;
+        });
+        
+        return new_arr = get_norepeat_ele( new_arr );
+    }
+    else{
+        return false;
+    }
+}
+
+
+// get array alone element
+function get_norepeat_ele( data_arr ){
+    if( Array.isArray( data_arr ) ){
+        return data_arr.filter( function( ele, index, arr ){
+            return arr.indexOf(ele) === index;
+        });
+    }
+    else{
+        return false;
+    }
 }
 
 

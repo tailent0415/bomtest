@@ -13,6 +13,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/multiple-search/bootstrap-table-multiple-search.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
 	</head>
 	<body>
 		<div class="load_modal"></div>
@@ -55,7 +56,8 @@
         </div>
 		<script language="JavaScript">
 			var body = $("body");
-            var table_refnum = $("#record_table");
+            var table_ref = $("#record_table");
+            const dbio = new db_io( );
             
 			$(document).on({
 				ajaxStart: function(){
@@ -66,30 +68,51 @@
 				}
 			});
 
+            
 			$(document).ready(function(){
                 upd_record_btn();
 			});
             
+            
             // update record table
             function upd_record_btn(){
-                var param = {
-                    "tabID": table_refnum
-                };
-                receive_record( param );
+                const attr = dbio.GetRecord();
+                receive_to_db( attr ).then( function( response ){
+                    if( response === false ){
+                        return;
+                    }
+                    table_ref.bootstrapTable('removeAll');
+                    table_ref.bootstrapTable('load', response);
+                    table_ref.bootstrapTable('selectPage', '1');
+                    table_ref.bootstrapTable('scrollTo', 'top');
+                });
             }
             
             // remove select record
             function rem_record_btn(){
-                res_rem_record_btn( table_refnum );
+                let attr = dbio.RemRecord();
+                var sel_target = new Array();
+                var del_index = new Array(); 
+                sel_target = table_ref.bootstrapTable( 'getSelections' );
+                for( var i=0; i<sel_target.length; i++ ){
+                    del_index[i] = sel_target[i].index;
+                }
+                var json_array = get_json_array( del_index );
+                attr.del_index = json_array;
+                send_to_db( attr ).then( function( response ){
+                    if( response === false ){
+                        return;
+                    }
+                    upd_record_btn();
+                });
             }
+            
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
-		<script type="text/javascript" src="/SubScripts/macro_send.js"></script>
 		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
-		<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
 		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
 		<script type="text/javascript" src="/SubScripts/get.js"></script>
-		<script type="text/javascript" src="/SubScripts/ctrl_table.js"></script>
+		<script type="text/javascript" src="/SubScripts/ctrl_bootstrapTable.js"></script>
 		<script type="text/javascript" src="/SubScripts/response_button.js"></script>
 	</body>
 </html>

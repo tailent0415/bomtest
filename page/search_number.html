@@ -15,6 +15,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
 		<script src="/CoreScripts/bootstrap-table-export.js"></script>
 		<script src="/CoreScripts/tableExport.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
 	</head>
 	<body>
 		<div class="load_modal"></div>
@@ -57,7 +58,8 @@
 		</div>
 		<script language="JavaScript">
 			var body = $("body");
-            var table_refnum = $("#part_table");
+            const table_ref = $("#part_table");
+            const dbio = new db_io( "", table_ref );
 			$(document).on({
 				ajaxStart: function(){
 					body.addClass("loading");
@@ -77,46 +79,33 @@
 			
 			window.guide_event_response = {
 				'click .guide_part_number': function (e, value, row, index) {
-					chenge_page_to_bom( value );
+					window.open( "bom.html?" + value , "frame_display" );
 				},
 				'click .guide_part_supplier': function (e, value, row, index) {
-					chenge_page_to_supplier( value );
+					window.open( "change_info_company.html?" + value, "frame_display" );
 				},
 			};
 			
 			$(document).ready(function(){
 				upd_partnum_table();
-				$('#part_table').bootstrapTable({ height: $(window).height() - 120 });
+				table_ref.bootstrapTable({ height: $(window).height() - 120 });
 			});
-			
-            
-            // supplier delete supplier
-            function supplier_delete_btn(){
-                var sel_target = new Array();
-                var del_index = new Array();
-                sel_target = product_table.bootstrapTable('getSelections');
-                for( var i=0; i<sel_target.length; i++ ){
-                    del_index[i] = sel_target[i].index
-                }
-                var json_array = get_json_array( del_index );
-                var attr = {
-                    "state": "rem_supplier_data",
-                    "del_index": json_array
-                };
-                send_to_db( attr );
-            }
-		
             
 			function upd_partnum_table(){
-				var info = {
-					"tabID": table_refnum
-				};
-				receive_db_info( info );
-			}
+                const attr = dbio.GetPartDetail();
+				receive_to_db( attr ).then( function( response ){
+                    table_ref.bootstrapTable('destroy').bootstrapTable({
+                        exportDataType: "all"
+                    });
+                    table_ref.bootstrapTable('removeAll');
+                    table_ref.bootstrapTable('load', response);
+                    table_ref.bootstrapTable('selectPage', '1');
+                    table_ref.bootstrapTable('scrollTo', 'top');
+                });
+			};
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
-		<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
-		<script type="text/javascript" src="/SubScripts/ctrl_table.js"></script>
+		<script type="text/javascript" src="/SubScripts/ctrl_bootstrapTable.js"></script>
 	</body>
 </html>

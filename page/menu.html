@@ -7,24 +7,24 @@
 		<style> 
 			body {
 				margin: 0px;
-				background: #d2e9ff;
+				background: #ffffff;
 			}
 			
 			.flip, .nonepanel, .panel {
 				padding: 5px;
 				text-align: center;
-				background-color: #66b3ff;
-				border: solid 1px #c3c3c3;
-				color: #750000;
+				background-color: #ffffff;
+				border: solid 1px #ffffff;
+				color: #99cfff;
 				font-weight: bold;
 				font-family: Monospace, Courier New, sans-serif;
 				cursor: pointer;
 			}
 		  
 			.panel {
-				background-color: #bbffff;
+				background-color: #ffffff;
 				display: none;
-				color: #c6a300;
+				color: #66cfaa;
 			}
 			
 			.toppos {
@@ -50,7 +50,11 @@
 			<div id="4_1" onclick="open_page( this.id )" >領用</div>
 		</div>
 		<div class="nonepanel" id="5" onclick="open_page( this.id )" >BOM</div>
-		<div class="nonepanel" id="6" onclick="open_page( this.id )" >製令</div>
+		<div class="flip" id="6" >製令</div>
+		<div class="panel" id="menu5" >
+			<div id="6_0" onclick="open_page( this.id )" >產生</div>
+			<div id="6_1" onclick="open_page( this.id )" >領用</div>
+		</div>
 		<div class="flip" id="7" >廠商</div>
 		<div class="panel" id="menu6" >
 			<div id="7_0" onclick="open_page( this.id )" >查詢</div>
@@ -120,8 +124,11 @@
 					case "5":
 						page_name = "bom.html";
 						break;
-					case "6":
-						page_name = "mo.html";
+					case "6_0":
+						page_name = "mo_build.html";
+						break;
+					case "6_1":
+						page_name = "mo_get_item.html";
 						break;
 					case "7_0":
 						page_name = "lookup_company.html";
@@ -156,7 +163,6 @@
 				}
 			});
 		</script>
-		<script type="text/javascript" src="/SubScripts/macro_receive.js"></script>
 		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
         <script type="text/javascript" src="/SubScripts/db_send.js"></script>
 	</body>
