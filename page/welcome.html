@@ -46,8 +46,8 @@
 			// google login event
 			function onSuccess( googleUser ){
 				let userEmail = googleUser.getBasicProfile().getEmail();
-				let userId = user_email.substring( 0, userEmail.indexOf("@") );
-                var link_to_menu = "menu.html?" + userId;
+				let userId = userEmail.substring( 0, userEmail.indexOf("@") );
+                var linkToMenu = "menu.html?" + userId;
                 sessionStorage.setItem( "login_id", userId );
                 sessionStorage.setItem( "part_options", undefined );
                 sessionStorage.setItem( "supplier_options", undefined );
