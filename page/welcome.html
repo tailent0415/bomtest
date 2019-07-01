@@ -55,23 +55,23 @@
                 let attr = dbio.GetPartNum();;
                 receive_to_db( attr ).then( function ( response ){
                     if( response === false ){
-                        alert( "Part Number 初始化失敗" )
+                        alert( "Part Number 初始化失敗" );
                         return;
                     }
                     attr = dbio.GetManifestNum();
                     receive_to_db( attr ).then( function ( response ){
                         if( response === false ){
-                            alert( "Manifest Number 初始化失敗" )
+                            alert( "Manifest Number 初始化失敗" );
                             return;
                         }
                         attr = dbio.GetSupplierName();
                         receive_to_db( attr ).then( function ( response ){
                             if( response === false ){
-                                alert( "Supplier Name 初始化失敗" )
+                                alert( "Supplier Name 初始化失敗" );
                                 return;
                             }
                             window.open( linkToMenu, "frame_menu" );
-                            $("#user_title")[0].textContent = "登入完成"
+                            $("#user_title")[0].textContent = "登入完成";
                         });
                     });
                 });
