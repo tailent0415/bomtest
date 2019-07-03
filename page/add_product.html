@@ -106,15 +106,17 @@
 					return ("<p onclick='change_quan_input(" + index + "," + param.val + ")'>" + param.val + "</p>");
 				}
 				else if(param.func == 2){
-					return ("<input type='number' style='width:60px;' onblur='calc_total_cost(" + index + ",this.value )' value='" + param.val + "'/>");
+					return ("<input type='number' style='width:60px;' onblur='updRowTotalCost(" + index + ",this.value )' value='" + param.val + "'/>");
 				}
 			}
 			
             
             function change_quan_input( idx, val ){
-                if ( isNaN( Number( val ) ) ){
+                val = Number( val );
+                if( isFinite( val ) == false ){
                     val = 0;
                 }
+                
                 var quan_param ={
                     func: 2,
                     val: val
@@ -126,14 +128,18 @@
                     }
                 });
             }
+            
 
-            // calculate total cost and update	
-            function update_total_cost( idx, val ){
+
+            
+            // calculate total cost and update of the index row
+            function updRowTotalCost( idx, val ){
                 var attr = table_ref.bootstrapTable('getRowByUniqueId', idx );
-                if ( isNaN( Number( val ) ) ){
+                val = Number( val );
+                if( isFinite( val ) == false ){
                     val = 0;
                 }
-
+                
                 var quan_param ={
                     func: 1,
                     val: val
@@ -150,39 +156,36 @@
                         totalcost: attr.cost * val,
                     }
                 });
-                data_attr = table_ref.bootstrapTable("getData",false);
-                var product_cost = 0;
-                var value = 0;
-                for( var i = 0; i<data_attr.length; i++ ){
-                    value = Number( data_attr[i].totalcost );
-                    if( isNaN(value) ){
-                        value = 0;
-                    }
-                    product_cost += value;
-                }
-                var part_attr = cnt_ref.getElementsByClassName("part_attr");
-                for( var i=0; i<part_attr.length; i++ ){
-                    if( part_attr[i].name == "part_totalcost" ){
-                        part_attr[i].value = product_cost;
-                    }
-                }
+                updProductAmount();
             }
 
 			// table formatter delete button
 			function formatter_delbtn( val, row, index ){
-				return ("<button class='delbtn btn btn-danger glyphicon glyphicon-remove row-remove' onclick='remove_table_row(" + index + ")'></button>");
+				return ("<button class='delbtn btn btn-danger glyphicon glyphicon-remove row-remove' onclick='remTableRow(" + index + ")'></button>");
 			}
 			
 			// remove table row
-			function remove_table_row( idx ){
-				rem_table_row( table_ref, idx );
+			function remTableRow( idx ){
+                let attr = table_ref.bootstrapTable('getRowByUniqueId', idx );
+                table_ref.bootstrapTable('remove', {
+                    field: "index",
+                    values: Array.of(idx)
+                });
+                var i = 1;
+                while( attr !== null ){
+                    var replace_index = idx+i-1;
+                    table_ref.bootstrapTable('updateRow', {
+                        index: replace_index,
+                        row: {
+                            index: replace_index,
+                        }
+                    });
+                    attr = table_ref.bootstrapTable('getRowByUniqueId', idx+i+1 );
+                    i++;
+                }
+                updProductAmount();
 			}
 
-			// calculate total cost and update	
-			function calc_total_cost( idx, val ){
-				upd_total_cost( cnt_ref, table_ref, idx, val );
-			}
-			
 			function change_static_type( idx, source_val ){
 				var param = set_table_partnum_input_type( table_ref, "static", idx, source_val );
                 var num_param ={
@@ -286,7 +289,7 @@
                             val: rec_data.quantity
                         };
                         new_data[i] = {
-                          "index": rec_data.index,
+                          "index": Number( rec_data.index ),
                           "number": num_param,
                           "name": rec_data.name,
                           "quantity": quan_param,
@@ -297,15 +300,18 @@
                           "delrow": ""
                         };
                     }
+                    table_ref.bootstrapTable('removeAll');
                     table_ref.bootstrapTable('load', new_data);
                     table_ref.bootstrapTable('selectPage', '1');
                     table_ref.bootstrapTable('scrollTo', 'top');
+                    updProductAmount();
                 });
                     
             }
             
 			// send a new product data to database
 			function upload_btn(){
+                updProductAmount();
                 const form_cnt = document.getElementById( "add_product_form" );
                 const partnum = cnt_ref.getElementsByClassName("numtext");
             	const part_attr = cnt_ref.getElementsByClassName("part_attr");
@@ -352,7 +358,27 @@
                     });
                 });
 			}
-			
+            
+            
+            // update the product amount
+            function updProductAmount(){
+                data_attr = table_ref.bootstrapTable("getData",false);
+                var product_cost = 0;
+                var value = 0;
+                for( var i = 0; i<data_attr.length; i++ ){
+                    value = Number( data_attr[i].totalcost );
+                    if( isFinite(value) == false ){
+                        value = 0;
+                    }
+                    product_cost += value;
+                }
+                var part_attr = cnt_ref.getElementsByClassName("part_attr");
+                for( var i=0; i<part_attr.length; i++ ){
+                    if( part_attr[i].name == "part_totalcost" ){
+                        part_attr[i].value = product_cost;
+                    }
+                }
+            }
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
 		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>

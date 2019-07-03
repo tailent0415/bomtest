@@ -170,7 +170,7 @@
                                     val: rec_data.quantity
                                 };
                                 new_data[i] = {
-                                  "index": rec_data.index,
+                                  "index": Number( rec_data.index ),
                                   "number": num_param,
                                   "name": rec_data.name,
                                   "quantity": quan_param,
@@ -181,6 +181,7 @@
                                   "delrow": ""
                                 };
                             }
+                            table_ref.bootstrapTable('removeAll');
                             table_ref.bootstrapTable('load', new_data);
                             table_ref.bootstrapTable('selectPage', '1');
                             table_ref.bootstrapTable('scrollTo', 'top');
@@ -311,15 +312,10 @@
                     case 1:
                         return ("<p onclick='change_quan_input(" + index + "," + param.val + ")'>" + param.val + "</p>");
                     case 2:
-                        return ("<input type='number' style='width:60px;' onblur='calc_total_cost(" + index + ",this.value )' value='" + param.val + "'/>");
+                        return ("<input type='number' style='width:60px;' onblur='updRowTotalCost(" + index + ",this.value )' value='" + param.val + "'/>");
                     default:
                         return;
                 }
-			}
-			
-			// calculate total cost and update	
-			function calc_total_cost( idx, val ){
-				upd_total_cost( cnt_main_ref, table_ref, idx, val );
 			}
 
             function change_quan_input( idx, val ){
@@ -338,13 +334,14 @@
                 });
             }            
             
-            // calculate total cost and update	
-            function update_total_cost( idx, val ){
+            // calculate total cost and update of the index row
+            function updRowTotalCost( idx, val ){
                 var attr = table_ref.bootstrapTable('getRowByUniqueId', idx );
-                if ( isNaN( Number( val ) ) ){
+                val = Number( val );
+                if( isFinite( val ) == false ){
                     val = 0;
                 }
-
+                
                 var quan_param ={
                     func: 1,
                     val: val
@@ -354,30 +351,14 @@
                     attr.cost = 0;
                 }
 
-                table_ref.bootstrapTable('updateRow', {
+                table_ref.bootstrapTable('updateRow',{
                     index: idx,
                     row: {
                         quantity: quan_param,
                         totalcost: attr.cost * val,
                     }
                 });
-                var data_attr = table_ref.bootstrapTable("getData",false);
-                var product_cost = 0;
-                var value = 0;
-                for( var i = 0; i<data_attr.length; i++ ){
-                    value = Number( data_attr[i].totalcost );
-                    if( isNaN(value) ){
-                        value = 0;
-                    }
-                    product_cost += value;
-                }
-                
-                var part_attr = cnt_info_ref.getElementsByClassName("part_attr");
-                for( var i=0; i<part_attr.length; i++ ){
-                    if( part_attr[i].name == "part_totalcost" ){
-                        part_attr[i].value = product_cost;
-                    }
-                }
+                updProductAmount();
             }
 
 			
@@ -389,8 +370,28 @@
 			// remove table row
 			function remove_table_row( idx ){
 				rem_table_row( table_ref, idx );
+                updProductAmount();
 			}
 			
+            // update the product amount
+            function updProductAmount(){
+                data_attr = table_ref.bootstrapTable("getData",false);
+                var product_cost = 0;
+                var value = 0;
+                for( var i = 0; i<data_attr.length; i++ ){
+                    value = Number( data_attr[i].totalcost );
+                    if( isFinite(value) == false ){
+                        value = 0;
+                    }
+                    product_cost += value;
+                }
+                var part_attr = cnt_main_ref.getElementsByClassName("part_attr");
+                for( var i=0; i<part_attr.length; i++ ){
+                    if( part_attr[i].name == "part_totalcost" ){
+                        part_attr[i].value = product_cost;
+                    }
+                }
+            }
             
 			/*--------------------------------- Response ---------------------------------*/
 			// add supplier new name
@@ -412,7 +413,6 @@
 			function append_btn(){
                 
                 var rows = [];
-                
                 var data_attr = table_ref.bootstrapTable("getData",false);
                 var num_param ={
                     "func": 1,

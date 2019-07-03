@@ -21,9 +21,9 @@
 			<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" ></textarea>
 			<br><label for="part_inventory_out">庫存 :</label><input id="part_inventory_out" class="part_attr input_container normal_font" name="part_inventory" type="number" style="width:100px" disabled="true" value="0" />
 			<br><label for="part_variable_in">變量 :</label><input id="part_variable_in" class="part_attr input_container normal_font" name="part_varval" type="number" style="width:100px" value="0" min="0" onchange="set_serial_table();" />
-            <br><label for="part_method_in">領用方法 :</label><select id="part_method_in" class="part_attr input_container normal_font" name="part_method" style="width:100px" ><option value="5">領出</option><option value="3">賣出</option><option value="4">借出</option></select>
-			<br><label for="part_goal_in">目的 :</label>
+            <br><label for="part_goal_in">目的 :</label>
 			<br><textarea id="part_goal_in" class="part_attr normal_font" name="part_goal" rows="5" cols="50" wrap="hard" ></textarea>
+            <br><label for="part_method_in">領用方法 :</label><select id="part_method_in" class="part_attr input_container normal_font" name="part_method" style="width:100px" ><option value="5">領出</option><option value="3">賣出</option><option value="4">借出</option></select>
 			<br><button type="button" class="btn btn-primary btn_field" onclick="outbound_btn()">領用</button>
             <div id= "serial" class="sub_page_container tab_form">
             </div>
@@ -68,7 +68,7 @@
                     return;
                 }
                 
-                if( isNaN( Number( param.inventory ) ) || isNaN( varval ) ){
+                if( isFinite(Number(param.inventory)) == false || isFinite( varval ) == false ){
                     alert( "設定數值錯誤" );
                     return;
                 }
@@ -79,11 +79,16 @@
                 var sn_arr = new Array();
                 for(var i=0; i<count; i++){
                     sn = td_node[i].children[0].value;
-                    if( isNaN( Number( sn ) ) && sn.trim().length !== 5 ){
+                    if( sn.trim().length !== 5 ){
                         alert( "請正確選取流水號" );
                         return;
                     }
-                    sn_arr[i] = parseInt( sn, 10 );
+                    sn = Number( sn );
+                    if( isFinite( sn ) == false ){
+                        alert( "請正確選取流水號" );
+                        return;
+                    }
+                    sn_arr[i] = sn;
                 }
                 var attr = dbio.AddInventoryQuan();
                 param.sn_type = $("#part_method_in").val();

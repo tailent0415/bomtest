@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="zh-tw">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
+		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/multiple-search/bootstrap-table-multiple-search.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
+	</head>
+	<body>
+        <div class="load_modal"></div>
+		<datalist id="manifest_list" class="normal_font"></datalist>
+		<div id="moCnt" class="page_container">
+            <div id="source">
+                <label for="part_manifest_in">單號 :</label><input id="part_manifest_in" class="part_attr input_container part_list_style normal_font" name="part_manifest" list="manifest_list" onchange="generateBtn( this.value )" autocomplete="off" />
+            </div>
+            <div>
+               <div id="viewParam">
+               </div>
+               <div id="viewBtn">
+               </div>
+               <div id="viewTable">
+               </div>
+            </div>
+		</div>
+		<script language="JavaScript">
+			var body = $("body");
+            const cntRefMo = document.getElementById( "moCnt" );
+            const cntRefSource = document.getElementById( "source" );
+            const cntRefViewBtn = document.getElementById( "viewBtn" );
+            const cntRefViewParam = document.getElementById( "viewParam" );
+            const cntRefViewTable = document.getElementById( "viewTable" );
+            const dbio = new db_io();
+            
+            // html start
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+            
+    
+            // html open ready
+			$(document).ready(function(){
+				body.addClass("loading");
+				var manifest_list_options = sessionStorage.getItem( "manifest_options" );
+				$("#manifest_list").empty();
+				$("#manifest_list").append( manifest_list_options );
+				setTimeout(function() { 
+					body.removeClass("loading"); 
+				}, 1000);
+                resetInterface();
+			});
+            
+            function resetInterface(){
+            
+                cntRefViewBtn.innerHTML = "";
+                cntRefViewParam.innerHTML = "";
+                cntRefViewTable.innerHTML = "";
+
+            }
+            
+            // click generate button
+            function generateBtn( manifestNum ){
+                resetInterface();
+                let attr = dbio.GetMOInfo();
+                attr.manifest = manifestNum;
+                receive_to_db( attr ).then( function( response ){
+                    if (response == false){
+                        return;
+                    }
+                    let data_str = "";
+                    let table_title = new Array();
+                    
+                    data_str += '<label for="part_manifest_out">品號 :</label>';
+                    data_str += '<input id="part_num_in" class="part_attr input_container part_list_style normal_font" style="width:200px" name="part_num_list" value="' + response.number + '" readonly />';
+                    data_str += '<br><label for="part_cost_out">總成本 :</label>';
+                    data_str += '<input id="part_cost_out" class="part_attr input_container normal_font" style="width:120px" name="part_totalcost" value="' + Number( response.cost ) + '" readonly />';
+                    data_str += '<br><label for="part_name_out">品名 : </label>';
+                    data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" readonly >' + response.name + '</textarea>';
+                    data_str += '<br><label for="part_remark_in">備註 : </label>';
+                    data_str += '<br><textarea id="part_remark_in" class="part_attr normal_font" name="part_remark" rows="2" cols="50" wrap="hard" ></textarea>';
+                    
+                    cntRefViewParam.innerHTML = data_str;
+
+                    var eleBtn = document.createElement("button");
+                    eleBtn.setAttribute( "type", "button" );
+                    eleBtn.setAttribute( "class", "btn btn-primary btn_field" );
+                    eleBtn.setAttribute( "onclick", "moReviseBtn" );
+                    eleBtn.innerHTML = "修改製令";
+                    cntRefViewBtn.appendChild( eleBtn );
+                    
+                    
+                    if( response.data == undefined ){
+                        return;
+                    }
+                    
+                    table_title = [ '品號', '品名', '數量' ];
+                    let title_len = table_title.length;
+                    let head_arr = new Array();
+                    for( var i=0; i<title_len; i++ ){
+                        switch( table_title[i] ){
+                            case '品號':
+                                head_arr[i] = "<td style='width:180px;text-align:center' >" + table_title[i] + "</td>";
+                                break;
+                            case '品名':
+                                head_arr[i] = "<td style='width:200px;text-align:center' >" + table_title[i] + "</td>";
+                                break;
+                            case '數量':
+                                head_arr[i] = "<td style='width:80px;text-align:center' >" + table_title[i] + "</td>";
+                                break;
+                            default:
+                        }
+                    }
+ 
+                    let data_len = response.data.number.length;
+                    let data_arr = new Array( data_len );
+                    for( let i=0; i<data_len; i++ ){
+                        data_arr[i] = new Array( title_len );
+                        for( let j=0; j<title_len; j++ ){
+                            switch( table_title[j] ){
+                                case '品號':
+                                    data_arr[i][j] = "<td style='height:35px;text-align:center;' ><input type='text' style='text-align:left;' class='frameless' value=" + response.data.number[i] + " readonly></td>";
+                                    break;
+                                case '品名':
+                                    data_arr[i][j] = "<td style='height:35px;text-align:center;' ><input type='text' style='text-align:center;' class='frameless' value=" + response.data.name[i] + " readonly></td>";
+                                    break;
+                                case '數量':
+                                    data_arr[i][j] = "<td style='height:35px;text-align:center;' ><input type='number' style='text-align:left;' class='frameless' value=" + response.data.quantity[i] + " readonly></td>";
+                                    break;
+                                default:
+                            }
+                        }
+                    }
+                    
+                    
+                    let table_obj = init_table();
+                    add_table_header( head_arr );
+                    add_table_data( data_arr );
+
+                    cntRefViewTable.appendChild( table_obj );
+                    var ele_br = document.createElement("br");
+                    cntRefViewTable.appendChild( ele_br );
+                });
+            }
+            
+            
+            function moReviseBtn(){
+                var head_items = cntRefViewTable.getElementsByTagName("thead")[0].childNodes[0].childElementCount;
+                var table_title = new Array();
+                for( var i=0; i<head_items; i++ ){
+                    table_title[i] = cntRefViewTable.getElementsByTagName("thead")[0].childNodes[0].childNodes[i].innerHTML;
+                }
+                var tr_obj = cntRefViewTable.getElementsByTagName("tbody")[0].children;
+                var items = tr_obj.length;
+                
+                var pnumber = new Array();
+                var pname = new Array();
+                var pquantity = new Array();
+                for(var i=0; i<items; i++){
+                    var td_obj = tr_obj[i].children;
+                    for( var j=0; j<head_items; j++ ){
+                        var res_str = td_obj[j].childNodes[0].value;
+                        if ( res_str == "" ){
+                            data_str = "";
+                            break;
+                        }
+                        switch( table_title[j] ){
+                            case '品號':
+                                pnumber[i] = res_str;
+                                break;
+                            case '品名':
+                                pname[i] = res_str;
+                                break;
+                            case '數量':
+                                pquantity[i] = res_str;
+                                break;
+                            default:
+                        }
+                    }
+                }
+                
+                items = pnumber.length;
+                var serial_str = "";
+                var code = "";
+                var count = 0;
+                var tag_num = 0;
+                for(var i=0; i<items; i++){
+                    serial_str = "";
+                    count = 0;
+                    tag_num = parseInt( pnumber[i][0] );
+                    switch( tag_num ){
+                        case 1:
+                        case 2:
+                            count = parseInt( pquantity[i] );
+                            for( var j=0; j<count; j++ ){
+                                serial_str += ",";
+                                serial_str += "none";
+                            }
+                            serial_str = serial_str.slice(1);
+                            code += "number=" + pnumber[i] + "&name=" + pname[i] + "&quantity=" + pquantity[i] + "&serial=" + serial_str + "&provide=0;";
+                            break;
+                        case 3:
+                            code += "number=" + pnumber[i] + "&name=" + pname[i] + "&quantity=" + pquantity[i] + "&serial=undefined" + "&provide=0;";
+                            break;
+                        default:
+                    }
+                }
+                var attr = dbio.AddMOData();
+                var part_attr = cntRefMo.getElementsByClassName("part_attr");
+                var param = get_doc_part_attr( part_attr );
+                param.mocode = code;
+                param.state = attr.state;
+                send_to_db( param ).then( function( response ){
+                    if ( response == false ){
+                        return;
+                    }
+                    alert( response );
+                    resetInterface();
+                    let attr = dbio.GetManifestNum();
+                    receive_to_db( attr ).then( function (response){
+                        if ( response == false ){
+                            return;
+                        };
+                    });
+                });
+            }
+            
+            
+            
+            
+            
+            
+            
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+		<script type="text/javascript" src="/SubScripts/get.js"></script>
+		<script type="text/javascript" src="/SubScripts/response_button.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_table.js"></script>
+	</body>
+</html>

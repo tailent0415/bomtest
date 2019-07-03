@@ -48,7 +48,7 @@
                             <th data-field="action">行為</th>
                             <th data-field="quantity">數量</th>
                             <th data-field="goal">目的</th>
-                            <th data-field="location">位置</th>
+                            <th data-field="manifest" data-formatter="manifest_link">單號</th>
                         </tr>
                     </thead>
                 </table>
@@ -105,6 +105,16 @@
                     }
                     upd_record_btn();
                 });
+            }
+            
+			function manifest_link( val, row, index ){
+				return ('<a href=\"javascript:open_manifest_link(\'' + val + '\')\">' + val + '</a>');
+			}
+            
+            
+            function open_manifest_link( manifest_num ){
+                var link_to_menu = "mo_outbound.html?" + manifest_num;
+                window.open( link_to_menu, "frame_display" );
             }
             
 		</script>

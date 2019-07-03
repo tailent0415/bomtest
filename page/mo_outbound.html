@@ -61,7 +61,10 @@
                 <label for="manifest_num_in">單號 :</label><input id="manifest_num_in" class="part_attr input_container normal_font" name="part_manifest" readonly />
                 <button class="btn btn-primary" onclick="upload_manifest_table()" >上傳資料</button>
                 <br><label for="part_num_in">製造品號 :</label><input id="part_num_in" class="part_attr input_container normal_font" name="part_num_list" readonly />
-                <br><label for="part_name_in">製造品名 :</label><input id="part_name_in" class="part_attr input_container normal_font" name="part_name" readonly />
+                <br><label for="part_name_in">製造品名 :</label>
+                <br><textarea id="part_name_in" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" readonly></textarea>
+                <br><label for="part_remark_in">備註 :</label>
+                <br><textarea id="part_remark_in" class="part_attr normal_font" name="part_remark" rows="2" cols="50" wrap="hard" ></textarea>
             </div>
             <div id="table">
             </div>
@@ -112,7 +115,9 @@
                     }
                     document.getElementById( "manifest_num_in" ).setAttribute( "value", manifest_num );
                     document.getElementById( "part_num_in" ).setAttribute( "value", response.number );
-                    document.getElementById( "part_name_in" ).setAttribute( "value", response.name );
+                    document.getElementById( "part_name_in" ).value = response.name;
+                    document.getElementById( "part_remark_in" ).value = response.remark;
+                    
                     if ( typeof response.data.number === "undefined" || typeof response.data.serial === "undefined"
                        || typeof response.data.quantity === "undefined" || typeof response.data.provide === "undefined" ){
                         return;
@@ -248,15 +253,22 @@
                         for(var i=0; i<input_items.length; i++){
                             cnt_serial_ref.removeChild( input_items[i] );
                         }
-                        let max_val = Number( cnt_table_ref.getElementsByTagName("tr")[Number(table_index)+1].childNodes[2].childNodes[0].value );
-                        if( isNaN( max_val ) ){
+                        let maxVal = Number( cnt_table_ref.getElementsByTagName("tr")[Number(table_index)+1].childNodes[2].childNodes[0].value );
+                        let needVal = Number( cnt_table_ref.getElementsByTagName("tr")[Number(table_index)+1].childNodes[3].childNodes[0].value );
+                        
+                        if( isFinite( maxVal ) === false || isFinite( needVal ) === false ){
                             max_val = 0;
                         }
+                        
+                        if( maxVal > needVal ){
+                            maxVal = needVal;
+                        }
+                        
                         input_obj = document.createElement("input");
                         input_obj.setAttribute("type", "number");
                         input_obj.setAttribute("value", $(e).text() );
                         input_obj.setAttribute("min", $(e).text() );
-                        input_obj.setAttribute("max", max_val);
+                        input_obj.setAttribute("max", maxVal);
                         cnt_serial_ref.appendChild( input_obj );
                         break;
                     default:
@@ -380,7 +392,7 @@
                 let attr = dbio.RepMoData();
                 param.state = attr.state;
                 send_to_db( param ).then( function( response ){
-                    if( response == false ){
+                    if( response === false ){
                         init_mo();
                         return;
                     }

@@ -20,8 +20,8 @@
 		<datalist id="part_list" class="normal_font"></datalist>
 		<div id="mo_cnt" class="page_container">
             <div id="declaration">
-                <label for="part_num_in">製造品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" />
-                <br><label for="part_items_in">製造數量 :</label><input id="part_items_in" class="part_attr input_container normal_font" name="part_items" type="number" style="width:100px" value="1" min="1" />
+                <label for="part_num_in">製造品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" onchange="reset_interface()" autocomplete="off" />
+                <br><label for="part_items_in">製造數量 :</label><input id="part_items_in" class="part_attr input_container normal_font" name="part_items" type="number" style="width:100px" value="1" min="1" onchange="reset_interface()" />
             </div>
             <div id="btn">
                 <button type="button" class="btn btn-primary btn_field" onclick="generate_btn()">產生製令</button>
@@ -79,6 +79,7 @@
                     if ( response === false ){
                         return;
                     }
+                    
                     var data_str = "";
                     var table_title = new Array();
                     switch ( param.number[0] ){
@@ -87,9 +88,9 @@
                             data_str += '<label for="part_manifest_out">單號 :</label>';
                             data_str += '<input id="part_manifest_out" class="part_attr input_container normal_font" style="width:100px" name="part_manifest" value="' + response.manifest + '" readonly />';
                             data_str += '<br><label for="part_cost_out">總成本 :</label>';
-                            data_str += '<input id="part_cost_out" class="part_attr input_container normal_font" style="width:120px" name="part_totalcost" value="' + parseInt( response.cost ) + '" readonly />';
+                            data_str += '<input id="part_cost_out" class="part_attr input_container normal_font" style="width:120px" name="part_totalcost" value="' + Number( response.cost ) + '" readonly />';
                             data_str += '<br><label for="part_name_out">品名 : </label>';
-                            data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" readonly >' + response.name + '</textarea>';
+                            data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" readonly >"' + response.name + '"</textarea>';
                             data_str += '<br><label for="part_remark_in">備註 : </label>';
                             data_str += '<br><textarea id="part_remark_in" class="part_attr normal_font" name="part_remark" rows="2" cols="50" wrap="hard" ></textarea>';
                             table_title = [ '品號', '品名', '數量' ];
@@ -97,13 +98,12 @@
                         default:
                             return;
                     }
-                    
+                    cnt_view_param_ref.innerHTML = data_str;
+
                     if( response.data == undefined ){
-                        resolve( "BOM 不存在" );
                         return;
                     }
-                    
-                    cnt_view_param_ref.innerHTML = data_str;
+
                     let title_len = table_title.length;
                     let head_arr = new Array();
                     for( var i=0; i<title_len; i++ ){
@@ -131,7 +131,7 @@
                                     data_arr[i][j] = "<td style='height:35px;text-align:center;' ><input type='text' style='text-align:left;' class='frameless' value=" + response.data[i].number + " readonly></td>";
                                     break;
                                 case '品名':
-                                    data_arr[i][j] = "<td style='height:35px;text-align:center;' ><input type='text' style='text-align:center;' class='frameless' value=" + response.data[i].name + " readonly></td>";
+                                    data_arr[i][j] = "<td style='height:35px;text-align:center;' ><input type='text' style='text-align:center;' class='frameless' value='" + response.data[i].name + "' readonly></td>";
                                     break;
                                 case '數量':
                                     data_arr[i][j] = "<td style='height:35px;text-align:center;' ><input type='number' style='text-align:left;' class='frameless' value=" + response.data[i].quantity + " readonly></td>";
