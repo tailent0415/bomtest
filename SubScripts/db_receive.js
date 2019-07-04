@@ -38,36 +38,42 @@ function receive_promise( data ){
                         resolve( response );
                         break;
 					case "get_all_supplier_name":
-						if( response[0].supplier == undefined || response.supplier == "" ){
-							return;
-						}
-						var supplier_list_options = "";
-						for(var i=0; i < response.length; i++){
-							supplier_list_options += '<option value="'+response[i].supplier+'" />';
-						}
+                        var supplier_list_options = '<option value="" />';
+                        if( Array.isArray( response ) !== false ){
+                            if( response[0].supplier !== undefined ){
+                                supplier_list_options = "";
+                                for(var i=0; i < response.length; i++){
+                                    supplier_list_options += '<option value="'+response[i].supplier+'" />';
+                                }
+                            }
+                        }
 						sessionStorage.setItem( "supplier_options", supplier_list_options );
-						resolve( supplier_list_options );
+                        resolve( supplier_list_options );
 						break;
 					case "get_all_partnum":
-						if( response[0].number == undefined || response.number == "" ){
-							return;
-						}
-						var part_list_options = "";
-						for(var i=0; i < response.length; i++){
-							part_list_options += '<option value="'+response[i].number+'" />';
-						}
+                        var part_list_options = '<option value="" />';
+                        if( Array.isArray( response ) !== false ){
+                            if( response[0].number !== undefined ){
+                                part_list_options = "";
+                                for(var i=0; i < response.length; i++){
+                                    part_list_options += '<option value="'+response[i].number+'" />';
+                                }
+                            }
+                        }
 						sessionStorage.setItem( "part_options", part_list_options );
 						resolve( part_list_options );
 						break;
 					case "get_all_manifest_number":
-						if( response[0].manifest == undefined || response.manifest == "" ){
-							return;
-						}
-						var manifest_list_options = "";
-						for(var i=0; i < response.length; i++){
-							manifest_list_options += '<option value="'+response[i].manifest+'" />';
-						}
-						sessionStorage.setItem( "manifest_options", manifest_list_options );
+                        var manifest_list_options = '<option value="" />';
+                        if( Array.isArray( response ) !== false ){
+                            if( response[0].manifest !== undefined ){
+                                manifest_list_options = "";
+                                for(var i=0; i < response.length; i++){
+                                    manifest_list_options += '<option value="'+response[i].manifest+'" />';
+                                }
+                            }
+                        }
+                        sessionStorage.setItem( "manifest_options", manifest_list_options );
 						resolve( manifest_list_options );
 						break;
                     case "get_sn_inbound":
