@@ -15,7 +15,7 @@ function receive_promise( data ){
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "post",
-			url: "https://script.google.com/macros/s/AKfycbyin5ERIe9qIEx4pEBlse7n_Alo3ELmKUWvqjXfpQ/exec",
+			url: "https://script.google.com/macros/s/AKfycbwKABEfJzkFN9eQFT-ZrAc4gDaMQNrYgwXVH9KOYW0laumRMcM3/exec",
 			data: data,
 			dataType: "JSON",
 			timeout: 10000,
