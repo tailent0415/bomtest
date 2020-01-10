@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="zh-tw">
+    <head>
+        <meta charset="utf-8">
+		<script src="/CoreScripts/jquery.min.js"></script>
+    </head>
+    <body>
+		<div class="login_container">
+            <form id = "uploadbanner" enctype="multipart/form-data" action="/upload/image" method="post">
+                  <input id = "fileupload" type = "file" />
+                  <input type = "submit" value = "submit" id = "submit" />
+            </form>
+			<div id='view'>
+            </div>
+		</div>
+        <script language="JavaScript">
+            $(document).ready(function(){
+                var innerText = "";
+                innerText += '<button type="button" onclick="reback()">返回</button>';
+                innerText += '<br><iframe src="../assets/mygpu.pdf" width="100%" height="600px"></iframe>';
+                document.getElementById("view").innerHTML = innerText;
+            })
+            
+            function reback(){
+                window.open( "search_number.html", "frame_display" );
+            }
+        </script>
+    </body>
+</html>
