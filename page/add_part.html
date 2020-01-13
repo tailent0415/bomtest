@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="zh-tw">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
+		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
+	</head>
+	<body>
+		<div class="load_modal"></div>
+		<datalist id="supplier_list" class="normal_font"></datalist>
+		<div id="add_part" class="page_container">
+			<form class= "tab_form" id="add_part_form">
+				<div class="text_field">
+					<label for="part_num_in">品號 :</label>
+                    <input class="numtext input_container normal_font" type=text name="part_num1" size="1" maxlength="1" placeholder="3" style="text-transform:uppercase" onchange="check_part_num(3,1,this.value)">
+					<b>－</b><input class="numtext input_container normal_font" type=text name="part_num2" size="2" maxlength="2" placeholder="AA" style="text-transform:uppercase" onchange="check_part_num(2,2,this.value)">
+					<b>－</b><input class="numtext input_container normal_font" type=text name="part_num3" size="3" maxlength="3" placeholder="AAA" style="text-transform:uppercase" onchange="check_part_num(2,3,this.value)">
+					<b>－</b><input class="numtext input_container normal_font" type=text name="part_num4" size="3" maxlength="3" placeholder="AAA" style="text-transform:uppercase" onchange="check_part_num(2,3,this.value)">
+					<b>－</b><input class="numtext input_container normal_font" type=text name="part_num5" size="3" maxlength="3" placeholder="000" style="text-transform:uppercase" onchange="check_part_num(1,3,this.value)">
+					<b>－</b><input class="numtext input_container normal_font" type=text name="part_num6" size="3" maxlength="3" placeholder="000" style="text-transform:uppercase" onchange="check_part_num(1,3,this.value)">
+					<br><label for="part_name_in">品名 :</label>
+					<br><textarea id="part_name_in" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" ></textarea>
+					<br><label for="part_format_in">規格 :</label>
+					<br><textarea id="part_format_in" class="part_attr normal_font" name="part_format" rows="2" cols="50" wrap="hard" autocomplete="off"></textarea>
+					<br><label for="part_fignum_in">圖號 :</label>
+                    <input id="part_fignum_in" class="part_attr input_container normal_font" name="part_fignum" type="text" style="width:200px" autocomplete="off"/>
+					<br><label for="part_supplier_in">廠商 :</label>
+                    <input id="part_supplier_in" class="part_attr input_container normal_font" name="part_supplier" list="supplier_list" type="text" style="width:100px" onchange="add_supplier_name( this.value )" />
+					<br><label for="part_unit_in">單位 :</label>
+                    <select id="part_unit_in" class="part_attr input_container normal_font" name="part_unit" style="width:70px" ><option value="SET">SET</option><option value="PCS">PCS</option></select>
+					<br><label for="part_cost_in">成本 :</label>
+                    <input id="part_cost_in" class="part_attr input_container normal_font" name="part_cost" type="number" style="width:100px" value="0" autocomplete="off"/>
+				</div>
+				<div class="btn_field">
+					<button type="button" class="btn btn-primary" onclick="add_part_btn()" >新增料件</button>
+				</div>
+			</form>
+		</div>
+		<script language="JavaScript">
+			var body = $("body");
+            const cnt_ref = document.getElementById( "add_part" );
+            const dbio = new db_io( );
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+
+			$(document).ready(function(){
+				body.addClass("loading");
+				const supplier_list_options = sessionStorage.getItem( "supplier_options" );
+				$("#supplier_list").empty();
+				$("#supplier_list").append( supplier_list_options );
+				setTimeout(function() { 
+					body.removeClass("loading"); 
+				}, 1000);
+			});
+			
+
+			
+			// add supplier new name
+			function add_supplier_name( currdata ){
+                if ( currdata == "" ){
+                    return;
+                }
+                let attr = dbio.SetSupplierInfo();
+                attr.supplier = currdata;
+                send_to_db( attr ).then( function( response ){
+                    if ( response != false ){
+                        attr = dbio.GetSupplierName();
+                        receive_to_db( attr );
+                    }
+                });
+			}
+            
+            function add_part_btn(){
+                const partnum = cnt_ref.getElementsByClassName( "numtext" );
+                const part_attr = cnt_ref.getElementsByClassName( "part_attr" );
+                let form_cnt = document.getElementById( "add_part_form" );
+                var param;
+                var num_str = "";
+                
+                
+                if( partnum[0].value !== "3" ){
+                    alert( "不屬於料件的類別" )
+                    return;
+                }
+                
+                for ( i = 0; i < partnum.length; i++) {
+                    num_str += partnum[i].value;
+                }
+                
+                if( check_part_num( 0, 15, num_str ) == false ){
+                    alert( "input has error" );
+                    return;
+                }
+                    
+                param = get_doc_part_attr( part_attr );
+                if (param !== false){                            
+                    var attr = dbio.AddNewData();
+                    param.state = attr.state;
+                    param.number = num_str;
+                    send_to_db( param ).then( function (response){
+                        if ( response == false ){
+                            return;
+                        }
+                        let attr = dbio.GetPartNum();
+                        receive_to_db( attr ).then( function (response){
+                            if ( response == false ){
+                                return;
+                            }
+                            form_cnt.reset();
+                        });
+                    });
+                }
+			}
+			
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+		<script type="text/javascript" src="/SubScripts/get.js"></script>
+	</body>
+</html>

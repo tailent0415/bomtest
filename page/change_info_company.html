@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="zh-tw">
+	<head>
+		<meta charset="utf-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
+		<script src="/CoreScripts/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
+	</head>
+	<body>
+		<div class="load_modal"></div>
+		<datalist id="supplier_list" class="normal_font"></datalist>
+		<div id="supplier_revise" class="page_container">
+			<div class= "tab_form">
+				<div class="text_field">
+					<label for="part_supplier_in">廠商 :</label><input id="part_supplier_in" class="part_attr input_container supplier_list_style normal_font" name="part_supplier" list="supplier_list" onchange="add_supplier_name( this.value )" autocomplete="off" />
+					<br><label for="part_replace_name_in">廠商名稱更改 :</label><input id="part_replace_name_in" class="part_attr input_container normal_font" name="part_replace_name" type="text" style="width:300px" />
+					<br><label for="part_contact_in">聯絡人 :</label><input id="part_contact_in" class="part_attr input_container normal_font" name="part_contact" type="text" style="width:300px" placeholder="Jacky" />
+					<br><label for="part_phone_in">電話 :</label><input id="part_phone_in" class="part_attr input_container normal_font" name="part_phone" type="text" style="width:300px" placeholder="(03)598-6199 Ext.5553" />
+					<br><label for="part_address_in">地址 :</label><input id="part_address_in" class="part_attr input_container normal_font" name="part_address" type="text" style="width:300px" placeholder="湖口" />
+					<br><label for="part_url_in">網址 :</label><input id="part_url_in" class="part_attr input_container normal_font" name="part_url" type="text" style="width:300px" placeholder="http://my.scientech.com.tw/" />
+				</div>
+			</div>
+			<div>
+				<button type="button" class="btn btn-primary" onclick="upload_btn()" >上傳</button>
+			</div>
+		</div>
+		<script language="JavaScript">
+			var body = $("body");
+            const cnt_ref = document.getElementById( "supplier_revise" );
+            const dbio = new db_io();
+            
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+
+			$(document).ready(function(){
+				let supplier_list_options = sessionStorage.getItem( "supplier_options" );
+				$("#supplier_list").empty();
+				$("#supplier_list").append( supplier_list_options );
+                init_supplier_interface();
+			});
+            
+            
+            // init supplier company information interface
+            function init_supplier_interface(){
+                const url = location.href;
+				const temp = url.split("?");
+				const supplier_name = decodeURIComponent( temp[1] ).replace(/\+/g, " ");
+                if ( supplier_name === "undefined" ){
+                    body.addClass("loading");
+                    $("#part_supplier_in")[0].value = "";
+                    setTimeout(function() { 
+                        body.removeClass("loading"); 
+                    }, 1000);
+                }
+                else{
+                    $("#part_supplier_in")[0].value = supplier_name;
+                    add_supplier_name( supplier_name );
+                }
+            }
+            
+            
+            
+            
+            
+			// add supplier new name
+			function add_supplier_name( currdata ){
+                if ( currdata == "" ){
+                    return;
+                }
+                let attr = dbio.SetSupplierInfo();
+                attr.supplier = currdata;
+                send_to_db( attr ).then( function( response ){
+                    if ( response === false ){
+                        return;
+                    }
+                    attr = dbio.GetSupplierDetail();
+                    attr.supplier = currdata;
+                    receive_to_db( attr ).then( function( response ){
+                        if ( response == false ){
+                            return;
+                        }
+                        let var_val = cnt_ref.getElementsByClassName("part_attr");
+                        for (var i=0; i<var_val.length; i++){
+                            switch( var_val[i].name ){
+                                case "part_contact":
+                                    if ( response.contact == undefined ){
+                                        var_val[i].value = "";
+                                    }
+                                    else{
+                                        var_val[i].value = response.contact;
+                                    }
+                                    break;
+                                case "part_phone":
+                                    if ( response.contact == undefined ){
+                                        var_val[i].value = "";
+                                    }
+                                    else{
+                                        var_val[i].value = response.phone;
+                                    }
+                                    break;
+                                case "part_address":
+                                    if ( response.contact == undefined ){
+                                        var_val[i].value = "";
+                                    }
+                                    else{
+                                        var_val[i].value = response.address;
+                                    }
+                                    break;
+                                case "part_url":
+                                    if ( response.contact == undefined ){
+                                        var_val[i].value = "";
+                                    }
+                                    else{
+                                        var_val[i].value = response.url;
+                                    }
+                                    break;
+                                default:
+                            }
+                        }
+                    });
+                });
+			}
+            
+            
+            // upload new supplier information
+            function upload_btn(){
+                let part_attr = cnt_ref.getElementsByClassName("part_attr");
+                let param = get_doc_part_attr( part_attr );
+                if ( param.supplier == "" ){
+                    return;
+                }
+                let attr = dbio.SetSupplierInfo();
+                param.state = attr.state;
+                send_to_db( param ).then( function( response ){
+                    if ( response == false ){
+                        return;
+                    }
+                    
+                    attr = dbio.GetSupplierName();
+                    receive_to_db( attr );
+                    for (var i=0; i<part_attr.length; i++){
+                        switch( part_attr[i].name ){
+                            case "part_supplier":
+                                if( param.replace_name == "" ){
+                                    part_attr[i].value = param.supplier;
+                                }
+                                else{
+                                    part_attr[i].value = param.replace_name;
+                                }
+                                break;
+                            case "part_replace_name":
+                                part_attr[i].value = "";
+                                break;
+                            default:
+                        }
+                    }
+
+                });
+            }
+            
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+		<script type="text/javascript" src="/SubScripts/get.js"></script>
+		<script type="text/javascript" src="/SubScripts/response_button.js"></script>
+	</body>
+</html>

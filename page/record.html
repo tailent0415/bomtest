@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="zh-tw">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
+		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/multiple-search/bootstrap-table-multiple-search.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
+	</head>
+	<body>
+		<div class="load_modal"></div>
+        <div id="record" calss="page_container">
+            <form class="tab_form" id="record_form">
+                <div id="record_toolbar">
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-primary" onclick="rem_record_btn()" >刪除</button>
+                        <button type="button" class="btn btn-primary" onclick="upd_record_btn()" >更新數據</button>
+                    </div>
+                </div>
+                <table id="record_table"
+                    data-toggle="table"
+                    data-side-pagination="client"
+                    data-pagination="true"
+                    data-page-list="[5, 10, 50, 100]"
+                    data-search="true"
+                    data-height="525"
+                    data-id-field="index"
+                    data-unique-id="index"
+                    data-show-columns="true"
+                    data-toolbar="#record_toolbar"
+                    data-row-style="set_table_font"
+                    data-page-number="1">
+                    <thead>
+                        <tr>
+                            <th data-field="state" data-checkbox="true"></th>
+                            <th data-field="index">項次</th>
+                            <th data-field="timestamp">時間</th>
+                            <th data-field="number">品號</th>
+                            <th data-field="name">品名</th>
+                            <th data-field="action">行為</th>
+                            <th data-field="quantity">數量</th>
+                            <th data-field="goal">目的</th>
+                            <th data-field="manifest" data-formatter="manifest_link">單號</th>
+                        </tr>
+                    </thead>
+                </table>
+            </form>
+        </div>
+		<script language="JavaScript">
+			var body = $("body");
+            var table_ref = $("#record_table");
+            const dbio = new db_io( );
+            
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+
+            
+			$(document).ready(function(){
+                upd_record_btn();
+			});
+            
+            
+            // update record table
+            function upd_record_btn(){
+                const attr = dbio.GetRecord();
+                receive_to_db( attr ).then( function( response ){
+                    if( response === false ){
+                        return;
+                    }
+                    table_ref.bootstrapTable('removeAll');
+                    table_ref.bootstrapTable('load', response);
+                    table_ref.bootstrapTable('selectPage', '1');
+                    table_ref.bootstrapTable('scrollTo', 'top');
+                });
+            }
+            
+            // remove select record
+            function rem_record_btn(){
+                let attr = dbio.RemRecord();
+                var sel_target = new Array();
+                var del_index = new Array(); 
+                sel_target = table_ref.bootstrapTable( 'getSelections' );
+                for( var i=0; i<sel_target.length; i++ ){
+                    del_index[i] = sel_target[i].index;
+                }
+                var json_array = get_json_array( del_index );
+                attr.del_index = json_array;
+                send_to_db( attr ).then( function( response ){
+                    if( response === false ){
+                        return;
+                    }
+                    upd_record_btn();
+                });
+            }
+            
+			function manifest_link( val, row, index ){
+				return ('<a href=\"javascript:open_manifest_link(\'' + val + '\')\">' + val + '</a>');
+			}
+            
+            
+            function open_manifest_link( manifest_num ){
+                var link_to_menu = "mo_outbound.html?" + manifest_num;
+                window.open( link_to_menu, "frame_display" );
+            }
+            
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+		<script type="text/javascript" src="/SubScripts/get.js"></script>
+		<script type="text/javascript" src="/SubScripts/ctrl_bootstrapTable.js"></script>
+		<script type="text/javascript" src="/SubScripts/response_button.js"></script>
+	</body>
+</html>

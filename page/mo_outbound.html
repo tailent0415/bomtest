@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="zh-tw">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
+		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/multiple-search/bootstrap-table-multiple-search.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_splitter.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_table.js"></script>
+        <style>
+            body
+            {
+              margin:0;
+              padding:0;
+            }
+            
+            #factor{
+                float:left;
+                position: absolute;
+                margin-top:auto;
+                margin-left:5px;
+                margin-right:5px;
+                margin-bottom:5px;
+                clip:auto;
+            }
+            #serial{
+                float:left;
+                position: absolute;
+                margin-top:10px;
+                margin-left:5px;
+                margin-right:5px;
+                margin-bottom:auto;
+                border: 1px solid 000000;
+            }
+            #splitter
+            {
+                height:3px;
+                background-color:#888888;
+                float:left;
+                width:100%;
+                position:absolute;
+                cursor:s-resize;
+            }
+            
+        </style>
+	</head>
+	<body>
+		<div class="load_modal"></div>
+        <datalist id="serial_list" class="normal_font"></datalist>
+		<div id="factor">
+            <div id="param">
+                <label for="manifest_num_in">單號 :</label><input id="manifest_num_in" class="part_attr input_container normal_font" name="part_manifest" readonly />
+                <button class="btn btn-primary" onclick="upload_manifest_table()" >上傳資料</button>
+                <br><label for="part_num_in">製造品號 :</label><input id="part_num_in" class="part_attr input_container normal_font" name="part_num_list" readonly />
+                <br><label for="part_name_in">製造品名 :</label>
+                <br><textarea id="part_name_in" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" readonly></textarea>
+                <br><label for="part_remark_in">備註 :</label>
+                <br><textarea id="part_remark_in" class="part_attr normal_font" name="part_remark" rows="2" cols="50" wrap="hard" ></textarea>
+            </div>
+            <div id="table">
+            </div>
+		</div>
+        <div id="splitter" style="display: none"></div>
+        <div id="serial" style="display: none">
+            <button class='btn btn-primary btn_field' onclick='upd_table_btn(this)' value="" >更新</button>
+            <br><p></p>
+        </div>
+		<script language="JavaScript">
+            var body = $("body");
+            const cnt_table_ref = document.getElementById( "table" );
+            const cnt_serial_ref = document.getElementById( "serial" );
+            const cnt_splitter_ref = document.getElementById( "splitter" );
+            const dbio = new db_io();
+            var manifest_table_obj = init_table();
+
+            // html start
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+            
+            // html open ready
+			$(document).ready(function(){
+                init_mo();
+			});
+            
+            function init_mo(){
+                const url = location.href;
+				const temp = url.split("?");
+				const manifest_num = temp[1];
+                if ( manifest_num == undefined ){
+                    alert( "載入錯誤" );
+                    return;
+                }
+                cnt_table_ref.innerHTML = "";
+                manifest_table_obj = init_table();
+                let attr = dbio.GetMOInfo();
+                attr.manifest = manifest_num;
+                receive_to_db( attr ).then( function( response ){
+                    if (response == false){
+                        return;
+                    }
+                    document.getElementById( "manifest_num_in" ).setAttribute( "value", manifest_num );
+                    document.getElementById( "part_num_in" ).setAttribute( "value", response.number );
+                    document.getElementById( "part_name_in" ).value = response.name;
+                    document.getElementById( "part_remark_in" ).value = response.remark;
+                    
+                    if ( typeof response.data.number === "undefined" || typeof response.data.serial === "undefined"
+                       || typeof response.data.quantity === "undefined" || typeof response.data.provide === "undefined" ){
+                        return;
+                    }
+                    
+                    let table_title = [ '品號', '品名', '庫存', '需求數量', '已領數量' ];
+                    let title_len = table_title.length;
+                    let head_arr = new Array( title_len );
+                    for( var i=0; i<title_len; i++ ){
+                        switch( table_title[i] ){
+                            case '品號':
+                                head_arr[i] = "<td style='width:180px;text-align:center' >" + table_title[i] + "</td>";
+                                break;
+                            case '品名':
+                                head_arr[i] = "<td style='width:auto;text-align:center' >" + table_title[i] + "</td>";
+                                break;
+                            case '庫存':
+                                head_arr[i] = "<td style='width:auto;text-align:center' >" + table_title[i] + "</td>";
+                                break;
+                            case '需求數量':
+                                head_arr[i] = "<td style='width:80px;text-align:center' >" + table_title[i] + "</td>";
+                                break;
+                            case '已領數量':
+                                head_arr[i] = "<td style='width:80px;text-align:center' >" + table_title[i] + "</td>";
+                                break;
+                            default:
+                        }
+                    }
+                    
+                    
+                    let data_len = response.data.number.length;
+                    let data_arr = new Array( data_len );
+                    for( let i=0; i<data_len; i++ ){
+                        data_arr[i] = new Array( title_len );
+                        for( let j=0; j<title_len; j++ ){
+                            switch( table_title[j] ){
+                                case '品號':
+                                    data_arr[i][j] = "<td style='height:35px;text-align:center;' ><input type='text' style='text-align:left;' class='frameless' value='" + response.data.number[i] + "' readonly tablename='number'></td>";
+                                    break;
+                                case '品名':
+                                    data_arr[i][j] = "<td style='height:35px;text-align:center;' ><input type='text' style='text-align:left;' class='frameless' value='" + response.data.name[i] + "' tablename='name'></td>";
+                                    break;
+                                case '庫存':
+                                    data_arr[i][j] = "<td style='height:35px;text-align:center;' ><input type='text' style='text-align:center;' class='frameless' value=" + response.data.reserve[i] + " readonly tablename='reserve'></td>";
+                                    break;
+                                case '需求數量':
+                                    data_arr[i][j] = "<td style='height:35px;text-align:center;' ><input type='text' style='text-align:center;' class='frameless' value=" + response.data.quantity[i] + " readonly tablename='quantity'></td>";
+                                    break;
+                                case '已領數量':
+                                    data_arr[i][j] = "<td style='height:35px;text-align:center;' ><a style='text-align:left;' class='frameless' href='javascript:void(0);' onclick='init_serial_table(this);' data_index=" + i + " data_num='" + response.data.number[i] + "' serial_num='" + response.data.serial[i] + "' tablename='provide'>" + response.data.provide[i] + "</a></td>";
+                                    break;
+                                default:
+                            }
+                        }
+                    }
+                    cnt_table_ref.appendChild( manifest_table_obj );
+                    set_table_object( manifest_table_obj );
+                    add_table_header( head_arr );
+                    add_table_data( data_arr );
+                    mouse_init( "splitter", "factor", "serial" );
+                });
+            }
+            
+            // initialization serial table
+            function init_serial_table( e ){
+                
+                curr_serial_num = $(e).attr("serial_num");
+                part_num = $(e).attr("data_num");
+                table_index = $(e).attr("data_index");
+                
+                switch( Number( part_num[0] ) ){
+                    case 1:
+                    case 2:
+                        cnt_serial_ref.getElementsByTagName("p")[0].innerHTML = "請選取欲領取的序號";
+                        const serial_table_obj = init_table();
+                        let table_items = cnt_serial_ref.getElementsByTagName( "table" );
+                        for(var i=0; i<table_items.length; i++){
+                            cnt_serial_ref.removeChild( table_items[i] );
+                        }
+                        
+                        $("#serial_list").empty();
+                        let attr = dbio.GetSNInbound();
+                        attr.number = part_num;
+                        attr.action = "out";
+                        receive_to_db( attr ).then(function(response){
+                            if( response === false ){
+                                return;
+                            }
+                            const count = response.length;
+                            let serial_list_options = "";
+
+                            for(var i=0; i < count; i++){
+                                serial_list_options += '<option value="'+response[i]+'" />';
+                            }
+                            serial_list_options += '<option value="none" />';
+                            $("#serial_list").append( serial_list_options );
+
+                            let data_arr = curr_serial_num.split(",");
+                            const data_len = data_arr.length;
+                            let table_obj = init_table();
+                            let data_cnt = new Array();
+                            let col_index = 0;
+                            let row_index = 0;
+                            let data_str = "";
+                            data_cnt[row_index] = new Array();
+                            for( var i=0; i<data_len; i++ ){
+                                if ( col_index == 5 ){
+                                    col_index = 0;
+                                    row_index++;
+                                    data_cnt[row_index] = new Array();
+                                }
+                                data_str = "<td style='height:35px;text-align:center'>";
+                                if ( data_arr[i] == "none" ){
+                                    data_str += '<input class="input_container serial_list_style normal_font" list="serial_list" value=""/>';
+                                }
+                                else{
+                                    data_str += '<input class="input_container serial_list_style normal_font" list="serial_list" value="' + data_arr[i] + '" readonly/>';
+                                }
+                                data_str += "</td>";
+                                data_cnt[row_index][col_index] = data_str;
+                                col_index++;
+                                
+                            }
+                            
+                            cnt_serial_ref.appendChild( serial_table_obj );
+                            set_table_object( serial_table_obj );
+                            add_table_data( data_cnt );
+                        });
+                        break;
+                    case 3:
+                        cnt_serial_ref.getElementsByTagName("p")[0].innerHTML = "請輸入欲領取的數量";
+                        let input_items = cnt_serial_ref.getElementsByTagName( "input" );
+                        for(var i=0; i<input_items.length; i++){
+                            cnt_serial_ref.removeChild( input_items[i] );
+                        }
+                        let maxVal = Number( cnt_table_ref.getElementsByTagName("tr")[Number(table_index)+1].childNodes[2].childNodes[0].value );
+                        let needVal = Number( cnt_table_ref.getElementsByTagName("tr")[Number(table_index)+1].childNodes[3].childNodes[0].value );
+                        
+                        if( isFinite( maxVal ) === false || isFinite( needVal ) === false ){
+                            max_val = 0;
+                        }
+                        
+                        if( maxVal > needVal ){
+                            maxVal = needVal;
+                        }
+                        
+                        input_obj = document.createElement("input");
+                        input_obj.setAttribute("type", "number");
+                        input_obj.setAttribute("value", $(e).text() );
+                        input_obj.setAttribute("min", $(e).text() );
+                        input_obj.setAttribute("max", maxVal);
+                        cnt_serial_ref.appendChild( input_obj );
+                        break;
+                    default:
+                        return;
+                }
+                
+                $(cnt_serial_ref.getElementsByTagName( "button" )).val( table_index );
+                $(cnt_serial_ref.getElementsByTagName( "button" )).attr( "PartClass", Number( part_num[0] ) );
+                enable_serial_interface( "on" );
+            }
+            
+            // update serial number to manifest table button response
+            function upd_table_btn( e ){
+                let PartClass = Number( $(e).attr("PartClass") );
+                let data_str = "";
+                let provide_items = 0;
+                switch( PartClass ){
+                    case 1:
+                    case 2:
+                        const raw_arr = cnt_serial_ref.getElementsByClassName( "serial_list_style" );
+                        let len = raw_arr.length;
+                        let data_arr = new Array( len );
+                        for( i=0; i<len; i++ ){
+                            data_arr[i] = raw_arr[i].value;
+                        }
+                        
+                        const repeat_ele = get_repeat_ele( data_arr );
+                        if( repeat_ele === false ){
+                            alert( "輸入數值有錯誤" );
+                            return;
+                        }
+                        
+                        if( repeat_ele.length > 0 ){
+                            if( repeat_ele.length < 3 ){
+                                for( var i=0; i<repeat_ele.length; i++ ){
+                                    if( repeat_ele[i] !== "none" && repeat_ele[i] !== "" ){
+                                        alert( "輸入數值有錯誤" );
+                                        return;
+                                    }
+                                }
+                            }
+                            else{
+                                alert( "輸入數值有錯誤" );
+                                return;
+                            }
+                            
+                        }
+
+                        for( i=0; i<len; i++ ){
+                            if( data_arr[i] == "none" || data_arr[i] == "" ){
+                                data_arr[i] = "none";
+                            }
+                            else{
+                                if( isNaN( Number(data_arr[i]) ) || data_arr[i].length !== 5 ){
+                                    alert( "輸入數值有錯誤" );
+                                    return;
+                                }
+                                provide_items++;
+                            }
+                            data_str += data_arr[i] + ","; 
+                        }
+                        data_str = data_str.substring( 0, data_str.length-1 );
+                        break;
+                    case 3:
+                        data_str = "undefined";
+                        provide_items = cnt_serial_ref.getElementsByTagName("input")[0].value;
+                        break;
+                    default:
+                        alert( "無此品號類別" );
+                        return;
+                }
+
+                $("a[data_index=" + e.value + "]").attr( "serial_num" , data_str );
+                $("a[data_index=" + e.value + "]").text( provide_items );
+                enable_serial_interface( "off" );
+                
+            }
+            
+            // upload manifest table to database button response
+            function upload_manifest_table(){
+                
+                let part_attr = document.getElementsByClassName( "part_attr" );
+                let param = get_doc_part_attr( part_attr );
+                
+                set_table_object( manifest_table_obj );
+                var data_arr = get_table_data( "all" );
+                
+                const row_len = data_arr.length;
+                const col_len = data_arr[0].length;
+                
+                let tablename = "";
+                let data_str = "";
+                let number_str = "";
+                let name_str = "";
+                let quantity_str = "";
+                let provide_str = "";
+                let serial_str = "";
+                
+                for( i=0; i<row_len; i++ ){
+                    for( j=0; j<col_len; j++ ){
+                        tablename = $( data_arr[i][j] ).attr( "tablename" );
+                        switch( tablename ){
+                            case "number":
+                                number_str = data_arr[i][j].value;
+                                break;
+                            case "name":
+                                name_str = data_arr[i][j].value;
+                                break;
+                            case "quantity":
+                                quantity_str = data_arr[i][j].value;
+                                break;
+                            case "provide":
+                                provide_str = data_arr[i][j].text;
+                                serial_str = $( data_arr[i][j] ).attr( "serial_num" );
+                                break;
+                        }
+                    }
+                    data_str += "number=" + number_str + "&name=" + name_str + "&quantity=" + quantity_str + "&serial=" + serial_str + "&provide=" + provide_str + ";";
+                }
+                param.data = data_str;
+                let attr = dbio.RepMoData();
+                param.state = attr.state;
+                send_to_db( param ).then( function( response ){
+                    if( response === false ){
+                        init_mo();
+                        return;
+                    }
+                    alert( response );
+                    init_mo();
+                });
+            }
+            
+            function enable_serial_interface( switch_flag ){
+                clip_enable( switch_flag );
+                switch( switch_flag ){
+                    case "on":
+                        cnt_serial_ref.style.display = "initial";
+                        cnt_splitter_ref.style.display = "initial";
+                        break;
+                    case "off":
+                    default:
+                        cnt_serial_ref.style.display = "none";
+                        cnt_splitter_ref.style.display = "none";
+                        break;
+                }
+            }
+            
+            
+            
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+		<script type="text/javascript" src="/SubScripts/get.js"></script>
+		<script type="text/javascript" src="/SubScripts/response_button.js"></script>
+	</body>
+</html>

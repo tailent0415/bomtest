@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="zh-tw">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
+		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
+	</head>
+	<body>
+		<div class="load_modal"></div>
+		<datalist id="part_list" class="normal_font"></datalist>
+        <datalist id="serial_list" class="normal_font"></datalist>
+		<div id= "inbound_cnt" class="page_container">
+			<label for="part_num_in">品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" onfocus="this.oldvalue = this.value;" onchange="change_btn( this );this.oldvalue = this.value;" />
+			<br><label for="part_name_out">品名 :</label>
+			<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" ></textarea>
+			<br><label for="part_inventory_out">庫存 :</label><input id="part_inventory_out" class="part_attr input_container normal_font" name="part_inventory" type="number" style="width:100px" disabled="true" value="0" />
+			<br><label for="part_variable_in">變量 :</label><input id="part_variable_in" class="part_attr input_container normal_font" name="part_varval" type="number" style="width:100px" value="0" min="0" onchange="set_serial_table();" />
+            <br><label for="part_goal_in">目的 :</label>
+			<br><textarea id="part_goal_in" class="part_attr normal_font" name="part_goal" rows="5" cols="50" wrap="hard" ></textarea>
+			<br><button type="button" class="btn btn-primary btn_field" onclick="inbound_btn()">入庫</button>
+            <div id= "serial" class="sub_page_container tab_form">
+            </div>
+		</div>
+
+		<script language="JavaScript">
+			var body = $("body");
+            const cnt_ref = document.getElementById( "inbound_cnt" );
+            const serial_cnt_ref = document.getElementById( "serial" );
+            const dbio = new db_io();
+            
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){
+					body.removeClass("loading");
+				}
+			});
+
+			$(document).ready(function(){
+				body.addClass("loading");
+				let part_list_options = sessionStorage.getItem( "part_options" );
+				$("#part_list").empty();
+				$("#part_list").append( part_list_options );
+				setTimeout(function() {
+					body.removeClass("loading");
+				}, 1000);
+			});
+			
+			
+			
+			// inbound button click
+			function inbound_btn(){
+                const part_attr = cnt_ref.getElementsByClassName("part_attr");
+                let param = get_doc_part_attr( part_attr );
+                let varval = Number( param.varval );
+                if( varval == 0 ){
+                    return;
+                }
+                
+                if( param.number == "" ){
+                    alert( "請填入正確品號" );
+                    return;
+                }
+                
+                if( isFinite(Number(param.inventory)) == false || isFinite( varval ) == false ){
+                    alert( "設定數值錯誤" );
+                    return;
+                }
+
+                let td_node = cnt_ref.getElementsByTagName("td");
+                let count = td_node.length;
+                let sn = "";
+                var sn_arr = new Array();
+                for(var i=0; i<count; i++){
+                    
+                    sn = td_node[i].children[0].value;
+                    
+                    if( sn.trim().length !== 5 && sn !== "New" ){
+                        alert( "流水號錯誤" );
+                        return;
+                    }
+                    if( sn === "New" ){
+                        sn = "-1";
+                    }
+                    sn = Number( sn );
+                    if( isFinite( sn ) == false ){
+                        alert( "請正確選取流水號" );
+                        return;
+                    }
+                    
+                    sn_arr[i] = sn;
+                }
+                const repeat_ele = get_repeat_ele( sn_arr );
+                if( repeat_ele === false || repeat_ele.length !== 0 ){
+                    if ( repeat_ele.length !== 1 || repeat_ele[0] !== -1 ){
+                        alert( "請勿使用重複流水號" );
+                        return;
+                    }
+                }
+
+                switch( param.number[0] ){
+                    case "1":
+                        param.sn_type = 1;
+                        break;
+                    case "2":
+                        param.sn_type = 2;
+                        break;
+                    default:
+                        param.sn_type = NaN;
+                }                
+                var attr = dbio.AddInventoryQuan();
+                param.state = attr.state;
+                param.action = "add";
+                param.serial = JSON.stringify( sn_arr );
+                send_to_db( param ).then( function( response ){
+                    if( response == false ){
+                        return;
+                    }
+                    param.value = param.number;
+                    change_btn( param );
+                    alert( response );
+                });
+			}
+            
+            // quantity change button response
+            function change_btn( currdata ){
+                serial_cnt_ref.innerHTML = "";
+                $("#serial_list").empty();
+                
+                var part_attr = cnt_ref.getElementsByClassName("part_attr");
+                var numValue = "";
+                if( check_part_num( 0, 15, normal_part_number( currdata.value ) ) ){
+                    numValue = currdata.value;
+                }
+                else if( check_part_num( 0, 15, normal_part_number( currdata.oldvalue ) ) ){
+                    numValue = currdata.oldvalue;
+                }
+                else{
+                    alert( "Part number has error" );
+                    return;
+                }
+                
+                var attr = dbio.GetSinglePartDetail();
+                attr.number = numValue;
+                receive_to_db( attr ).then(function(response){
+                    for (var i=0; i<part_attr.length; i++){
+                        switch( part_attr[i].name ){
+                            case "part_name":
+                                part_attr[i].value = response.name;
+                                break;
+                            case "part_varval":
+                                part_attr[i].value = 0;
+                                break;
+                            case "part_inventory":
+                                part_attr[i].value = response.stock_quantity;
+                                break;
+                            default:
+                        }
+                    }
+                    
+                    let attr = dbio.GetSNInbound();
+                    let param = get_doc_part_attr( part_attr );
+                    param.state = attr.state;
+                    param.action = "in";
+                    receive_to_db( param ).then(function(response){
+						if( response === false ){
+							return;
+						}
+                        const count = response.length;
+                        let serial_list_options = "";
+                        
+						for(var i=0; i<count; i++){
+                            serial_list_options += '<option value="'+response[i]+'" />';
+						}
+                        serial_list_options += "<option value='New' />"
+                        $("#serial_list").append( serial_list_options );
+                    });
+                    
+                });
+            }
+			
+            function set_serial_table(){
+                serial_cnt_ref.innerHTML = "";
+                var part_attr = cnt_ref.getElementsByClassName( "part_attr" );
+                var param = get_doc_part_attr( part_attr );
+                const partNum = param.number;
+                const partVal = Number( param.varval );
+                const partClass = Number( partNum[0] );
+                
+                if( isFinite( partVal ) === false || isFinite( partClass ) === false ){
+                    alert( "輸入數值有誤" );
+                    return;
+                }
+                
+                if( partNum == "" || partVal == 0 || partClass<1 || partClass>2 ){
+                    return;
+                }
+                
+                var text_field_node = document.createElement( "div" );
+                text_field_node.setAttribute( "class", "text_field" );
+                serial_cnt_ref.appendChild( text_field_node );
+                
+                var table_obj = document.createElement( "table" );
+                var tbody_obj = document.createElement( "tbody" );
+                table_obj.appendChild( tbody_obj );
+                text_field_node.appendChild( table_obj );
+                table_obj.border = "1";
+                
+                var data_str = "";
+                var tr_obj;
+                for( var i=0; i<partVal; i++ ){
+                    if ( i%5 == 0 ){
+                        if ( i!= 0 ){
+                            tr_obj.innerHTML = data_str;
+                            tbody_obj.appendChild( tr_obj );
+                        }
+                        tr_obj = document.createElement( "tr" );
+                        data_str = "<td style='height:35px;text-align:center' >";
+                        data_str += '<input class="input_container serial_list_style normal_font" list="serial_list"/>';
+                        data_str += "</td>";
+                    }
+                    else{
+                        data_str += "<td style='height:35px;text-align:center' >";
+                        data_str += '<input class="input_container serial_list_style normal_font" list="serial_list"/>';
+                        data_str += "</td>";
+                    }
+
+                }
+                tr_obj.innerHTML = data_str;
+                tbody_obj.appendChild( tr_obj );
+            }
+            
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+		<script type="text/javascript" src="/SubScripts/get.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_table.js"></script>
+	</body>
+</html>

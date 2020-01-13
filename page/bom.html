@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="zh-tw">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
+		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/multiple-search/bootstrap-table-multiple-search.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
+        
+	</head>
+	<body>
+        <div class="load_modal"></div>
+		<datalist id="part_list" class="normal_font"></datalist>
+		<div class="page_container">
+            <div id="bom_num" >
+            </div>
+            <div id="bom_table" >
+            </div>
+		</div>
+		<script language="JavaScript">
+			const body = $("body");
+            const table_ref = $("#part_table");
+            const dbio = new db_io();
+			var bom_order_array = new Array();
+			
+            // ajax working
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+            
+            // when html open ready
+			$(document).ready(function(){
+                body.addClass("loading");
+				const url = location.href;
+				const temp = url.split("?");
+				const num_value = temp[1];
+				if ( num_value == undefined ){
+                    const part_list_options = sessionStorage.getItem( "part_options" );
+                    $("#part_list").empty();
+                    $("#part_list").append( part_list_options );
+                    init_bomtable_interface();
+                    setTimeout(function() { 
+                        body.removeClass("loading"); 
+                    }, 1000);
+				}
+				else{
+                    update_bomtable_type( num_value, -1 );
+				}
+			});
+			
+            
+			// Init Bomtable interface
+			function init_bomtable_interface(){
+				bom_order_array = [];
+                const bom_num_ref = document.getElementById( "bom_num" );
+                const bom_table_ref = document.getElementById( "bom_table" );
+                bom_table_ref.innerHTML = "";
+				bom_num_ref.innerHTML = '<label for="part_num_in">品號 : </label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" onchange="update_bomtable_type( this.value, -1 )"/>';
+			}
+
+			// Bomtable Go Page
+			function bomtable_go_page( data_ind ){
+				if( data_ind < 0 || data_ind >= bom_order_array.length ){
+					return;
+				}
+				num_value = bom_order_array[ data_ind ];
+				update_bomtable_type( num_value, data_ind );
+			};
+            
+            
+            // Update Bomtable interface type
+			function update_bomtable_type( num_value, data_ind ){
+                if( check_part_num( 0, 15, normal_part_number( num_value ) ) ){
+					if( data_ind == -1 ){
+						bom_order_array[ bom_order_array.length ] = num_value;
+						data_ind = bom_order_array.length-1;
+					}
+                    const bom_num_ref = document.getElementById( "bom_num" );
+                    const bom_table_ref = document.getElementById( "bom_table" );
+                    bom_table_ref.innerHTML = "";
+
+                    var attr = dbio.GetSinglePartDetail();
+                    attr.number = num_value;
+                    attr.func = "";
+					receive_to_db( attr ).then( function(response){
+                        
+                        if ( response == false ){
+                            init_bomtable_interface();
+                            return;
+                        }
+                        
+                        var param = get_inner_part_info( response, data_ind );
+                        if ( param == false ){
+                            init_bomtable_interface();
+                            alert( "database error" );
+                            return;
+                        }
+                        bom_num_ref.innerHTML = param.inner_str;
+                        if( param.table_title == undefined  ){
+                            return;
+                        }
+                        if( response.data == undefined ){
+                            init_bomtable_interface();
+                            alert( "database error" );
+                            return;
+                        }
+                        
+                        const table_title = param.table_title
+                        var head_arr = get_inner_table_title( table_title );
+                        const title_len = table_title.length;
+                        const data_len = response.data.length;
+                        let data_arr = new Array( data_len );
+                        for( var i=0; i<data_len; i++ ){
+                            data_arr[i] = new Array( title_len );
+                            for( var j=0; j<title_len; j++ ){
+                                switch( table_title[j] ){
+                                    case '品號':
+                                        res_str = "<a style='font-family: Monospace, Courier New, sans-serif' onclick = 'update_bomtable_type( this.text, -1 )' >" + response.data[i].number + "</a>";
+                                        break;
+                                    case '品名':
+                                        res_str = response.data[i].name;
+                                        break;
+                                    case '成本':
+                                        res_str = response.data[i].cost;
+                                        break;
+                                    case '數量':
+                                        res_str = response.data[i].quantity;
+                                        break;
+                                    case '廠商':
+                                        res_str = response.data[i].supplier;
+                                        break;
+                                    case '規格':
+                                        res_str = response.data[i].format;
+                                        break;
+                                    case '庫存':
+                                        res_str = response.data[i].stock_quantity;
+                                        break;
+                                    case '備註':
+                                        res_str = response.data[i].remark;
+                                        break;
+                                    default:
+                                        return;
+                                }
+                                data_str = "<td style='height:35px;text-align:center' >" + res_str + "</td>";
+                                data_arr[i][j] = data_str;
+                            }
+                        }
+                        var table_obj = init_table();
+                        bom_table_ref.appendChild( table_obj );
+                        set_table_object( table_obj );
+                        add_table_header( head_arr );
+                        add_table_data( data_arr );
+					});
+				}
+                
+				else{
+					init_bomtable_interface();
+				}
+			};
+            
+            // get part infomation interface
+            function get_inner_part_info( response, data_ind ){
+                var data_str = '<label for="part_num_in">品號 :</label><input id="part_num_in" class="input_container part_list_style normal_font" name="part_num_list" list="part_list" value="' + response.number + '" onchange="update_bomtable_type( this.value, -1 )"/>';
+                data_str += '<a onclick="bomtable_go_page(' + (data_ind-1) + ')"><i class="fa fa-arrow-circle-left fa-2x fa-fw"></i></a>';
+                data_str += '<a onclick="bomtable_go_page(' + (data_ind+1) + ')"><i class="fa fa-arrow-circle-right fa-2x"></i></a>';
+                var param = {};
+                switch ( response.number[0] ){
+                    case '1':
+                    case '2':
+                        data_str += '<br><label for="part_cost_out">總成本 :</label><input id="part_cost_out" class="input_container normal_font" style="width:100px" disabled="true" value="' + response.cost + '" />';
+                        data_str += '<br><label for="part_name_out">品名 :</label>';
+                        data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" >' + response.name + '</textarea>';
+                        data_str += '<br><label for="part_remark_out">備註 : </label><br><textarea id="part_remark_out" class="normal_font" rows="5" cols="50" wrap="hard" disabled="true" />' + response.remark + '</textarea>';
+                        data_str += '<br><label for="part_stock_out">庫存 :</label><input id="part_stock_out" class="input_container normal_font" style="width:60px" disabled="true" value="' + response.stock_quantity + '" />';
+                        param.table_title = [ '品號', '品名', '成本', '數量', '規格', '備註', '庫存' ];
+                        break;
+                    case '3':
+                        data_str += '<br><label for="part_name_out">品名 :</label>';
+                        data_str += '<br><textarea id="part_name_out" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" disabled="true" >' + response.name + '</textarea>';
+                        data_str += '<br><label for="part_format_out">規格 :</label>';
+                        data_str += '<br><textarea id="part_format_out" class="part_attr normal_font" name="part_format" rows="2" cols="50" wrap="hard" disabled="true">' + response.format + '</textarea>'
+                        data_str += '<br><label for="part_supplier_out">廠商 :</label><input id="part_supplier_out" class="input_container normal_font" style="width:100px" disabled="true" value="' + response.supplier + '" />';
+                        data_str += '<br><label for="part_unit_out">單位 :</label><input id="part_unit_out" class="input_container normal_font" style="width:60px" disabled="true" value="' + response.unit + '" />';
+                        data_str += '<br><label for="part_cost_out">成本 :</label><input id="part_cost_out" class="input_container normal_font" style="width:200px" disabled="true" value="' + response.cost + '" />';
+                        data_str += '<br><label for="part_fignum_out">圖號 :</label><input id="part_fignum_out" class="input_container normal_font" style="width:200px" disabled="true" value="' + response.fignum + '" />';
+                        data_str += '<br><label for="part_stock_out">庫存 :</label><input id="part_stock_out" class="input_container normal_font" style="width:60px" disabled="true" value="' + response.stock_quantity + '" />';
+                        break;
+                    default:
+                        return false;
+                };
+                param.inner_str = data_str;
+                return param;
+            }
+            
+            // get part table title data
+            function get_inner_table_title( table_title ){
+                const title_len = table_title.length;
+                let head_arr = new Array();
+                var title_str = "";
+                var style_str = "";
+                for( var i=0; i<title_len; i++ ){
+                    switch( table_title[i] ){
+                        case '品號':
+                            style_str = "style='width:170px;text-align:center' ";
+                            break;
+                        case '品名':
+                            style_str = "style='width:200px;text-align:center' ";
+                            break;
+                        case '成本':
+                            style_str = "style='width:80px;text-align:center' ";
+                            break;
+                        case '數量':
+                            style_str = "style='width:80px;text-align:center' ";
+                            break;
+                        case '廠商':
+                            style_str = "style='width:100px;text-align:center' ";
+                            break;
+                        case '規格':
+                            style_str = "style='width:200px;text-align:center' ";
+                            break;
+                        case '庫存':
+                            style_str = "style='width:80px;text-align:center' ";
+                            break;
+                        case '備註':
+                            style_str = "style='width:200px;text-align:center' ";
+                            break;
+                        default:
+                    }
+                    head_arr[i] = "<td " + style_str + ">" + table_title[i] + "</td>";
+                }
+                return head_arr;
+            }
+            
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+		<script type="text/javascript" src="/SubScripts/get.js"></script>
+		<script type="text/javascript" src="/SubScripts/class_table.js"></script>
+		<script type="text/javascript" src="/SubScripts/response_button.js"></script>
+	</body>
+</html>

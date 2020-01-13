@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="zh-tw">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
+		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/multiple-search/bootstrap-table-multiple-search.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
+		<script src="/CoreScripts/bootstrap-table-export.js"></script>
+		<script src="/CoreScripts/tableExport.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
+	</head>
+	<body>
+		<div class="load_modal"></div>
+		<div class="page_container">
+			<div>
+                <div id="home_toolbar">
+                    <div class="form-inline" role="form">
+                        <div class="form-group">
+                            <input id="searchText" class="form-control" type="text" placeholder="Search">
+                        </div>
+                        <button id="searchObj" type="submit" class="btn btn-primary">搜尋</button>
+                        <button type="button" class="btn btn-primary" onclick="upd_partnum_table()" >更新數據</button>
+                    </div>
+                </div>
+				<table id="part_table"
+                    data-toolbar="#home_toolbar"
+					data-toggle="table"
+                    data-search='true'
+					data-click-to-select="true"
+					data-side-pagination="client"
+					data-pagination="true"
+					data-page-list="[10, 50, 100]"
+					data-id-field="index"
+					data-unique-id="index"
+					data-show-columns="true"
+					data-show-export="true"
+					data-row-style="set_table_font">
+					<thead>
+						<tr>
+							<th data-field="index">項次</th>
+							<th data-field="number" data-formatter="guide_num_format" data-events="guide_event_response">品號</th>
+							<th data-field="name">品名</th>
+							<th data-field="format">規格</th>
+							<th data-field="supplier" data-formatter="guide_supplier_format" data-events="guide_event_response" >廠商</th>
+							<th data-field="unit">單位</th>
+                            <th data-field="produce">生產數量</th>
+							<th data-field="stock_amount">庫存數量</th>
+							<th data-field="cost">單位成本</th>
+							<th data-field="stock_cost">庫存成本</th>
+						</tr>
+					</thead>
+				</table>					
+			</div>
+		</div>
+		<script language="JavaScript">
+			var body = $("body");
+            const table_ref = $("#part_table");
+            const searchText = $("#searchText");
+            const searchObj = $("#searchObj");
+            const dbio = new db_io( "", table_ref );
+            
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+            
+            $(document).ready(function(){
+				upd_partnum_table();
+				table_ref.bootstrapTable({ height: $(window).height() - 120 });
+                $('.fixed-table-toolbar').find('.search > :input').hide();
+                searchObj.click(function () {
+                    table_ref.bootstrapTable('filterBy', {} );
+                    cmd = searchText.val();
+                    try{
+                        const re = /[(>)|(>)|(=)|(<)|(<)]=?/i;
+                        let compare = cmd.match(re)[0];
+                        let spStr = cmd.split(re);
+                        let data = table_ref.bootstrapTable('getData');
+                        var result = new Set();
+                        var repeat = new Set();
+                        var item = 0;
+                        const compareVal = parseFloat( spStr[1] );
+                        let valid = false;
+                        let nameType = -1;
+                        switch( spStr[0].trim() ){
+                            case 'index':
+                            case '項次':
+                                nameType = 0;
+                                attr = 'index';
+                                break;
+                            case 'produce':
+                            case '生產數量':
+                                nameType = 1;
+                                attr = 'produce';
+                                break;
+                            case 'stock_amount':
+                            case '庫存數量':
+                                nameType = 2;
+                                attr = 'stock_amount';
+                                break;
+                            case 'cost':
+                            case '單位成本':
+                                nameType = 3;
+                                attr = 'cost';
+                                break;
+                            case 'stock_cost':
+                            case '庫存成本':
+                                nameType = 4;
+                                attr = 'stock_cost';
+                                break;
+                            default:
+                                attr = '';
+                        }
+                        let format = "int";
+                        if( nameType >= 0 && isFinite( compareVal ) ){
+                            for( i=0; i<=data.length-1; i++ ){
+                                valid = false;
+                                switch( nameType ){
+                                    case 0:
+                                        checkVal = parseInt(data[i].index)
+                                        format = "int";
+                                        break;
+                                    case 1:
+                                        checkVal = parseFloat(data[i].produce)
+                                        format = "int";
+                                        break;
+                                    case 2:
+                                        checkVal = parseFloat(data[i].stock_amount)
+                                        format = "int";
+                                        break;
+                                    case 3:
+                                        checkVal = parseFloat(data[i].cost)
+                                        format = "str";
+                                        break;
+                                    case 4:
+                                        checkVal = parseFloat(data[i].stock_cost)
+                                        format = "str";
+                                        break;
+                                }
+                                switch( compare ){
+                                    case '>':
+                                        if( checkVal > compareVal ){ 
+                                            valid = true;
+                                        }
+                                        break;
+                                    case '>=':
+                                        if( checkVal >= compareVal ){ 
+                                            valid = true;
+                                        }
+                                        break;
+                                    case '=':
+                                        if( checkVal == compareVal ){ 
+                                            valid = true;
+                                        }
+                                        break;
+                                    case '<=':
+                                        if( checkVal <= compareVal ){ 
+                                            valid = true;
+                                        }
+                                        break;
+                                    case '<':
+                                        if( checkVal < compareVal ){ 
+                                            valid = true;
+                                        }
+                                        break;
+                                    case '>':
+                                        if( checkVal > compareVal ){ 
+                                            valid = true;
+                                        }
+                                        break;
+                                }
+                                if( valid ){
+                                    if( format == "str"){
+                                        checkVal = checkVal.toString();
+                                    }
+                                    result.has(checkVal) ? repeat.add(checkVal) : result.add(checkVal);
+                                }
+                            }
+                            console.log( result )
+                            result = Array.from(result).sort(function(a, b){return a - b});
+                            var params = {}
+                            params[ attr ] = result;
+                            console.log( params )
+                            table_ref.bootstrapTable('filterBy', params );
+                        }
+                        else{
+                            table_ref.bootstrapTable('resetSearch')
+                        }
+                    }
+                    catch(e){
+                        console.log( e )
+                        table_ref.bootstrapTable('resetSearch', cmd )
+                    }
+                })
+			});
+            
+			function guide_num_format( val ){
+				return ("<a class='guide_part_number' href='javascript:void(0)' >" + val + "</a>");
+			}
+			
+			function guide_supplier_format( val ){
+				return ("<a class='guide_part_supplier' href='javascript:void(0)' >" + val + "</a>");
+			}
+			
+			window.guide_event_response = {
+				'click .guide_part_number': function (e, value, row, index) {
+					window.open( "bom.html?" + value , "frame_display" );
+				},
+				'click .guide_part_supplier': function (e, value, row, index) {
+					window.open( "change_info_company.html?" + value, "frame_display" );
+				},
+			};
+
+			function upd_partnum_table( data ){
+                const attr = dbio.GetPartDetail();
+				receive_to_db( attr ).then( function( response ){
+                    table_ref.bootstrapTable('destroy').bootstrapTable({
+                        exportDataType: "all"
+                    });
+                    table_ref.bootstrapTable('removeAll');
+                    table_ref.bootstrapTable('load', response);
+                    table_ref.bootstrapTable('selectPage', '1');
+                    table_ref.bootstrapTable('scrollTo', 'top');
+                    $('.fixed-table-toolbar').find('.search > :input').hide()
+                });
+			};
+            
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/ctrl_bootstrapTable.js"></script>
+	</body>
+</html>

@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="zh-tw">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
+		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/multiple-search/bootstrap-table-multiple-search.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
+	</head>
+	<body>
+		<div class="load_modal"></div>
+		<datalist id="part_list" class="normal_font"></datalist>
+		<div id="add_product" class="page_container">
+			<form class="tab_form" id="add_product_form">
+				<label>品號 :</label><input class="numtext input_container normal_font" type=text name="part_num1" size="1" maxlength="1" placeholder="1" style="text-transform:uppercase" onchange="check_part_num(3,1,this.value)">
+				<b>－</b><input class="numtext input_container normal_font" type=text name="part_num2" size="2" maxlength="2" placeholder="AA" style="text-transform:uppercase" onchange="check_part_num(2,2,this.value)" >
+				<b>－</b><input class="numtext input_container normal_font" type=text name="part_num3" size="3" maxlength="3" placeholder="AAA" style="text-transform:uppercase" onchange="check_part_num(2,3,this.value)" >
+				<b>－</b><input class="numtext input_container normal_font" type=text name="part_num4" size="3" maxlength="3" placeholder="AAA" style="text-transform:uppercase" onchange="check_part_num(2,3,this.value)" >
+				<b>－</b><input class="numtext input_container normal_font" type=text name="part_num5" size="3" maxlength="3" placeholder="000" style="text-transform:uppercase" onchange="check_part_num(1,3,this.value)" >
+				<b>－</b><input class="numtext input_container normal_font" type=text name="part_num6" size="3" maxlength="3" placeholder="000" style="text-transform:uppercase" onchange="check_part_num(1,3,this.value)" >
+                <br><label for="part_num_in">載入品號 :</label><input id="part_num_in" class="part_attr input_container part_list_style normal_font" name="part_num_list" list="part_list" />
+                <button type="button" class="btn btn-success btn_small" onclick='download_btn()' >BOM載入</button>
+				<br><label for="part_name_in">品名 :</label>
+				<br><textarea id="part_name_in" class="part_attr normal_font" name="part_name" rows="2" cols="50" wrap="hard" ></textarea>
+				<br><label for="part_format_in">規格 :</label>
+				<br><textarea id="part_format_in" class="part_attr normal_font" name="part_format" rows="2" cols="50" wrap="hard" ></textarea>
+				<br><label for="part_unit_in">單位 :</label><select id="part_unit_in" class="part_attr input_container normal_font" name="part_unit" style="width:70px" ><option value="SET">SET</option><option value="PCS">PCS</option></select>
+				<br><label for="part_remark_in">備註 : </label>
+				<br><textarea id="part_remark_in" class="part_attr normal_font" name="part_remark" rows="5" cols="50" wrap="hard" ></textarea>
+				<br><div id="add_product_toolbar">
+                        <button type="button" class="btn btn-primary" onclick='append_btn()' >新增表單</button>
+                        <button type="button" class="btn btn-primary" onclick='upload_btn()' >資料上傳</button>
+                        <br><label for="part_totalcost_out">總成本 :</label><input type=text id="part_totalcost_out" class="part_attr input_container normal_font" style="width:200px;margin-top:15px" name="part_totalcost" disabled="true" value="0" >
+				    </div>
+				<table id="product_table_add"
+					data-toggle="table"
+					data-side-pagination="client"
+					data-pagination="false"
+					data-height="525"
+					data-id-field="index"
+					data-toolbar="#add_product_toolbar"
+					data-row-style="set_table_font"
+					data-unique-id="index">
+					<thead>
+						<tr>
+							<th data-field="index">項次</th>
+							<th data-field="number" data-formatter="edit_partnum">品號</th>
+							<th data-field="name">品名</th>
+							<th data-field="quantity" data-formatter="edit_quan">數量</th>
+							<th data-field="cost">單位成本</th>
+							<th data-field="totalcost">成本加總</th>
+							<th data-field="supplier">廠商</th>
+							<th data-field="format">規格</th>
+							<th data-field="delrow" data-formatter="formatter_delbtn">刪除</th>
+						</tr>
+					</thead>
+				</table>
+			</form>
+		</div>
+		<script language="JavaScript">
+			var body = $("body");
+			const table_ref = $("#product_table_add");
+            const cnt_ref = document.getElementById( "add_product" );
+            const dbio = new db_io();
+            
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+
+			$(document).ready(function(){
+				body.addClass("loading");
+				var part_list_options = sessionStorage.getItem( "part_options" );
+				$("#part_list").empty();
+				$("#part_list").append( part_list_options );
+				setTimeout(function() { 
+					body.removeClass("loading"); 
+				}, 1000);
+			});
+			
+			// table part number sub function
+			function edit_partnum( param, row, index ){
+				if(param.func == 1){
+					return ("<pre onclick='change_static_type(" + index + ")'>" + param.val + "</pre>");
+				}
+				else if(param.func == 2){
+					return ("<input list='part_list' id='part_num_input' class='part_list_style normal_font' onblur='change_dynamic_type(" + index + ",this.value)' value=" + param.val + " >");
+				}
+			}
+			
+			// table part quantity sub function
+			function edit_quan( param, row, index ){
+				if(param.func == 1){
+					return ("<p onclick='change_quan_input(" + index + "," + param.val + ")'>" + param.val + "</p>");
+				}
+				else if(param.func == 2){
+					return ("<input type='number' style='width:60px;' onblur='updRowTotalCost(" + index + ",this.value )' value='" + param.val + "'/>");
+				}
+			}
+			
+            
+            function change_quan_input( idx, val ){
+                val = Number( val );
+                if( isFinite( val ) == false ){
+                    val = 0;
+                }
+                
+                var quan_param ={
+                    func: 2,
+                    val: val
+                };
+                table_ref.bootstrapTable('updateRow', {
+                    index: idx,
+                    row: {
+                        quantity: quan_param
+                    }
+                });
+            }
+            
+
+
+            
+            // calculate total cost and update of the index row
+            function updRowTotalCost( idx, val ){
+                var attr = table_ref.bootstrapTable('getRowByUniqueId', idx );
+                val = Number( val );
+                if( isFinite( val ) == false ){
+                    val = 0;
+                }
+                
+                var quan_param ={
+                    func: 1,
+                    val: val
+                };
+
+                if( typeof attr.cost !== "number"){
+                    attr.cost = 0;
+                }
+
+                table_ref.bootstrapTable('updateRow',{
+                    index: idx,
+                    row: {
+                        quantity: quan_param,
+                        totalcost: attr.cost * val,
+                    }
+                });
+                updProductAmount();
+            }
+
+			// table formatter delete button
+			function formatter_delbtn( val, row, index ){
+				return ("<button class='delbtn btn btn-danger glyphicon glyphicon-remove row-remove' onclick='remTableRow(" + index + ")'></button>");
+			}
+			
+			// remove table row
+			function remTableRow( idx ){
+                let attr = table_ref.bootstrapTable('getRowByUniqueId', idx );
+                table_ref.bootstrapTable('remove', {
+                    field: "index",
+                    values: Array.of(idx)
+                });
+                var i = 1;
+                while( attr !== null ){
+                    var replace_index = idx+i-1;
+                    table_ref.bootstrapTable('updateRow', {
+                        index: replace_index,
+                        row: {
+                            index: replace_index,
+                        }
+                    });
+                    attr = table_ref.bootstrapTable('getRowByUniqueId', idx+i+1 );
+                    i++;
+                }
+                updProductAmount();
+			}
+
+			function change_static_type( idx, source_val ){
+				var param = set_table_partnum_input_type( table_ref, "static", idx, source_val );
+                var num_param ={
+                    func: 2,
+                    val: param
+                };
+                table_ref.bootstrapTable('updateRow', {
+                    index: idx,
+                    row: {
+                        number: num_param
+                    }
+                });
+			}
+			
+			
+			// dynamic change partnum input type
+			function change_dynamic_type( idx, source_val ){
+				var param = set_table_partnum_input_type( table_ref, "dynamic", idx, source_val );
+                if ( param != false ){
+                    var attr = dbio.GetSinglePartDetail();
+                    attr.number = param.value;
+                    receive_to_db( attr ).then( function( response ){
+                        if( response.number !== undefined ){
+                            var num_param ={
+                                func: 1,
+                                val: response.number
+                            };
+                            var quan_param ={
+                                func: 1,
+                                val: 0
+                            };
+                            table_ref.bootstrapTable('updateRow', {
+                                index: param.index,
+                                row: {
+                                    index: param.index,
+                                    number: num_param,
+                                    name: response.name,
+                                    quantity: quan_param,
+                                    cost: response.cost,
+                                    supplier: response.supplier,
+                                    format: response.format
+                                }
+                            });
+                        }
+                    });
+                }
+			}
+
+			
+			// addend new row to product table
+			function append_btn(){
+                var rows = [];
+                var data_attr = table_ref.bootstrapTable("getData",false);
+                var num_param ={
+                    "func": 1,
+                    "val": "undefined"
+                };
+                rows.push({
+                    index: data_attr.length,
+                    number: num_param,
+                    name: "",
+                    quantity: "",
+                    cost: "",
+                    totalcost: "",
+                    supplier: "",
+                    format: "",
+                    delrow: ""
+                });
+                table_ref.bootstrapTable( "append", rows );
+                table_ref.bootstrapTable( "scrollTo", 'bottom' );
+			};
+			
+            //receive bom information into table
+            function download_btn(){
+
+                var num_value = $("#part_num_in").val();
+                if( check_part_num( 0, 15, normal_part_number( num_value ) ) == false ){
+                    return;
+                }
+                if( Number( num_value[0] ) > 2 ){
+                    return;
+                }
+                
+                var attr = dbio.GetSinglePartDetail();
+                attr.number = num_value;
+                receive_to_db( attr ).then( function( response ){
+                    table_ref.bootstrapTable('removeAll');
+                    if(response.data == undefined){
+                        return;
+                    }
+                    let rec_data;
+                    let new_data = new Array();
+                    for( var i=0; i<response.data.length; i++ ){
+                        rec_data = response.data[i];
+                        var num_param ={
+                            func: 1,
+                            val: rec_data.number
+                        };
+                        var quan_param ={
+                            func: 1,
+                            val: rec_data.quantity
+                        };
+                        new_data[i] = {
+                          "index": Number( rec_data.index ),
+                          "number": num_param,
+                          "name": rec_data.name,
+                          "quantity": quan_param,
+                          "cost": rec_data.cost,
+                          "totalcost": rec_data.totalcost,
+                          "supplier": rec_data.supplier,
+                          "format": rec_data.format,
+                          "delrow": ""
+                        };
+                    }
+                    table_ref.bootstrapTable('removeAll');
+                    table_ref.bootstrapTable('load', new_data);
+                    table_ref.bootstrapTable('selectPage', '1');
+                    table_ref.bootstrapTable('scrollTo', 'top');
+                    updProductAmount();
+                });
+                    
+            }
+            
+			// send a new product data to database
+			function upload_btn(){
+                updProductAmount();
+                const form_cnt = document.getElementById( "add_product_form" );
+                const partnum = cnt_ref.getElementsByClassName("numtext");
+            	const part_attr = cnt_ref.getElementsByClassName("part_attr");
+                var num_str = "";
+
+                const partClass = partnum[0].value;
+                if( isNaN( partClass ) || Number( partClass ) > 2 ){
+                    alert( "成品/半成品類別錯誤" );
+                    return;
+                }
+                
+                for (i = 0; i < partnum.length; i++) {
+                    num_str += partnum[i].value;
+                }
+
+                if( check_part_num_noshow( 0, 15, num_str ) == false ){
+                    alert( "品號錯誤" );
+                    return;
+                }
+
+                var param = get_doc_part_attr( part_attr );
+                var data_str = "";
+                var data = table_ref.bootstrapTable('getData');
+                for( var i=0; i<data.length; i++ ){
+                    data_str += "index=" + i + "&number=" + data[i].number.val + "&quantity=" + data[i].quantity.val + ";";
+                }
+                
+                param.number = num_str;
+                param.bomcode = data_str;
+                var attr = dbio.AddNewData();
+                param.state = attr.state;
+                send_to_db( param ).then( function ( response ){
+                    if ( response == false ){
+                        return;
+                    }
+
+                    let attr = dbio.GetPartNum();
+                    receive_to_db( attr ).then( function ( response ){
+                        if ( response == false ){
+                            return;
+                        }
+                        form_cnt.reset();
+                        table_ref.bootstrapTable( 'removeAll' );
+                    });
+                });
+			}
+            
+            
+            // update the product amount
+            function updProductAmount(){
+                data_attr = table_ref.bootstrapTable("getData",false);
+                var product_cost = 0;
+                var value = 0;
+                for( var i = 0; i<data_attr.length; i++ ){
+                    value = Number( data_attr[i].totalcost );
+                    if( isFinite(value) == false ){
+                        value = 0;
+                    }
+                    product_cost += value;
+                }
+                var part_attr = cnt_ref.getElementsByClassName("part_attr");
+                for( var i=0; i<part_attr.length; i++ ){
+                    if( part_attr[i].name == "part_totalcost" ){
+                        part_attr[i].value = product_cost;
+                    }
+                }
+            }
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+		<script type="text/javascript" src="/SubScripts/get.js"></script>
+		<script type="text/javascript" src="/SubScripts/ctrl_bootstrapTable.js"></script>
+		<script type="text/javascript" src="/SubScripts/response_button.js"></script>
+	</body>
+</html>

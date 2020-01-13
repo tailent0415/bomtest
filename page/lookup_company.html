@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="zh-tw">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
+		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/multiple-search/bootstrap-table-multiple-search.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
+	</head>
+	<body>
+		<div class="load_modal"></div>
+		<div class="page_container">
+			<div>
+				<div id="supplier_toolbar">
+					<button type="button" class="btn btn-primary" onclick="rem_supplier_btn()" >刪除</button>
+				</div>
+				<table id="supplier_table"
+					data-toggle="table"
+					data-side-pagination="client"
+					data-pagination="true"
+					data-page-list="[5, 10, 50, 100]"
+					data-search="true"
+					data-height="525"
+					data-id-field="index"
+					data-unique-id="index"
+					data-show-columns="true"
+					data-toolbar="#supplier_toolbar"
+					data-row-style="set_table_font"
+					data-page-number="1">
+					<thead>
+						<tr>
+							<th data-field="state" data-checkbox="true"></th>
+							<th data-field="index">項次</th>
+							<th data-field="supplier">廠商名稱</th>
+							<th data-field="contact">聯絡人</th>
+							<th data-field="phone">電話</th>
+							<th data-field="address">地址</th>
+							<th data-field="url">網址</th>
+						</tr>
+					</thead>
+				</table>				
+			</div>
+		</div>
+		<script language="JavaScript">
+			var body = $("body");
+            const table_ref = $("#supplier_table");
+            const dbio = new db_io( "", table_ref );
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+
+			$(document).ready(function(){
+                upd_supplier_data();
+			});
+            
+            function upd_supplier_data(){
+                let attr = dbio.GetSupplierData();
+                receive_to_db( attr ).then( function( response ){
+                    table_ref.bootstrapTable('removeAll');
+                    table_ref.bootstrapTable('load', response);
+                    table_ref.bootstrapTable('selectPage', '1');
+                    table_ref.bootstrapTable('scrollTo', 'top');
+                });
+            };
+            
+            
+            function rem_supplier_btn(){
+                let sel_target = new Array();
+                let del_index = new Array();
+                sel_target = table_ref.bootstrapTable('getSelections');
+                for( var i=0; i<sel_target.length; i++ ){
+                    del_index[i] = sel_target[i].index
+                }
+                let json_array = get_json_array( del_index );
+                let attr = dbio.RemSupplierData();
+                attr.del_index = json_array;
+                send_to_db( attr ).then( function( response ){
+                    attr = dbio.GetSupplierName();
+                    receive_to_db( attr ).then( function( response ){
+                        upd_supplier_data();
+                    });
+                });
+            }
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+		<script type="text/javascript" src="/SubScripts/get.js"></script>
+		<script type="text/javascript" src="/SubScripts/ctrl_bootstrapTable.js"></script>
+		<script type="text/javascript" src="/SubScripts/response_button.js"></script>
+	</body>
+</html>

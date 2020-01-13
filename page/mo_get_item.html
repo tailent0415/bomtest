@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html lang="zh-tw">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/style.css">
+		<script src="/CoreScripts/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/multiple-search/bootstrap-table-multiple-search.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-zh-TW.min.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
+	</head>
+	<body>
+		<div class="load_modal"></div>
+		<div class="page_container">
+			<div>
+				<div id="mo_toolbar">
+					<button type="button" class="btn btn-primary" onclick="rem_mo_btn()" >刪除</button>
+				</div>
+				<table id="mo_table"
+					data-toggle="table"
+					data-side-pagination="client"
+					data-pagination="true"
+					data-page-list="[5, 10, 50, 100]"
+					data-search="true"
+					data-height="525"
+					data-id-field="index"
+					data-unique-id="index"
+					data-show-columns="true"
+					data-toolbar="#mo_toolbar"
+					data-row-style="set_serial_table_style"
+					data-page-number="1">
+					<thead>
+						<tr>
+							<th data-field="state" data-checkbox="true"></th>
+							<th data-field="index">項次</th>
+							<th data-field="manifest" data-formatter="manifest_link">單號</th>
+							<th data-field="number">品號</th>
+							<th data-field="name">品名</th>
+							<th data-field="remark">備註</th>
+							<th data-field="totalcost">製造成本</th>
+                            <th data-field="quantity">製作數量</th>
+                            <th data-field="mostate">製作狀態</th>
+						</tr>
+					</thead>
+				</table>				
+			</div>
+		</div>
+		<script language="JavaScript">
+            const body = $("body");
+            const table_ref = $("#mo_table");
+            const dbio = new db_io( );
+
+            // html start
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+            
+            // html open ready
+			$(document).ready(function(){
+                upd_manifest_data();
+			});
+            
+            function upd_manifest_data(){
+                let attr = dbio.GetAllMOInfo();
+                receive_to_db( attr ).then( function( response ){
+                    table_ref.bootstrapTable('removeAll');
+                    table_ref.bootstrapTable('load', response);
+                    table_ref.bootstrapTable('selectPage', '1');
+                    table_ref.bootstrapTable('scrollTo', 'top');
+                });
+            };
+            
+			function manifest_link( val, row, index ){
+				return ('<a href=\"javascript:open_manifest_link(\'' + val + '\')\">' + val + '</a>');
+			}
+            
+            function open_manifest_link( manifest_num ){
+                var link_to_menu = "mo_outbound.html?" + manifest_num;
+                window.open( link_to_menu, "frame_display" );
+            }
+            
+            function rem_mo_btn(){
+                
+                let attr = dbio.RemMOData();
+                
+                let sel_target = new Array();
+                sel_target = table_ref.bootstrapTable('getSelections');
+                
+                let len = sel_target.length;
+                let del_sn_arr = new Array( len );
+
+                for( var i=0; i<len; i++ ){
+                    del_sn_arr[i] = table_ref[0].rows[ sel_target[i].index ].getElementsByTagName("td")[2].childNodes[0].innerHTML;
+                }
+                attr.del_sn = JSON.stringify( del_sn_arr );
+                send_to_db(attr).then( function( response ){
+                    if( response == false ){
+                        return;
+                    }
+                    alert( response );
+                    upd_manifest_data();
+                });
+            }
+            
+		</script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+		<script type="text/javascript" src="/SubScripts/get.js"></script>
+		<script type="text/javascript" src="/SubScripts/ctrl_bootstrapTable.js"></script>
+		<script type="text/javascript" src="/SubScripts/response_button.js"></script>
+	</body>
+</html>
