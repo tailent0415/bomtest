@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Ajax upload example</title>
+        <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript">
+            function TransferCompleteCallback(content){
+                // we might want to use the transferred content directly
+                // for example to render an uploaded image
+            }
+            $( document ).ready(function() {
+                var input = document.getElementById("input_files");
+                var formdata = false;
+                if (window.FormData) {
+                    formdata = new FormData();
+                    $("#btn_submit").hide();
+                    $("#loading_spinner").hide();
+                }
+                $('#input_files').on('change',function(event){
+                    var i = 0, len = this.files.length, img, reader, file;
+                    //console.log('Number of files to upload: '+len);
+                    $('#result').html('');
+                    $('#input_files').prop('disabled',true);
+                    $("#loading_spinner").show();
+                    for ( ; i < len; i++ ) {
+                        file = this.files[i];
+                        //console.log(file);
+                        if(!!file.name.match(/.*\.pdf$/)){
+                                if ( window.FileReader ) {
+                                    reader = new FileReader();
+                                    reader.onloadend = function (e) { 
+                                        TransferCompleteCallback(e.target.result);
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
+                                if (formdata) {
+                                    formdata.append("files[]", file);
+                                }
+                        } else {
+                            $("#loading_spinner").hide();
+                            $('#input_files').val('').prop('disabled',false);
+                            alert(file.name+' is not a PDF');
+                        }
+                    }
+                    if (formdata) {
+                        $.ajax({
+                            url: "/process_files.php",
+                            type: "POST",
+                            data: formdata,
+                            processData: false,
+                            contentType: false, // this is important!!!
+                            success: function (res) {
+                                var result = JSON.parse(res);
+                                $("#loading_spinner").hide();
+                                $('#input_files').val('').prop('disabled',false);
+                                if(result.res === true){
+                                    var buf = '<ul class="list-group">';
+                                    for(var x=0; x<result.data.length; x++){
+                                        buf+='<li class="list-group-item">'+result.data[x]+'</li>';
+                                    }
+                                    buf += '</ul>';
+                                    $('#result').html('<strong>Files uploaded:</strong>'+buf);
+                                } else {
+                                    $('#result').html(result.data);
+                                }
+                                // reset formdata
+                                formdata = false;
+                                formdata = new FormData();
+                            }
+                        });
+                    }
+                    return false;
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div id="container" style="margin-top:50px;">
+            <div class="col-sm-offset-2 col-sm-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Ajax upload example</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form method="post" enctype="multipart/form-data"  action="/process_files.php">
+                            <input type="file" name="files[]" id="input_files" multiple />
+                            <button type="submit" id="btn_submit" class="form-control">Upload Files!</button>
+                        </form>
+                        <br />
+                        <div id="loading_spinner"><i class="fa fa-spinner fa-pulse"></i> Uploading</div>
+                        <div id="result"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

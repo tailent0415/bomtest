@@ -15,7 +15,7 @@ function receive_promise( data ){
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "post",
-			url: "https://script.google.com/macros/s/AKfycbwKABEfJzkFN9eQFT-ZrAc4gDaMQNrYgwXVH9KOYW0laumRMcM3/exec",
+			url: "https://script.google.com/macros/s/AKfycbx6DpX7AHFdxprVtsSehZBZWmMWF3aynYEu_ey2z1cSjjRvfLgK/exec",
 			data: data,
 			dataType: "JSON",
 			timeout: 10000,
@@ -64,6 +64,7 @@ function receive_promise( data ){
 						resolve( part_list_options );
 						break;
 					case "get_all_manifest_number":
+                        console.log( response )
                         var manifest_list_options = '<option value="" />';
                         if( Array.isArray( response ) !== false ){
                             if( response[0].manifest !== undefined ){

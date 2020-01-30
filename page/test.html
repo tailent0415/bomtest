@@ -1,10 +1,183 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
 <html lang="zh-tw">
+    <head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="/css/style.css">
+		<script src="/CoreScripts/jquery.min.js"></script>
+        <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
+        <title>Complete file example</title>
+        <style>
+            html {
+                font-family: sans-serif;
+            }
+
+            form {
+                width: 600px;
+                background: #ccc;
+                margin: 0 auto;
+                padding: 20px;
+                border: 1px solid black;
+            }
+
+            form ol {
+                padding-left: 0;
+            }
+
+            form li, div > p {
+                background: #eee;
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                list-style-type: none;
+                border: 1px solid black;
+            }
+
+            form img {
+                height: 64px;
+                order: 1;
+            }
+
+            form p {
+                line-height: 32px;
+                padding-left: 10px;
+            }
+
+            form label, form button {
+                background-color: #7F9CCB;
+                padding: 5px 10px;
+                border-radius: 5px;
+                border: 1px ridge black;
+                font-size: 0.8rem;
+                height: auto;
+            }
+
+            form label:hover, form button:hover {
+                background-color: #2D5BA3;
+                color: white;
+            }
+
+            form label:active, form button:active {
+                background-color: #0D3F8F;
+                color: white;
+            }
+        </style>
+    </head>
     <body>
-        <form id = "uploadbanner" enctype="multipart/form-data" action="/upload/image" method="post">
-              <input id = "fileupload" type = "file" />
-              <input type = "submit" value = "submit" id = "submit" />
-        </form>
+        <div>
+            <label for="image_uploads">Choose images to upload (PNG, JPG)</label>
+            <input type="file" id="image_uploads" name="image_uploads" accept=".pdf" multiple>
+        </div>
+        <div class="preview">
+            <p>No files currently selected for upload</p>
+        </div>
+        <div>
+            <button onclick="upload_btn()">Submit</button>
+        </div>
+        <script language="JavaScript">
+            var body = $("body");
+			$(document).on({
+				ajaxStart: function(){
+					body.addClass("loading");
+				},
+				ajaxStop: function(){ 
+					body.removeClass("loading");
+				}
+			});
+            
+            var fileName = document.querySelector('label');
+            var input = document.querySelector('input');
+            var preview = document.querySelector('.preview');
+
+            input.style.opacity = 0;
+
+            input.addEventListener('change', updateImageDisplay);
+            
+            
+            function sentToDB( base64_Data, dataName ){
+                let attr = {"state": "uploadFile",
+                           "myName": dataName,
+                           "myFile": base64_Data }
+                send_to_db( attr ).then( function( response ){
+                    console.log( response )
+                    if ( response === false ){
+                        return;
+                    }
+                })
+            
+            }
+            function upload_btn(){
+                var curFiles = input.files;
+                var reader = new FileReader();
+                reader.readAsDataURL( curFiles[0] );
+                reader.onloadend = function(e){
+                    var base64_Data = e.target.result
+                    sentToDB( base64_Data, curFiles[0].name )
+                } 
+            }
+            
+            
+            function updateImageDisplay() {
+                while(preview.firstChild) {
+                    preview.removeChild(preview.firstChild);
+                }
+                
+                var curFiles = input.files;
+                fileName.innerHTML = curFiles[0].name
+                
+                /*if(curFiles.length === 0) {
+                    var para = document.createElement('p');
+                    para.textContent = 'No files currently selected for upload';
+                    preview.appendChild(para);
+                } else {
+                    var list = document.createElement('ol');
+                    preview.appendChild(list);
+                    for(var i = 0; i < curFiles.length; i++) {
+                        fileName.innerHTML = curFiles[i].name
+                        var listItem = document.createElement('li');
+                        var para = document.createElement('p');
+                        if(validFileType(curFiles[i])) {
+                            para.textContent = 'File name ' + curFiles[i].name + ', file size ' + returnFileSize(curFiles[i].size) + '.';
+                            var image = document.createElement('img');
+                            image.src = window.URL.createObjectURL(curFiles[i]);
+                            listItem.appendChild(image);
+                            listItem.appendChild(para);
+                        } else {
+                            para.textContent = 'File name ' + curFiles[i].name + ': Not a valid file type. Update your selection.';
+                            listItem.appendChild(para);
+                        }
+                        list.appendChild(listItem);
+                    }
+                }*/
+            }
+
+            var fileTypes = [
+                'application/pdf',
+            ]
+
+            function validFileType(file) {
+                for(var i = 0; i < fileTypes.length; i++) {
+                    if(file.type === fileTypes[i]) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            function returnFileSize(number) {
+                if(number < 1024) {
+                    return number + 'bytes';
+                } else if(number > 1024 && number < 1048576) {
+                    return (number/1024).toFixed(1) + 'KB';
+                } else if(number > 1048576) {
+                    return (number/1048576).toFixed(1) + 'MB';
+                }
+            }
+        </script>
+		<script type="text/javascript" src="/SubScripts/db_send.js"></script>
+		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
+		<script type="text/javascript" src="/SubScripts/part_number.js"></script>
+		<script type="text/javascript" src="/SubScripts/get.js"></script>
+		<script type="text/javascript" src="/SubScripts/response_button.js"></script>
     </body>
 </html>

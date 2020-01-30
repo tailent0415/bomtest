@@ -16,7 +16,7 @@ function send_promise( data ){
 	return new Promise(function (resolve, reject){
 		$.ajax({
 			type: "get",
-			url: "https://script.google.com/macros/s/AKfycbwKABEfJzkFN9eQFT-ZrAc4gDaMQNrYgwXVH9KOYW0laumRMcM3/exec",
+			url: "https://script.google.com/macros/s/AKfycbx6DpX7AHFdxprVtsSehZBZWmMWF3aynYEu_ey2z1cSjjRvfLgK/exec",
 			data: data,
 			dataType: "JSON",
 			timeout: 30000,
@@ -33,6 +33,9 @@ function send_promise( data ){
                         break;
                     case "add_mo_data":
                         resolve( "製令新增完成" );
+                        break;
+                    case "uploadFile":
+                        resolve( response);
                         break;
                     case "set_supplier_info":
                         resolve( "廠商資訊更新" );

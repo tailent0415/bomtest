@@ -9,7 +9,7 @@
         <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
 	</head>
 	<body>
-		<p>當前版本: 1.4.11.11</p>
+		<p>當前版本: 1.4.11.13</p>
 		<div class="load_modal"></div>
 		<div class="login_container">
 			<div class="login_icon" id="my-signin2"></div>
@@ -31,7 +31,7 @@
 			});
 
             function openPDF(){
-                window.open( "https://forms.gle/Cya4ow2W25h5Z9Bw7", "" );
+                window.open( "test.html","frame_display");
             }
             
             
@@ -86,7 +86,7 @@
 			function onFailure(error){
 				//alert(JSON.stringify( error ) );
                 
-				let userId = "m9913008";
+				let userId = "harryjan731006";
                 var linkToMenu = "menu.html?" + userId;
                 sessionStorage.setItem( "login_id", userId );
                 sessionStorage.setItem( "part_options", undefined );
@@ -100,6 +100,7 @@
                     }
                     attr = dbio.GetManifestNum();
                     receive_to_db( attr ).then( function ( response ){
+                        console.log( attr )
                         if( response === false ){
                             alert( "Manifest Number 初始化失敗" );
                             return;
