@@ -152,16 +152,15 @@
 			
 			
 			$(document).ready(function(){
-				var url = location.href;
-				var temp = url.split("?");
-				username = temp[1];
-				if ( username == undefined ){
+				username = location.hash.slice(1);
+				if ( username.length == 0 ){
 					document.getElementById("user_title").innerHTML = "User: Guest";
 				}
 				else{
 					document.getElementById("user_title").innerHTML = "User:"+ " " + username;
 				}
 			});
+            
 		</script>
 		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>
         <script type="text/javascript" src="/SubScripts/db_send.js"></script>

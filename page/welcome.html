@@ -9,13 +9,12 @@
         <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
 	</head>
 	<body>
-		<p>當前版本: 1.4.11.13</p>
+		<p>當前版本: 1.4.12.0</p>
 		<div class="load_modal"></div>
 		<div class="login_container">
 			<div class="login_icon" id="my-signin2"></div>
 			<div class="login_id align_left">
                 <p id="user_title">尚未登入</p>
-                <button type="button" onclick="openPDF()">Test</button>
             </div>
 		</div>
 		<script>
@@ -30,13 +29,6 @@
 				}
 			});
 
-            function openPDF(){
-                var dbHtml = "https://script.google.com/macros/s/AKfycbwwrtYl3lni8rGmeJNeJd_BNxEOdqJwE-iZ8Tj5EaCLOtJ-oW2v/exec"
-                window.open( dbHtml,"newWindow");
-                //window.open( "test.html","frame_display");
-            }
-            
-            
 			// google login render icon
 			function renderButton(){
 				gapi.signin2.render('my-signin2', {
@@ -50,51 +42,31 @@
 				});
 			};
 
-			// google login event
+			
+            // google login event
 			function onSuccess( googleUser ){
 				let userEmail = googleUser.getBasicProfile().getEmail();
 				let userId = userEmail.substring( 0, userEmail.indexOf("@") );
-                var linkToMenu = "menu.html?" + userId;
-                sessionStorage.setItem( "login_id", userId );
-                sessionStorage.setItem( "part_options", undefined );
-                sessionStorage.setItem( "supplier_options", undefined );
-                sessionStorage.setItem( "serial_options", undefined );
-                let attr = dbio.GetPartNum();;
-                receive_to_db( attr ).then( function ( response ){
-                    if( response === false ){
-                        alert( "Part Number 初始化失敗" );
-                        return;
-                    }
-                    attr = dbio.GetManifestNum();
-                    receive_to_db( attr ).then( function ( response ){
-                        if( response === false ){
-                            alert( "Manifest Number 初始化失敗" );
-                            return;
-                        }
-                        attr = dbio.GetSupplierName();
-                        receive_to_db( attr ).then( function ( response ){
-                            if( response === false ){
-                                alert( "Supplier Name 初始化失敗" );
-                                return;
-                            }
-                            window.open( linkToMenu, "frame_menu" );
-                            $("#user_title")[0].textContent = "登入完成";
-                        });
-                    });
-                });
+                loginProcess( userId )
 			};
-
+            
+            
 			// google login failure report
 			function onFailure(error){
 				//alert(JSON.stringify( error ) );
-                
 				let userId = "harryjan731006";
-                var linkToMenu = "menu.html?" + userId;
+                loginProcess( userId )
+			};
+			
+            
+            // login user information
+            function loginProcess( userId ){
+                var linkToMenu = "menu.html?#" + userId;
                 sessionStorage.setItem( "login_id", userId );
                 sessionStorage.setItem( "part_options", undefined );
                 sessionStorage.setItem( "supplier_options", undefined );
                 sessionStorage.setItem( "serial_options", undefined );
-                let attr = dbio.GetPartNum();;
+                let attr = dbio.GetPartNum();
                 receive_to_db( attr ).then( function ( response ){
                     if( response === false ){
                         alert( "Part Number 初始化失敗" );
@@ -102,7 +74,6 @@
                     }
                     attr = dbio.GetManifestNum();
                     receive_to_db( attr ).then( function ( response ){
-                        console.log( attr )
                         if( response === false ){
                             alert( "Manifest Number 初始化失敗" );
                             return;
@@ -118,8 +89,10 @@
                         });
                     });
                 });
-			};
-			
+            }
+            
+            
+            
 		</script>
 		<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 		<script type="text/javascript" src="/SubScripts/db_receive.js"></script>

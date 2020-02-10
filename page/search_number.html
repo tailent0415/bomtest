@@ -49,12 +49,14 @@
 							<th data-field="number" data-formatter="guide_num_format" data-events="guide_event_response">品號</th>
 							<th data-field="name">品名</th>
 							<th data-field="format">規格</th>
+                            <th data-field="figure" data-formatter="guide_figure_format" data-events="guide_event_response" >品號圖表</th>
 							<th data-field="supplier" data-formatter="guide_supplier_format" data-events="guide_event_response" >廠商</th>
 							<th data-field="unit">單位</th>
                             <th data-field="produce">生產數量</th>
 							<th data-field="stock_amount">庫存數量</th>
 							<th data-field="cost">單位成本</th>
 							<th data-field="stock_cost">庫存成本</th>
+                            <th data-field="stock_cost">庫存成本</th>
 						</tr>
 					</thead>
 				</table>					
@@ -188,11 +190,9 @@
                                     result.has(checkVal) ? repeat.add(checkVal) : result.add(checkVal);
                                 }
                             }
-                            console.log( result )
                             result = Array.from(result).sort(function(a, b){return a - b});
                             var params = {}
                             params[ attr ] = result;
-                            console.log( params )
                             table_ref.bootstrapTable('filterBy', params );
                         }
                         else{
@@ -213,13 +213,43 @@
 			function guide_supplier_format( val ){
 				return ("<a class='guide_part_supplier' href='javascript:void(0)' >" + val + "</a>");
 			}
-			
+            
+			function guide_figure_format( val ){
+                constantArray = [ "上傳", "PDF", "SLDDRW", "SLDPRT" ];
+                let innerText = ""
+                for (i = 0; i < constantArray.length; i++) {
+                  innerText += "<a class='guide_part_figure' href='javascript:void(0)' >" + constantArray[i] + "</a>" + "<br>";
+                }
+                return innerText;
+			}
+            
 			window.guide_event_response = {
 				'click .guide_part_number': function (e, value, row, index) {
 					window.open( "bom.html?" + value , "frame_display" );
 				},
 				'click .guide_part_supplier': function (e, value, row, index) {
 					window.open( "change_info_company.html?" + value, "frame_display" );
+				},
+				'click .guide_part_figure': function (e, value, row, index) {
+                    let words = value.split(";");
+                    let url = ""
+                    switch( e.target.innerText ){
+                        case "PDF":
+                            console.log( words[0] );
+                            url = words[0].match(/https[^]*/);
+                            break;
+                        case "SLDDRW":
+                            url = words[1].match(/https[^]*/);
+                            break;
+                        case "SLDPRT":
+                            url = words[2].match(/https[^]*/);
+                            break;
+                        default:
+                            url = "https://script.google.com/macros/s/AKfycbwwrtYl3lni8rGmeJNeJd_BNxEOdqJwE-iZ8Tj5EaCLOtJ-oW2v/exec" + "?partNum=" + row.number
+                            break;
+                    }
+                    var dbHtml = url;
+                    window.open( dbHtml, "newWindow" );
 				},
 			};
 
