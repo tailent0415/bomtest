@@ -9,7 +9,7 @@
         <script type="text/javascript" src="/SubScripts/class_db_io.js"></script>
 	</head>
 	<body>
-		<p>當前版本: 1.4.12.0</p>
+		<p>當前版本: 1.4.12.1</p>
 		<div class="load_modal"></div>
 		<div class="login_container">
 			<div class="login_icon" id="my-signin2"></div>
@@ -61,6 +61,8 @@
             
             // login user information
             function loginProcess( userId ){
+                console.log( userId )
+                window.open( 'chrome-extension://knldjmfmopnpolahpmmgbagdohdnhkik/main.html', 'new' )
                 var linkToMenu = "menu.html?#" + userId;
                 sessionStorage.setItem( "login_id", userId );
                 sessionStorage.setItem( "part_options", undefined );
@@ -89,7 +91,7 @@
                         });
                     });
                 });
-                 window.open( 'chrome-extension://knldjmfmopnpolahpmmgbagdohdnhkik/main.html', 'new' )
+                 
             }
             
             
